@@ -4,12 +4,16 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@src': path.resolve(__dirname, './src'),
+    },
+  },
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'CIOAgentOverview',
       fileName: (format) => `index.${format}.js`,
-      formats: ['es', 'cjs', 'umd'],
+      formats: ['es', 'cjs'],
     },
     rollupOptions: {
       external: [
@@ -18,11 +22,6 @@ export default defineConfig({
         '@constructor-io/constructorio-client-javascript',
       ],
       output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          '@constructor-io/constructorio-client-javascript': 'ConstructorIO',
-        },
         assetFileNames: 'styles.css',
       },
     },

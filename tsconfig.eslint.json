@@ -5,15 +5,23 @@
     "noEmit": true,
     "allowJs": true,
     "rootDir": ".",
-    "outDir": null
+    "outDir": null,
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": ["src/*"],
+      "@spec/*": ["spec/*"],
+      "@stories/*": ["stories/*"]
+    }
   },
   "include": [
-    "src",
-    "spec",
-    "stories",
-    ".storybook",
+    "src/**/*",
+    "spec/**/*",
+    "stories/**/*",
+    ".storybook/**/*",
     "vite.lib.config.ts",
     "vite.standalone.config.ts",
+    "vitest.config.ts",
+    "vitest.shims.d.ts",
     "eslint.config.mjs"
   ]
 }

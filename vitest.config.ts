@@ -13,6 +13,13 @@ const dirname =
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@src': path.resolve(__dirname, './src'),
+      '@spec': path.resolve(__dirname, './spec'),
+      '@stories': path.resolve(__dirname, './stories'),
+    },
+  },
   test: {
     projects: [
       {

@@ -68,9 +68,9 @@ export default tseslint.config(
         'error',
         {
           devDependencies: [
-            '**/stories/**/*.*',
+            'stories/**/*.*',
             '**/.storybook/**/*.*',
-            '**/spec/**/*.*',
+            'spec/**/*.*',
             '**/*.test.{js,jsx,ts,tsx}',
           ],
           peerDependencies: true,
@@ -106,7 +106,7 @@ export default tseslint.config(
       'max-nested-callbacks': ['error', 5],
       'max-params': ['error', 4],
       complexity: ['error', 20],
-      '@cspell/spellchecker': ['error'],
+      '@cspell/spellchecker': ['warn', { words: ['constructorio'] }],
     },
   },
   {

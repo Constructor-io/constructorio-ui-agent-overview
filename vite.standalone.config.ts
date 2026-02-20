@@ -8,10 +8,15 @@ export default defineConfig({
     react(),
     cssInjectedByJsPlugin({ styleId: 'cio-agent-overview-styles' }),
   ],
+  resolve: {
+    alias: {
+      '@src': path.resolve(__dirname, './src'),
+    },
+  },
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/bundled.ts'),
-      name: 'CIOAgentOverview',
+      entry: path.resolve(__dirname, 'src/standalone.tsx'),
+      name: 'CioAgentOverview',
       fileName: () => 'constructorio-ui-agent-overview.standalone.js',
       formats: ['umd'],
     },
