@@ -2,6 +2,12 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const dirname =
+  typeof __dirname !== 'undefined'
+    ? __dirname
+    : path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [
@@ -10,12 +16,12 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@src': path.resolve(__dirname, './src'),
+      '@src': path.resolve(dirname, 'src'),
     },
   },
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/standalone.tsx'),
+      entry: path.resolve(dirname, 'src/standalone.tsx'),
       name: 'CioAgentOverview',
       fileName: () => 'constructorio-ui-agent-overview.standalone.js',
       formats: ['umd'],

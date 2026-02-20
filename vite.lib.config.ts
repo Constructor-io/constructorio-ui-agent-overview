@@ -1,17 +1,23 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const dirname =
+  typeof __dirname !== 'undefined'
+    ? __dirname
+    : path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@src': path.resolve(__dirname, './src'),
+      '@src': path.resolve(dirname, 'src'),
     },
   },
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
+      entry: path.resolve(dirname, 'src/index.ts'),
       fileName: (format) => `index.${format}.js`,
       formats: ['es', 'cjs'],
     },

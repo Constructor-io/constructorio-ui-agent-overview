@@ -15,9 +15,9 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@src': path.resolve(__dirname, './src'),
-      '@spec': path.resolve(__dirname, './spec'),
-      '@stories': path.resolve(__dirname, './stories'),
+      '@src': path.resolve(dirname, 'src'),
+      '@spec': path.resolve(dirname, 'spec'),
+      '@stories': path.resolve(dirname, 'stories'),
     },
   },
   test: {

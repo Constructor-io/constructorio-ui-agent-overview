@@ -1,5 +1,6 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 const config: StorybookConfig = {
   stories: [
@@ -15,12 +16,17 @@ const config: StorybookConfig = {
   ],
   framework: '@storybook/react-vite',
   viteFinal: (config) => {
+    const dirname =
+      typeof __dirname !== 'undefined'
+        ? __dirname
+        : path.dirname(fileURLToPath(import.meta.url));
+
     config.resolve = config.resolve || {};
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@src': path.resolve(__dirname, '../src'),
-      '@spec': path.resolve(__dirname, '../spec'),
-      '@stories': path.resolve(__dirname, '../stories'),
+      '@src': path.resolve(dirname, '../src'),
+      '@spec': path.resolve(dirname, '../spec'),
+      '@stories': path.resolve(dirname, '../stories'),
     };
     return config;
   },
