@@ -87,9 +87,18 @@ export default tseslint.config(
       'react/prefer-stateless-function': 'off',
       'react/jsx-props-no-spreading': 'off',
       'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': ['warn'],
+      '@typescript-eslint/no-unused-vars': ['off'],
       'prefer-const': 'error',
       'global-require': 'off',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+        },
+      ],
       'simple-import-sort/imports': [
         'error',
         {
