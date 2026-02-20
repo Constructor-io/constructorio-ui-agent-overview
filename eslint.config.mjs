@@ -106,7 +106,7 @@ export default tseslint.config(
       'max-nested-callbacks': ['error', 5],
       'max-params': ['error', 4],
       complexity: ['error', 20],
-      '@cspell/spellchecker': ['warn', { words: ['constructorio'] }],
+      '@cspell/spellchecker': ['error'],
     },
   },
   {
