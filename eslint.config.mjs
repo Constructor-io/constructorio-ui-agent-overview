@@ -15,7 +15,7 @@ import globals from 'globals';
 export default tseslint.config(
   {
     ignores: [
-      '*.config.js',
+      '*.config.mjs',
       'lib/**/*.js',
       'lib/**/*.d.ts',
       'docs/**/*.js',
@@ -32,7 +32,6 @@ export default tseslint.config(
         ecmaVersion: 'latest',
         sourceType: 'module',
         project: 'tsconfig.eslint.json',
-        tsconfigRootDir: __dirname,
         ecmaFeatures: { jsx: true },
       },
     },
@@ -78,8 +77,6 @@ export default tseslint.config(
         },
       ],
       ...jsxA11y.flatConfigs.recommended.rules,
-      ...reactPlugin.configs.flat.recommended.rules,
-      ...reactPlugin.configs.flat['jsx-runtime'].rules,
       ...reactHooksPlugin.configs.recommended.rules,
       'prettier/prettier': ['error'],
       'react/require-default-props': 'off',
@@ -139,7 +136,7 @@ export default tseslint.config(
       'no-snapshot-testing': noSnapshotPlugin,
     },
     rules: {
-      ...vitestPlugin.configs['flat/recommended'].rules,
+      ...vitestPlugin.configs.recommended.rules,
       ...testingLibraryPlugin.configs['flat/react'].rules,
       'vitest/consistent-test-it': [
         'error',
