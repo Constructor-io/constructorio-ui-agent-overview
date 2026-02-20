@@ -7,6 +7,7 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import prettierPlugin from 'eslint-plugin-prettier';
 import storybookPlugin from 'eslint-plugin-storybook';
 import cspellPlugin from '@cspell/eslint-plugin';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import vitestPlugin from 'eslint-plugin-vitest';
 import testingLibraryPlugin from 'eslint-plugin-testing-library';
 import noSnapshotPlugin from 'eslint-plugin-no-snapshot-testing';
@@ -39,7 +40,7 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   {
-    files: ['src/**/*.{js,jsx,ts,tsx}'],
+    files: ['{src,spec,stories}/**/*.{js,jsx,ts,tsx}'],
     plugins: {
       import: importPlugin,
       'jsx-a11y': jsxA11y,
@@ -48,6 +49,7 @@ export default tseslint.config(
       prettier: prettierPlugin,
       '@typescript-eslint': tseslint.plugin,
       '@cspell': cspellPlugin,
+      'simple-import-sort': simpleImportSort,
     },
     languageOptions: {
       globals: {
@@ -88,6 +90,34 @@ export default tseslint.config(
       '@typescript-eslint/no-unused-vars': ['warn'],
       'prefer-const': 'error',
       'global-require': 'off',
+      'simple-import-sort/imports': [
+        'error',
+        {
+          groups: [
+            ['^\\u0000'],
+            ['^node:'],
+            ['^react$', '^react-dom$'],
+            ['^@?\\w'],
+            ['^@spec(/.*|$)'],
+            ['^@stories(/.*|$)'],
+            ['^@src(/.*|$)'],
+            ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
+            ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+            ['^.+\\.s?css$'],
+          ],
+        },
+      ],
+      'simple-import-sort/exports': 'error',
+      'sort-imports': 'off',
+      'import/order': 'off',
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        {
+          prefer: 'type-imports',
+          disallowTypeAnnotations: true,
+          fixStyle: 'separate-type-imports',
+        },
+      ],
       'max-len': [
         'error',
         120,

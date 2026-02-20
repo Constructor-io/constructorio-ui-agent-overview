@@ -1,8 +1,12 @@
 export {};
 
 import React from 'react';
+
 import ReactDOM from 'react-dom/client';
-import CioAgentOverviewComponent, { type IAgentOverviewProps } from './app';
+
+import CioAgentOverviewComponent from './app';
+import type { IAgentOverviewProps } from './types';
+
 import './styles.css';
 
 // Global instance tracking for cleanup
