@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "moduleResolution": "bundler",
     "noEmit": true,
     "allowJs": true,
     "rootDir": ".",
@@ -9,10 +10,10 @@
   "include": [
     "src",
     "spec",
-    "vite.config.ts",
-    ".eslintrc.cjs",
-    "**/*.config.js",
-    "**/*.config.cjs",
-    "**/*.config.mjs"
+    "stories",
+    ".storybook",
+    "vite.lib.config.ts",
+    "vite.standalone.config.ts",
+    "eslint.config.js"
   ]
 }

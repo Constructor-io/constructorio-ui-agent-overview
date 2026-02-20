@@ -1,31 +1,31 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import path from "path";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
   build: {
     lib: {
-      entry: path.resolve(__dirname, "src/index.ts"),
-      name: "CIOAgentOverview",
+      entry: path.resolve(__dirname, 'src/index.ts'),
+      name: 'CIOAgentOverview',
       fileName: (format) => `index.${format}.js`,
-      formats: ["es", "cjs", "umd"],
+      formats: ['es', 'cjs', 'umd'],
     },
     rollupOptions: {
       external: [
-        "react",
-        "react-dom",
-        "@constructor-io/constructorio-client-javascript",
+        'react',
+        'react-dom',
+        '@constructor-io/constructorio-client-javascript',
       ],
       output: {
         globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-          "@constructor-io/constructorio-client-javascript": "ConstructorIO",
+          react: 'React',
+          'react-dom': 'ReactDOM',
+          '@constructor-io/constructorio-client-javascript': 'ConstructorIO',
         },
-        assetFileNames: "styles.css",
+        assetFileNames: 'styles.css',
       },
     },
-    outDir: "dist",
+    outDir: 'dist',
   },
 });

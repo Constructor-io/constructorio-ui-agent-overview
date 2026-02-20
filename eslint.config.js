@@ -7,7 +7,7 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import prettierPlugin from 'eslint-plugin-prettier';
 import storybookPlugin from 'eslint-plugin-storybook';
 import cspellPlugin from '@cspell/eslint-plugin';
-import jestPlugin from 'eslint-plugin-jest';
+import vitestPlugin from 'eslint-plugin-vitest';
 import testingLibraryPlugin from 'eslint-plugin-testing-library';
 import noSnapshotPlugin from 'eslint-plugin-no-snapshot-testing';
 import globals from 'globals';
@@ -19,7 +19,7 @@ export default tseslint.config(
       'lib/**/*.js',
       'lib/**/*.d.ts',
       'docs/**/*.js',
-      'jest.setup.ts',
+      'spec/setup.ts',
       'node_modules/',
       'dist/',
       'storybook-static/',
@@ -32,6 +32,7 @@ export default tseslint.config(
         ecmaVersion: 'latest',
         sourceType: 'module',
         project: 'tsconfig.eslint.json',
+        tsconfigRootDir: __dirname,
         ecmaFeatures: { jsx: true },
       },
     },
@@ -80,10 +81,6 @@ export default tseslint.config(
       ...reactPlugin.configs.flat.recommended.rules,
       ...reactPlugin.configs.flat['jsx-runtime'].rules,
       ...reactHooksPlugin.configs.recommended.rules,
-      ...tseslint.configs.recommendedTypeChecked.reduce(
-        (acc, config) => ({ ...acc, ...config.rules }),
-        {}
-      ),
       'prettier/prettier': ['error'],
       'react/require-default-props': 'off',
       'react/jsx-uses-react': 'off',
@@ -116,7 +113,10 @@ export default tseslint.config(
     },
   },
   {
-    files: ['**/*.stories.{js,jsx,ts,tsx}', '**/.storybook/**/*.{js,jsx,ts,tsx}'],
+    files: [
+      'stories/**/*.stories.{js,jsx,ts,tsx}',
+      '.storybook/**/*.{js,jsx,ts,tsx}',
+    ],
     plugins: {
       storybook: storybookPlugin,
     },
@@ -129,20 +129,31 @@ export default tseslint.config(
     languageOptions: {
       globals: {
         ...globals.node,
-        ...globals.jest,
+        ...globals.vitest,
       },
     },
     plugins: {
-      jest: jestPlugin,
+      vitest: vitestPlugin,
       import: importPlugin,
       'testing-library': testingLibraryPlugin,
       'no-snapshot-testing': noSnapshotPlugin,
     },
     rules: {
-      ...jestPlugin.configs['flat/recommended'].rules,
+      ...vitestPlugin.configs['flat/recommended'].rules,
       ...testingLibraryPlugin.configs['flat/react'].rules,
+      'vitest/consistent-test-it': [
+        'error',
+        { fn: 'test', withinDescribe: 'it' },
+      ],
+      'vitest/prefer-hooks-in-order': 'error',
+      'vitest/prefer-hooks-on-top': 'error',
+      'vitest/no-identical-title': 'error',
+      'vitest/require-top-level-describe': 'error',
       'no-snapshot-testing/no-snapshot-testing': 'error',
-      'testing-library/no-node-access': ['error', { allowContainerFirstChild: true }],
+      'testing-library/no-node-access': [
+        'error',
+        { allowContainerFirstChild: true },
+      ],
       'import/no-extraneous-dependencies': [
         'error',
         { devDependencies: true, peerDependencies: true },
