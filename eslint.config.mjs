@@ -87,10 +87,7 @@ export default tseslint.config(
       'react/prefer-stateless-function': 'off',
       'react/jsx-props-no-spreading': 'off',
       'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': ['off'],
-      'prefer-const': 'error',
-      'global-require': 'off',
-      'unused-imports/no-unused-vars': [
+      '@typescript-eslint/no-unused-vars': [
         'warn',
         {
           vars: 'all',
@@ -99,6 +96,8 @@ export default tseslint.config(
           argsIgnorePattern: '^_',
         },
       ],
+      'prefer-const': 'error',
+      'global-require': 'off',
       'simple-import-sort/imports': [
         'error',
         {
