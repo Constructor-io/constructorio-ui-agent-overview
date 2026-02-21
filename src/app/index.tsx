@@ -10,7 +10,7 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
 
   return (
     <div className="cio-agent-overview-root">
-      <div className=".cio-agent-overview__header">
+      <div className="cio-agent-overview__header">
         <h1>Constructor.io Agent Overview</h1>
       </div>
     </div>
