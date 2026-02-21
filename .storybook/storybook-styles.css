@@ -1,8 +1,21 @@
 #storybook-root {
   display: flex;
-  background-color: #f6f9fc;
+  background-color: #fafafa;
 }
 
 #storybook-docs {
-  background-color: #f6f9fc;
+  background-color: #fafafa;
+}
+
+.small-container-example-wrapper {
+  height: 100%;
+  display: grid;
+  align-content: center;
+  width: 100%;
+}
+
+.small-container-example {
+  height: 600px;
+  width: 70%;
+  margin: auto auto;
 }

@@ -4,10 +4,7 @@ import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const dirname =
-  typeof __dirname !== 'undefined'
-    ? __dirname
-    : path.dirname(fileURLToPath(import.meta.url));
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [

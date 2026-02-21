@@ -4,10 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import prefixer from 'postcss-prefix-selector';
 
-const dirname =
-  typeof __dirname !== 'undefined'
-    ? __dirname
-    : path.dirname(fileURLToPath(import.meta.url));
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const rootClass = '.cio-agent-overview-root';
 

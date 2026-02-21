@@ -16,10 +16,7 @@ const config: StorybookConfig = {
   ],
   framework: '@storybook/react-vite',
   viteFinal: (config) => {
-    const dirname =
-      typeof __dirname !== 'undefined'
-        ? __dirname
-        : path.dirname(fileURLToPath(import.meta.url));
+    const dirname = path.dirname(fileURLToPath(import.meta.url));
 
     config.resolve = config.resolve || {};
     config.resolve.alias = {
