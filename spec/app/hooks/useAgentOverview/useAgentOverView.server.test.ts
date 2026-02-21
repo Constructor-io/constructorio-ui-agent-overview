@@ -10,6 +10,6 @@ describe(`${useAgentOverview.name}: server`, () => {
     const { result } = renderHookServerSide(() => useAgentOverview(props), {
       initialProps: props,
     });
-    expect(result).toEqual({});
+    expect(result).toEqual({ text: 'This is the useAgentOverview hook.' });
   });
 });

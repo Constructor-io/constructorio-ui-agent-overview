@@ -8,6 +8,8 @@ describe(`${useAgentOverview.name}: client`, () => {
   const props = factories.agentOverviewProps.build();
   it('should return the correct data', () => {
     const { result } = renderHook(() => useAgentOverview(props));
-    expect(result.current).toEqual({});
+    expect(result.current).toEqual({
+      text: 'This is the useAgentOverview hook.',
+    });
   });
 });
