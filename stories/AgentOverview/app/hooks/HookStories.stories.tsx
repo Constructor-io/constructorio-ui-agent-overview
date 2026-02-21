@@ -11,7 +11,7 @@ import HooksTemplate from './HooksTemplate';
 import '@src/styles.css';
 
 const meta: Meta<typeof HooksTemplate> = {
-  title: 'Quiz/useCioQuiz',
+  title: 'AgentOverview/useAgentOverview Hooks',
   component: HooksTemplate,
   parameters: {
     controls: storiesControls,
