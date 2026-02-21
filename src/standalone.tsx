@@ -10,7 +10,6 @@ import version from './version';
 
 import './styles.css';
 
-// Global instance tracking for cleanup
 const instances = new Map<Element, ReactDOM.Root>();
 
 /**
@@ -75,7 +74,6 @@ const CioAgentOverview = {
     includeCSS = true,
     ...componentProps
   }: CioAgentOverviewOptions): Element | undefined {
-    // Guard against server-side rendering
     if (typeof document === 'undefined') {
       console.error(
         'CioAgentOverview.init() can only be called in browser environments'
@@ -83,7 +81,6 @@ const CioAgentOverview = {
       return undefined;
     }
 
-    // Find the container
     const container = document.querySelector<HTMLElement>(selector);
     if (!container) {
       console.error(
@@ -92,10 +89,8 @@ const CioAgentOverview = {
       return undefined;
     }
 
-    // Handle CSS injection
     this._handleStylesheet(includeCSS);
 
-    // Clean up any existing instance
     const existingRoot = instances.get(container);
     if (existingRoot) {
       existingRoot.unmount();
@@ -103,7 +98,6 @@ const CioAgentOverview = {
     }
 
     try {
-      // Create new root and render
       const root = ReactDOM.createRoot(container);
       instances.set(container, root);
 
@@ -151,7 +145,6 @@ const CioAgentOverview = {
       return;
     }
 
-    // Update CSS if provided
     if (includeCSS !== undefined) {
       this._handleStylesheet(includeCSS);
     }
@@ -190,7 +183,6 @@ const CioAgentOverview = {
     if (typeof document === 'undefined') return;
 
     if (selector) {
-      // Destroy specific instance
       const container = document.querySelector<HTMLElement>(selector);
       if (container) {
         const root = instances.get(container);
@@ -200,7 +192,6 @@ const CioAgentOverview = {
         }
       }
     } else {
-      // Destroy all instances
       instances.forEach((root) => {
         root.unmount();
       });
@@ -221,13 +212,10 @@ const CioAgentOverview = {
     ) as HTMLStyleElement | null;
 
     if (includeCSS) {
-      // If stylesheet doesn't exist, it should have been injected by vite-plugin-css-injected-by-js
-      // But we can enable it if it was disabled
       if (stylesheet) {
         stylesheet.disabled = false;
       }
     } else {
-      // Disable stylesheet if it exists
       if (stylesheet) {
         stylesheet.disabled = true;
       }
