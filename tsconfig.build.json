@@ -5,6 +5,9 @@
     "outDir": "./dist/types",
     "rootDir": "./src",
     "emitDeclarationOnly": true,
+    "declarationMap": false,
+    "removeComments": false,
+    "allowJs": false,
     "types": [],
     "paths": {
       "@src/*": ["src/*"]
