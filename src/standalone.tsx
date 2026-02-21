@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/client';
 
 import CioAgentOverviewComponent from './app';
 import type { IAgentOverviewProps } from './types';
+import version from './version';
 
 import './styles.css';
 
@@ -47,7 +48,7 @@ const CioAgentOverview = {
   /**
    * Version of the library (injected from package.json at build time)
    */
-  VERSION: process.env.npm_package_version || '0.1.0',
+  VERSION: version || '0.1.0',
 
   /**
    * Initialize the Agent Overview component

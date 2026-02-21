@@ -1,0 +1,1 @@
+export const DEMO_API_KEY = 'DEMO_API_KEY';

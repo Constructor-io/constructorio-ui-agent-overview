@@ -4,6 +4,4 @@ export interface IAgentOverviewProps {
   apiKey?: string;
   cioJsClient?: ConstructorIOClient;
   domain: string;
-  primaryColor?: string;
-  enableHydration?: boolean;
 }

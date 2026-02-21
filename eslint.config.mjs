@@ -32,7 +32,7 @@ export default tseslint.config(
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-        project: 'tsconfig.eslint.json',
+        project: 'tsconfig.json',
         ecmaFeatures: { jsx: true },
       },
     },

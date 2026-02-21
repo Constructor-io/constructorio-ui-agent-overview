@@ -9,6 +9,8 @@ const dirname =
     ? __dirname
     : path.dirname(fileURLToPath(import.meta.url));
 
+const rootClass = '.cio-agent-overview-root';
+
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -20,8 +22,15 @@ export default defineConfig({
     postcss: {
       plugins: [
         prefixer({
-          prefix: '.cio',
-          exclude: [':root', 'html', 'body', '@keyframes'],
+          prefix: rootClass,
+          exclude: [
+            ':root',
+            ':global',
+            'html',
+            'body',
+            '@keyframes',
+            rootClass,
+          ],
           transform(_, selector, prefixedSelector, filePath) {
             if (filePath.includes('node_modules')) {
               return selector;

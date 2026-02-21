@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "./dist/types",
+    "rootDir": "./src",
+    "emitDeclarationOnly": true,
+    "types": [],
+    "paths": {
+      "@src/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
+    "src/bundled.tsx",
+    "vitest.shims.d.ts",
+    "**/__tests__/**",
+    "**/__mocks__/**"
+  ]
+}
