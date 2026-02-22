@@ -9,7 +9,7 @@ import './index.css';
 export default function CioAgentOverview(props: IAgentOverviewProps) {
   useAgentOverview(props);
 
-  const client = new AgentOverviewClient({
+  new AgentOverviewClient({
     apiKey: props.apiKey,
     cioJsClient: props.cioJsClient,
   });

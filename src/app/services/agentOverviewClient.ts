@@ -72,9 +72,9 @@ class AgentNamespace {
 }
 
 class TrackingNamespace {
-  constructor(private readonly client: ConstructorIOClient) {
-    // Tracking methods for agent overview will be added here
-    // For example:
-    // trackAgentEvent(event: AgentTrackingEvent) { ... }
-  }
+  // constructor(private readonly client: ConstructorIOClient) {
+  //   // Tracking methods for agent overview will be added here
+  //   // For example:
+  //   // trackAgentEvent(event: AgentTrackingEvent) { ... }
+  // }
 }
