@@ -1,12 +1,18 @@
 import type { IAgentOverviewProps } from '../types';
 
 import useAgentOverview from './hooks/useAgentOverview';
+import { AgentOverviewClient } from './services/agentOverviewClient';
 
 import '../styles.css';
 import './index.css';
 
 export default function CioAgentOverview(props: IAgentOverviewProps) {
   useAgentOverview(props);
+
+  const client = new AgentOverviewClient({
+    apiKey: props.apiKey,
+    cioJsClient: props.cioJsClient,
+  });
 
   return (
     <div className="cio-agent-overview-root">
