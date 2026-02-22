@@ -33,11 +33,11 @@ export class AgentOverviewClient {
     }
 
     this.agent = new AgentNamespace(this.client);
-    this.tracking = new TrackingNamespace(this.client);
+    // this.tracking = new TrackingNamespace(this.client);
   }
 
   public readonly agent: AgentNamespace;
-  public readonly tracking: TrackingNamespace;
+  // public readonly tracking: TrackingNamespace;
 
   /**
    * Exposes the raw ConstructorIO client for advanced use cases.
@@ -71,10 +71,10 @@ class AgentNamespace {
   }
 }
 
-class TrackingNamespace {
-  // constructor(private readonly client: ConstructorIOClient) {
-  //   // Tracking methods for agent overview will be added here
-  //   // For example:
-  //   // trackAgentEvent(event: AgentTrackingEvent) { ... }
-  // }
-}
+// class TrackingNamespace {
+// constructor(private readonly client: ConstructorIOClient) {
+//   // Tracking methods for agent overview will be added here
+//   // For example:
+//   // trackAgentEvent(event: AgentTrackingEvent) { ... }
+// }
+// }
