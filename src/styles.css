@@ -14,3 +14,11 @@
     transform: rotate(360deg);
   }
 }
+
+@container cio-agent-overview-root {
+  .cio-agent-overview__header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
