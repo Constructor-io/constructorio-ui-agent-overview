@@ -20,14 +20,7 @@ export default defineConfig({
       plugins: [
         prefixer({
           prefix: rootClass,
-          exclude: [
-            ':root',
-            ':global',
-            'html',
-            'body',
-            '@keyframes',
-            rootClass,
-          ],
+          exclude: [':root', 'html', 'body', rootClass] ,
           transform(_, selector, prefixedSelector, filePath) {
             if (filePath.includes('node_modules')) {
               return selector;
