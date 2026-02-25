@@ -9,81 +9,55 @@ import version from './version';
 import './styles.css';
 
 /**
- * Options for initializing the standalone Agent Overview.
- * Extends component props with initialization-specific options.
+ * Options for initializing the Agent Overview component.
+ * @public
  */
-interface CioAgentOverviewOptions extends IAgentOverviewProps {
-  /** CSS selector for the container element (required) */
+export interface CioAgentOverviewInitOptions extends IAgentOverviewProps {
+  /** CSS selector for the container element */
   selector: string;
-  /** Whether to include the injected CSS (default: true) */
+  /** Whether to include default CSS styles (default: true) */
   includeCSS?: boolean;
 }
 
 /**
- * Constructor.io Agent Overview - Standalone entry point
- *
- * This object is exposed globally as `window.CioAgentOverview` when using the
- * standalone script via `<script>` tag.
- *
- * @example
- * ```html
- * <div id="agent"></div>
- * <script src="constructorio-ui-agent-overview.standalone.js"></script>
- * <script>
- *   CioAgentOverview.init({
- *     selector: '#agent',
- *     apiKey: 'your-api-key',
- *     domain: 'agent-123',
- *     includeCSS: true
- *   });
- * </script>
- * ```
+ * Standalone Constructor.io Agent Overview.
+ * @public
  */
 const CioAgentOverview = (() => {
-  /** Tracks active React roots by their container element */
-  const instances = new Map<Element, ReactDOM.Root>();
+  const instances = new Map<
+    Element,
+    {
+      root: ReactDOM.Root;
+      currentProps: IAgentOverviewProps;
+    }
+  >();
 
-  /**
-   * Enables or disables the injected stylesheet.
-   * The stylesheet is injected by `vite-plugin-css-injected-by-js` at runtime,
-   * so this function toggles it after it has been added to the DOM.
-   *
-   * @param includeCSS - Whether the CSS should be enabled
-   */
   function handleStylesheet(includeCSS: boolean): void {
     const styleId = 'cio-agent-overview-styles';
     const stylesheet = document.getElementById(
       styleId
     ) as HTMLStyleElement | null;
-
     if (stylesheet) {
       stylesheet.disabled = !includeCSS;
     }
   }
 
   return {
-    /**
-     * Version of the library (injected from package.json at build time)
-     */
+    /** Library version. */
     VERSION: version || '0.1.0',
 
     /**
-     * Initialize the Agent Overview component.
+     * Initializes and mounts the component.
      *
      * @param options - Configuration options
-     * @param options.selector - CSS selector for the container element (required)
-     * @param options.includeCSS - Whether to include the injected CSS (default: true)
-     * @param options.apiKey - Your Constructor.io API key
-     * @param options.domain - Domain of the agent to query
-     * @returns The container element if successful, undefined otherwise
+     * @returns The container element or undefined if failed
      *
      * @example
      * ```js
-     * const container = CioAgentOverview.init({
+     * CioAgentOverview.init({
      *   selector: '#agent',
-     *   apiKey: 'abc123',
-     *   domain: 'agent-456',
-     *   includeCSS: true
+     *   apiKey: 'your-api-key',
+     *   domain: 'your-domain'
      * });
      * ```
      */
@@ -91,34 +65,31 @@ const CioAgentOverview = (() => {
       selector,
       includeCSS = true,
       ...componentProps
-    }: CioAgentOverviewOptions): Element | undefined {
+    }: CioAgentOverviewInitOptions): Element | undefined {
       if (typeof document === 'undefined') {
-        console.error(
-          'CioAgentOverview.init() can only be called in browser environments'
-        );
+        console.error('CioAgentOverview.init() requires a browser environment');
         return undefined;
       }
 
       const container = document.querySelector<HTMLElement>(selector);
       if (!container) {
         console.error(
-          `CioAgentOverview.init(): No element found for selector "${selector}"`
+          `CioAgentOverview.init(): Element not found for selector "${selector}"`
         );
         return undefined;
       }
 
       handleStylesheet(includeCSS);
 
-      // Unmount any existing instance on this container before re-mounting
-      const existingRoot = instances.get(container);
-      if (existingRoot) {
-        existingRoot.unmount();
+      const existingInstance = instances.get(container);
+      if (existingInstance) {
+        existingInstance.root.unmount();
         instances.delete(container);
       }
 
       try {
         const root = ReactDOM.createRoot(container);
-        instances.set(container, root);
+        instances.set(container, { root, currentProps: componentProps });
 
         root.render(
           <React.StrictMode>
@@ -134,72 +105,56 @@ const CioAgentOverview = (() => {
     },
 
     /**
-     * Update an existing instance with new props.
-     * The component will re-render with the provided props.
-     * If no instance exists for the given selector, a warning is logged.
+     * Updates an existing instance with new props.
      *
-     * @param options - Configuration options
-     * @param options.selector - CSS selector of the container (required)
-     * @param options.includeCSS - Whether to include the injected CSS
-     * @param options.apiKey - Your Constructor.io API key
-     * @param options.domain - Domain of the agent to query
+     * @param selector - CSS selector of the container
+     * @param newProps - Partial props to update
      *
      * @example
      * ```js
-     * CioAgentOverview.update({
-     *   selector: '#agent',
-     *   domain: 'agent-789',
+     * CioAgentOverview.update('#agent', {
+     *   domain: 'new-domain'
      * });
      * ```
      */
-    update({
-      selector,
-      includeCSS,
-      ...componentProps
-    }: CioAgentOverviewOptions): void {
+    update(selector: string, newProps: Partial<IAgentOverviewProps>): void {
       if (typeof document === 'undefined') return;
 
       const container = document.querySelector<HTMLElement>(selector);
       if (!container) {
         console.error(
-          `CioAgentOverview.update(): No element found for selector "${selector}"`
+          `CioAgentOverview.update(): Element not found for selector "${selector}"`
         );
         return;
       }
 
-      if (includeCSS !== undefined) {
-        handleStylesheet(includeCSS);
-      }
-
-      const root = instances.get(container);
-      if (!root) {
+      const instance = instances.get(container);
+      if (!instance) {
         console.warn(
-          `CioAgentOverview.update(): No instance found for selector "${selector}". Call init() first.`
+          `CioAgentOverview.update(): No instance found for selector "${selector}"`
         );
         return;
       }
 
-      root.render(
+      const mergedProps = { ...instance.currentProps, ...newProps };
+      instance.currentProps = mergedProps;
+
+      instance.root.render(
         <React.StrictMode>
-          <CioAgentOverviewComponent {...componentProps} />
+          <CioAgentOverviewComponent {...mergedProps} />
         </React.StrictMode>
       );
     },
 
     /**
-     * Destroy an existing instance and unmount the React tree.
-     * If no selector is provided, all instances are destroyed.
+     * Destroys one or all instances.
      *
-     * @param selector - CSS selector of the container to destroy.
-     *                   If omitted, destroys all instances.
+     * @param selector - Optional selector. If omitted, destroys all instances.
      *
      * @example
      * ```js
-     * // Destroy a specific instance
-     * CioAgentOverview.destroy('#agent');
-     *
-     * // Destroy all instances
-     * CioAgentOverview.destroy();
+     * CioAgentOverview.destroy('#agent');  // Destroy specific
+     * CioAgentOverview.destroy();           // Destroy all
      * ```
      */
     destroy(selector?: string): void {
@@ -208,14 +163,14 @@ const CioAgentOverview = (() => {
       if (selector) {
         const container = document.querySelector<HTMLElement>(selector);
         if (container) {
-          const root = instances.get(container);
-          if (root) {
-            root.unmount();
+          const instance = instances.get(container);
+          if (instance) {
+            instance.root.unmount();
             instances.delete(container);
           }
         }
       } else {
-        instances.forEach((root) => root.unmount());
+        instances.forEach((instance) => instance.root.unmount());
         instances.clear();
       }
     },
