@@ -1,6 +1,6 @@
 import type ConstructorIOClient from '@constructor-io/constructorio-client-javascript';
 
-export interface Theme {
+export interface CioAgentOverviewTheme {
   primaryColor?: React.CSSProperties['color'];
   secondaryColor?: React.CSSProperties['color'];
   background?: React.CSSProperties['backgroundColor'];
@@ -11,5 +11,5 @@ export interface IAgentOverviewProps {
   apiKey?: string;
   cioJsClient?: ConstructorIOClient;
   domain: string;
-  theme?: Theme;
+  theme?: CioAgentOverviewTheme;
 }
