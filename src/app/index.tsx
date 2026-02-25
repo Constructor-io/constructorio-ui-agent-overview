@@ -14,8 +14,19 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
     cioJsClient: props.cioJsClient,
   });
 
+  const themeStyles = Object.entries(props.theme || {}).reduce(
+    (acc, [key, value]) => {
+      if (value !== undefined) {
+        const cssVarName = `--${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
+        return { ...acc, [cssVarName]: value as string };
+      }
+      return acc;
+    },
+    {} as React.CSSProperties
+  );
+
   return (
-    <div className="cio-agent-overview-root">
+    <div className="cio-agent-overview-root" style={themeStyles}>
       <div className="cio-agent-overview__header">
         <h1>Constructor.io Agent Overview</h1>
       </div>
