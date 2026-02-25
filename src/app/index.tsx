@@ -17,8 +17,12 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
   const themeStyles = Object.entries(props.theme || {}).reduce(
     (acc, [key, value]) => {
       if (value !== undefined) {
+        const sanitizedValue = String(value)
+          .replace(/[<>]/g, '')
+          .replace(/javascript:/gi, 'blocked:')
+          .trim();
         const cssVarName = `--${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
-        return { ...acc, [cssVarName]: value as string };
+        return { ...acc, [cssVarName]: sanitizedValue };
       }
       return acc;
     },
