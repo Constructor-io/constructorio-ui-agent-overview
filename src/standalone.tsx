@@ -44,7 +44,7 @@ const CioAgentOverview = (() => {
 
   return {
     /** Library version. */
-    VERSION: version || '0.1.0',
+    VERSION: version || '0.0.0',
 
     /**
      * Initializes and mounts the component.
@@ -154,7 +154,7 @@ const CioAgentOverview = (() => {
      * @example
      * ```js
      * CioAgentOverview.destroy('#agent');  // Destroy specific
-     * CioAgentOverview.destroy();           // Destroy all
+     * CioAgentOverview.destroy();          // Destroy all
      * ```
      */
     destroy(selector?: string): void {
