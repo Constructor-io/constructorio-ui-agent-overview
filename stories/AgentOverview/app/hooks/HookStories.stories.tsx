@@ -1,4 +1,4 @@
-import type { Meta } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import {
   argTypes,
@@ -30,4 +30,6 @@ const meta: Meta<typeof HooksTemplate> = {
 
 export default meta;
 
-export const BasicUsage = HooksTemplate.bind({});
+type Story = StoryObj<typeof HooksTemplate>;
+
+export const BasicUsage: Story = {};
