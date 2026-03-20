@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 
 import * as factories from '@spec/factory';
 
@@ -6,10 +6,74 @@ import useAgentOverview from '@src/app/hooks/useAgentOverview';
 
 describe(`${useAgentOverview.name}: client`, () => {
   const props = factories.agentOverviewProps.build();
-  it('should return the correct data', () => {
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('should return initial state with categories phase', async () => {
     const { result } = renderHook(() => useAgentOverview(props));
-    expect(result.current).toEqual({
-      text: 'This is the useAgentOverview hook.',
+
+    await act(async () => {
+      vi.advanceTimersByTime(1100);
     });
+
+    expect(result.current.phase).toBe('categories');
+    expect(result.current.sections).toEqual([]);
+  });
+
+  it('should load categories from mock stream', async () => {
+    const { result } = renderHook(() => useAgentOverview(props));
+
+    await act(async () => {
+      vi.advanceTimersByTime(1100);
+    });
+
+    expect(result.current.phase).toBe('categories');
+    expect(result.current.categories.length).toBeGreaterThan(0);
+    expect(result.current.categoryDescription).toBeTruthy();
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it('should show skeleton for at least 1 second', async () => {
+    const { result } = renderHook(() => useAgentOverview(props));
+
+    // Before 1s, should still be loading
+    await act(async () => {
+      vi.advanceTimersByTime(500);
+    });
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.categories).toEqual([]);
+
+    // After 1s, categories should appear
+    await act(async () => {
+      vi.advanceTimersByTime(600);
+    });
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.categories.length).toBeGreaterThan(0);
+  });
+
+  it('should transition to products phase on selectCategory', async () => {
+    const { result } = renderHook(() => useAgentOverview(props));
+
+    await act(async () => {
+      vi.advanceTimersByTime(1100);
+    });
+
+    const category = result.current.categories[0];
+    act(() => {
+      result.current.selectCategory(category);
+    });
+
+    // Advance timers to let the polling interval resolve
+    await act(async () => {
+      vi.advanceTimersByTime(200);
+    });
+
+    expect(result.current.phase).toBe('products');
   });
 });

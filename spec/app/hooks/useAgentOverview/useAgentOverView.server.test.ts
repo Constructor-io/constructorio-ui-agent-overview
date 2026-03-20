@@ -6,10 +6,19 @@ import useAgentOverview from '@src/app/hooks/useAgentOverview';
 describe(`${useAgentOverview.name}: server`, () => {
   const props = factories.agentOverviewProps.build();
 
-  it('should return the correct data', () => {
+  it('should return initial state on server', () => {
     const { result } = renderHookServerSide(() => useAgentOverview(props), {
       initialProps: props,
     });
-    expect(result).toEqual({ text: 'This is the useAgentOverview hook.' });
+    expect(result).toEqual({
+      phase: 'categories',
+      categories: [],
+      categoryDescription: '',
+      sections: [],
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      selectCategory: expect.any(Function),
+      isLoading: false,
+      error: null,
+    });
   });
 });

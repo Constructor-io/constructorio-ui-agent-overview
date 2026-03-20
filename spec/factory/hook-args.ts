@@ -4,5 +4,7 @@ import type { IAgentOverviewProps } from '../../src/types';
 
 export const agentOverviewProps = Factory.define<IAgentOverviewProps>(() => ({
   apiKey: 'DEMO_API_KEY',
-  domain: 'example.com',
+  intent: 'I want to buy shoes',
+  categoryDomain: 'searchbar_agent',
+  productDomain: 'explorer',
 }));

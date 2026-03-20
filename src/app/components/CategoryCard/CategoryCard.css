@@ -1,0 +1,21 @@
+.cio-agent-overview__category-card {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  width: 100%;
+  height: 100%;
+}
+
+.cio-agent-overview__category-card__inner {
+  padding: 0;
+}
+
+.cio-agent-overview__category-card__content {
+  padding: 0 16px 16px 16px;
+}

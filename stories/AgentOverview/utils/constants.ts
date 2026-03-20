@@ -1,2 +1,4 @@
-export const apiKey = 'key_n4SkMH5PFWLdStQZ';
-export const domain = 'example';
+export const apiKey = 'key_x6UnCVRZaJgIHFQD';
+export const intent = 'I want to buy slim pants';
+export const categoryDomain = 'searchbar_agent';
+export const productDomain = 'explorer';

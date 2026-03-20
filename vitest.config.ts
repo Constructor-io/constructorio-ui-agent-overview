@@ -31,6 +31,11 @@ export default defineConfig({
             'stories/**/*.stories.{js,jsx}',
           ],
           globals: true,
+          server: {
+            deps: {
+              inline: ['@constructor-io/constructorio-ui-components'],
+            },
+          },
         },
       },
       {

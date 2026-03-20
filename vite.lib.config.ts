@@ -45,6 +45,7 @@ export default defineConfig({
       ],
       output: {
         assetFileNames: 'styles.css',
+        exports: 'named',
       },
     },
     outDir: 'dist',

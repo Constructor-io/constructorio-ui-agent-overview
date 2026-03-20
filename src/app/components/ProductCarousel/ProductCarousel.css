@@ -1,0 +1,30 @@
+.cio-agent-overview__carousel {
+  position: relative;
+  max-width: 100%;
+}
+
+/* Position nav buttons absolutely over the carousel */
+.cio-agent-overview__carousel [data-slot='carousel'] {
+  position: relative;
+}
+
+.cio-agent-overview__carousel [data-slot='carousel-previous'],
+.cio-agent-overview__carousel [data-slot='carousel-next'] {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-100%);
+  z-index: 2;
+}
+
+.cio-agent-overview__carousel [data-slot='carousel-previous'] {
+  left: 0;
+}
+
+.cio-agent-overview__carousel [data-slot='carousel-next'] {
+  right: 0;
+}
+
+
+.cio-agent-overview__carousel__content {
+  padding-left: 0;
+}

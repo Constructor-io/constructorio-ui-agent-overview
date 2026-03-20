@@ -21,7 +21,7 @@
       "import": "./dist/index.es.js",
       "require": "./dist/index.cjs.js"
     },
-    "./style.css": "./dist/styles.css",
+    "./styles.css": "./dist/styles.css",
     "./constructorio-ui-agent-overview-standalone": {
       "import": "./dist/standalone/constructorio-ui-agent-overview.standalone.js",
       "require": "./dist/standalone/constructorio-ui-agent-overview.standalone.js"
@@ -60,7 +60,7 @@
     "storybook-docs-dev": "storybook dev --docs -p 6007"
   },
   "peerDependencies": {
-    "@constructor-io/constructorio-client-javascript": "^2.75.0",
+    "@constructor-io/constructorio-client-javascript": "^2.76.0",
     "react": ">=16.12.0",
     "react-dom": ">=16.12.0"
   },
@@ -118,5 +118,8 @@
   "volta": {
     "node": "22.17.1",
     "npm": "10.9.3"
+  },
+  "dependencies": {
+    "@constructor-io/constructorio-ui-components": "^1.3.0"
   }
 }

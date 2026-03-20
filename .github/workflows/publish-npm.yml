@@ -1,0 +1,62 @@
+name: Publish to npm
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: Version tag (e.g. v1.2.3)
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version tag (e.g. v1.2.3)
+        required: true
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Remove version prefix
+        id: version
+        uses: ./.github/actions/remove-version-prefix
+        with:
+          version: ${{ inputs.version }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.17.1'
+          registry-url: 'https://registry.npmjs.org/'
+          scope: '@constructor-io'
+          cache: 'npm'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - run: npm ci
+
+      - name: Compile
+        uses: ./.github/actions/compile
+        with:
+          version: ${{ inputs.version }}
+
+      - name: Set package version
+        run: |
+          jq --arg v "${{ steps.version.outputs.without_prefix }}" '.version = $v' package.json > tmp.json && mv tmp.json package.json
+
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Notify Slack
+        uses: ravsamhq/notify-slack-action@bca2d7f5660b833a27bda4f6b8bef389ebfefd25 # v2.3.0
+        with:
+          status: ${{ job.status }}
+          notification_title: 'New constructorio-ui-agent-overview release published to npm at version ${{ steps.version.outputs.without_prefix }}'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

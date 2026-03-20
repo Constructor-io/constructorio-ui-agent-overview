@@ -1,0 +1,19 @@
+name: Remove Version Prefix
+description: Removes the 'v' prefix from a version string
+
+inputs:
+  version:
+    description: Version string (e.g. v1.2.3)
+    required: true
+
+outputs:
+  without_prefix:
+    description: Version without the v prefix
+    value: ${{ steps.remove.outputs.without_prefix }}
+
+runs:
+  using: composite
+  steps:
+    - id: remove
+      shell: bash
+      run: echo "without_prefix=$(echo '${{ inputs.version }}' | tr -d 'v')" >> $GITHUB_OUTPUT

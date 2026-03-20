@@ -4,7 +4,12 @@ import {
   argTypes,
   storiesControls,
 } from '@stories/AgentOverview/utils/argTypes';
-import { apiKey, domain } from '@stories/AgentOverview/utils/constants';
+import {
+  apiKey,
+  categoryDomain,
+  intent,
+  productDomain,
+} from '@stories/AgentOverview/utils/constants';
 
 import HooksTemplate from './HooksTemplate';
 
@@ -22,8 +27,10 @@ const meta: Meta<typeof HooksTemplate> = {
     },
   },
   args: {
-    domain,
     apiKey,
+    intent,
+    categoryDomain,
+    productDomain,
   },
   argTypes,
 };

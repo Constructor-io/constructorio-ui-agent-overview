@@ -11,20 +11,26 @@ export const argTypes: Partial<ArgTypes<IAgentOverviewProps>> = {
       defaultValue: { summary: 'demo' },
     },
   },
-  domain: {
-    description: 'Domain for Constructor.io',
+  intent: {
+    description: 'Intent query for agent recommendations',
     control: 'text',
     table: {
       type: { summary: 'string' },
-      defaultValue: { summary: 'example.com' },
     },
   },
-  cioJsClient: {
-    description: 'Constructor.io client instance',
+  categoryDomain: {
+    description: 'Domain for category suggestions',
+    control: 'text',
     table: {
-      type: { summary: 'CioClient' },
+      type: { summary: 'string' },
     },
-    control: false,
+  },
+  productDomain: {
+    description: 'Domain for product recommendations',
+    control: 'text',
+    table: {
+      type: { summary: 'string' },
+    },
   },
 };
 
@@ -32,5 +38,7 @@ export const storiesControls = {
   expanded: true,
   hideNoControlsWarning: true,
   apiKey: { type: 'text' },
-  domain: { type: 'text' },
+  intent: { type: 'text' },
+  categoryDomain: { type: 'text' },
+  productDomain: { type: 'text' },
 };

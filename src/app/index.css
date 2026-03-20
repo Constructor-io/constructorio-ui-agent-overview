@@ -1,5 +1,30 @@
-.cio-agent-overview__header {
+.cio-agent-overview-root {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--cio-spacing-2xl);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.cio-agent-overview__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--cio-spacing-2xl) var(--cio-spacing-lg);
+  text-align: center;
+}
+
+.cio-agent-overview__error__icon {
+  color: var(--cio-color-muted);
+  margin-bottom: var(--cio-spacing-lg);
+}
+
+.cio-agent-overview__error__message {
+  font-family: var(--cio-font-family);
+  font-size: var(--cio-font-size-sm);
+  font-weight: var(--cio-font-weight-normal);
+  color: var(--cio-color-muted);
+  margin: 0;
+  line-height: var(--cio-line-height-base);
 }

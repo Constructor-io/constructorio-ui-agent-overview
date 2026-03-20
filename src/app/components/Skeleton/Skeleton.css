@@ -1,0 +1,92 @@
+@keyframes cio-shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.cio-agent-overview__skeleton-bone {
+  background: linear-gradient(
+    90deg,
+    var(--cio-color-background-muted) 25%,
+    #ebebeb 37%,
+    var(--cio-color-background-muted) 63%
+  );
+  background-size: 800px 100%;
+  animation: cio-shimmer 1.5s infinite linear;
+  border-radius: 4px;
+}
+
+.cio-agent-overview__skeleton__section {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: var(--cio-spacing-xl);
+  border-bottom: 1px solid var(--cio-color-border);
+}
+
+.cio-agent-overview__skeleton__badge {
+  display: flex;
+  align-items: center;
+  gap: var(--cio-spacing-sm);
+  font-family: var(--cio-font-family);
+  font-size: var(--cio-font-size-sm);
+  font-weight: var(--cio-font-weight-normal);
+  color: var(--cio-color-subtle);
+  line-height: var(--cio-line-height-base);
+  margin-bottom: var(--cio-spacing-md);
+}
+
+@keyframes cio-thinking-dots {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+}
+
+.cio-agent-overview__skeleton__thinking-dots::after {
+  content: '';
+  animation: cio-thinking-dots 1.5s infinite steps(1);
+}
+
+.cio-agent-overview__skeleton__title {
+  width: 200px;
+  height: 22px;
+  margin-bottom: var(--cio-spacing-md);
+}
+
+.cio-agent-overview__skeleton__description {
+  width: 100%;
+  max-width: 500px;
+  height: 16px;
+  margin-bottom: var(--cio-spacing-xl);
+}
+
+.cio-agent-overview__skeleton__products {
+  display: flex;
+  gap: var(--cio-product-card-gap);
+}
+
+.cio-agent-overview__skeleton__product {
+  display: flex;
+  flex-direction: column;
+}
+
+.cio-agent-overview__skeleton__product-image {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 0;
+}
+
+.cio-agent-overview__skeleton__product-price {
+  width: 60px;
+  height: 14px;
+  margin-top: var(--cio-spacing-md);
+  margin-bottom: var(--cio-spacing-xs);
+}
+
+.cio-agent-overview__skeleton__product-name {
+  width: 120px;
+  height: 14px;
+}

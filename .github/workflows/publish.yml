@@ -1,0 +1,109 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version-strategy:
+        description: Version strategy
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+        default: patch
+      title:
+        description: Release title
+        required: true
+        type: string
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  update_package_version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version-tag.outputs.next-version }}
+    steps:
+      - name: Notify Slack - Starting deployment
+        uses: ravsamhq/notify-slack-action@bca2d7f5660b833a27bda4f6b8bef389ebfefd25 # v2.3.0
+        with:
+          status: ${{ job.status }}
+          notification_title: 'Starting new constructorio-ui-agent-overview deployment'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - uses: actions/checkout@v4
+
+      - name: Set git credentials
+        uses: oleksiyrudenko/gha-git-credentials@ac5b66bcf3873df4259c681d957d8c145980171f # v2.1.1
+        with:
+          token: ${{ github.token }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.17.1'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Get latest release
+        id: latest-release
+        uses: pozetroninc/github-action-get-latest-release@d1dafdb6e338bdab109e6afce581a01858680dfb # v0.7.0
+        with:
+          repository: ${{ github.repository }}
+          excludes: prerelease, draft
+
+      - name: Create version tag
+        id: version-tag
+        uses: ./.github/actions/create-version-tag
+        with:
+          last-version: ${{ steps.latest-release.outputs.release }}
+          version-strategy: ${{ inputs.version-strategy }}
+          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  create_github_release:
+    needs: update_package_version
+    uses: ./.github/workflows/create-github-release.yml
+    with:
+      version: ${{ needs.update_package_version.outputs.version }}
+      title: ${{ inputs.title }}
+    secrets: inherit
+
+  publish_to_npm:
+    needs: [create_github_release, update_package_version]
+    uses: ./.github/workflows/publish-npm.yml
+    with:
+      version: ${{ needs.update_package_version.outputs.version }}
+    secrets: inherit
+
+  publish_to_cdn:
+    needs: [publish_to_npm, update_package_version]
+    uses: ./.github/workflows/publish-cdn.yml
+    with:
+      version: ${{ needs.update_package_version.outputs.version }}
+    secrets: inherit
+
+  deploy_storybook:
+    needs: publish_to_npm
+    uses: ./.github/workflows/deploy-storybook.yml
+
+  final_deployment_notification:
+    if: always()
+    needs: [update_package_version, create_github_release, publish_to_npm, publish_to_cdn, deploy_storybook]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine workflow conclusion
+        uses: technote-space/workflow-conclusion-action@45ce8e0eb155657ab8ccf346ade734257fd196a5 # v3.0.3
+        with:
+          STRICT_SUCCESS: 'true'
+
+      - name: Notify Slack - Deployment completed
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ env.WORKFLOW_CONCLUSION }}
+          notification_title: 'constructorio-ui-agent-overview deployment completed'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
