@@ -1,4 +1,4 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 
 import * as factories from '@spec/factory';
 
@@ -19,7 +19,7 @@ describe(`${useAgentOverview.name}: client`, () => {
     const { result } = renderHook(() => useAgentOverview(props));
 
     await act(async () => {
-      vi.advanceTimersByTime(1100);
+      await vi.advanceTimersByTimeAsync(1100);
     });
 
     expect(result.current.phase).toBe('categories');
@@ -30,7 +30,7 @@ describe(`${useAgentOverview.name}: client`, () => {
     const { result } = renderHook(() => useAgentOverview(props));
 
     await act(async () => {
-      vi.advanceTimersByTime(1100);
+      await vi.advanceTimersByTimeAsync(1100);
     });
 
     expect(result.current.phase).toBe('categories');
@@ -44,14 +44,14 @@ describe(`${useAgentOverview.name}: client`, () => {
 
     // Before 1s, should still be loading
     await act(async () => {
-      vi.advanceTimersByTime(500);
+      await vi.advanceTimersByTimeAsync(500);
     });
     expect(result.current.isLoading).toBe(true);
     expect(result.current.categories).toEqual([]);
 
     // After 1s, categories should appear
     await act(async () => {
-      vi.advanceTimersByTime(600);
+      await vi.advanceTimersByTimeAsync(600);
     });
     expect(result.current.isLoading).toBe(false);
     expect(result.current.categories.length).toBeGreaterThan(0);
@@ -61,7 +61,7 @@ describe(`${useAgentOverview.name}: client`, () => {
     const { result } = renderHook(() => useAgentOverview(props));
 
     await act(async () => {
-      vi.advanceTimersByTime(1100);
+      await vi.advanceTimersByTimeAsync(1100);
     });
 
     const category = result.current.categories[0];
@@ -71,7 +71,7 @@ describe(`${useAgentOverview.name}: client`, () => {
 
     // Advance timers to let the polling interval resolve
     await act(async () => {
-      vi.advanceTimersByTime(200);
+      await vi.advanceTimersByTimeAsync(200);
     });
 
     expect(result.current.phase).toBe('products');

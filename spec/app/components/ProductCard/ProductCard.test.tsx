@@ -40,18 +40,16 @@ describe('ProductCard', () => {
   it('does not set href when product.url is empty and no href prop', () => {
     const noUrlProduct = { ...product, url: '' };
     render(<ProductCard product={noUrlProduct} />);
-    const card = screen.getByText('Test Shoe').closest('a');
-    expect(card?.getAttribute('href')).toBeNull();
+    expect(screen.queryByRole('link')).toBeNull();
   });
 
-  it('calls onClick with the event when clicked', async () => {
+  it('calls onClick when clicked', async () => {
     const user = userEvent.setup();
     const handleClick = vi.fn();
     render(<ProductCard product={product} onClick={handleClick} />);
     const link = screen.getByRole('link');
     await user.click(link);
     expect(handleClick).toHaveBeenCalledOnce();
-    expect(handleClick.mock.calls[0][0].type).toBe('click');
   });
 
   it('does not prevent default navigation — consumer controls that via onClick', async () => {

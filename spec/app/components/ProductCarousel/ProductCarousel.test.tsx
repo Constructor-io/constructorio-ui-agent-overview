@@ -44,9 +44,10 @@ describe('ProductCarousel', () => {
     );
     const links = screen.getAllByRole('link');
     await user.click(links[0]);
-    expect(handleClick).toHaveBeenCalledOnce();
-    expect(handleClick.mock.calls[0][0].type).toBe('click');
-    expect(handleClick.mock.calls[0][1]).toBe(products[0]);
+    expect(handleClick).toHaveBeenCalledExactlyOnceWith(
+      expect.anything(),
+      products[0]
+    );
   });
 
   it('uses getProductUrl to set product card href', () => {

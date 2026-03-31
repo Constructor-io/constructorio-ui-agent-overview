@@ -20,7 +20,11 @@ export function toLibraryProduct(product: IProduct): Product {
   };
 }
 
-export default function ProductCard({ product, href, onClick }: IProductCardProps) {
+export default function ProductCard({
+  product,
+  href,
+  onClick,
+}: IProductCardProps) {
   const libraryProduct = toLibraryProduct(product);
   const resolvedHref = href ?? product.url;
 

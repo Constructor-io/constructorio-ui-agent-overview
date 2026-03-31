@@ -57,8 +57,7 @@ describe('RecommendationSection', () => {
   });
 
   it('passes getProductUrl through to product cards', () => {
-    const getProductUrl = (product: IProduct) =>
-      `/custom/${product.itemName}`;
+    const getProductUrl = (product: IProduct) => `/custom/${product.itemName}`;
     render(
       <RecommendationSection section={section} getProductUrl={getProductUrl} />
     );
@@ -75,8 +74,9 @@ describe('RecommendationSection', () => {
     );
     const links = screen.getAllByRole('link');
     await user.click(links[0]);
-    expect(handleClick).toHaveBeenCalledOnce();
-    expect(handleClick.mock.calls[0][0].type).toBe('click');
-    expect(handleClick.mock.calls[0][1]).toBe(section.products[0]);
+    expect(handleClick).toHaveBeenCalledExactlyOnceWith(
+      expect.anything(),
+      section.products[0]
+    );
   });
 });

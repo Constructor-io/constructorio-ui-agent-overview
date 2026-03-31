@@ -15,7 +15,13 @@ function SkeletonProduct() {
   );
 }
 
-function SkeletonSection({ showTitle = true, cards = DEFAULT_CARDS }: { showTitle?: boolean; cards?: number }) {
+function SkeletonSection({
+  showTitle = true,
+  cards = DEFAULT_CARDS,
+}: {
+  showTitle?: boolean;
+  cards?: number;
+}) {
   return (
     <div className="cio-agent-overview__skeleton__section">
       <div className="cio-agent-overview__skeleton__badge">
@@ -44,7 +50,11 @@ interface SkeletonProps {
   cards?: number;
 }
 
-export default function Skeleton({ rows = DEFAULT_ROWS, showTitle = true, cards = DEFAULT_CARDS }: SkeletonProps) {
+export default function Skeleton({
+  rows = DEFAULT_ROWS,
+  showTitle = true,
+  cards = DEFAULT_CARDS,
+}: SkeletonProps) {
   return (
     <>
       {Array.from({ length: rows }, (_, i) => (
