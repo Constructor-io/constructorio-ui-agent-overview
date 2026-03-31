@@ -2,8 +2,8 @@ import SparkleSVG from '../RecommendationSection/SparkleSVG';
 
 import './Skeleton.css';
 
-const SKELETON_SECTIONS = 3;
-const SKELETON_PRODUCTS = 5;
+const DEFAULT_ROWS = 3;
+const DEFAULT_CARDS = 5;
 
 function SkeletonProduct() {
   return (
@@ -15,7 +15,7 @@ function SkeletonProduct() {
   );
 }
 
-function SkeletonSection() {
+function SkeletonSection({ showTitle = true, cards = DEFAULT_CARDS }: { showTitle?: boolean; cards?: number }) {
   return (
     <div className="cio-agent-overview__skeleton__section">
       <div className="cio-agent-overview__skeleton__badge">
@@ -25,10 +25,12 @@ function SkeletonSection() {
           <span className="cio-agent-overview__skeleton__thinking-dots" />
         </span>
       </div>
-      <div className="cio-agent-overview__skeleton-bone cio-agent-overview__skeleton__title" />
+      {showTitle && (
+        <div className="cio-agent-overview__skeleton-bone cio-agent-overview__skeleton__title" />
+      )}
       <div className="cio-agent-overview__skeleton-bone cio-agent-overview__skeleton__description" />
       <div className="cio-agent-overview__skeleton__products">
-        {Array.from({ length: SKELETON_PRODUCTS }, (_, i) => (
+        {Array.from({ length: cards }, (_, i) => (
           <SkeletonProduct key={i} />
         ))}
       </div>
@@ -36,11 +38,17 @@ function SkeletonSection() {
   );
 }
 
-export default function Skeleton() {
+interface SkeletonProps {
+  rows?: number;
+  showTitle?: boolean;
+  cards?: number;
+}
+
+export default function Skeleton({ rows = DEFAULT_ROWS, showTitle = true, cards = DEFAULT_CARDS }: SkeletonProps) {
   return (
     <>
-      {Array.from({ length: SKELETON_SECTIONS }, (_, i) => (
-        <SkeletonSection key={i} />
+      {Array.from({ length: rows }, (_, i) => (
+        <SkeletonSection key={i} showTitle={showTitle} cards={cards} />
       ))}
     </>
   );

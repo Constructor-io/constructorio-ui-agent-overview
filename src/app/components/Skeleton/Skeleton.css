@@ -22,7 +22,7 @@
 .cio-agent-overview__skeleton__section {
   display: flex;
   flex-direction: column;
-  padding-bottom: var(--cio-spacing-xl);
+  padding: var(--cio-spacing-xl);
   border-bottom: 1px solid var(--cio-color-border);
 }
 
@@ -59,18 +59,21 @@
 .cio-agent-overview__skeleton__description {
   width: 100%;
   max-width: 500px;
-  height: 16px;
+  height: 21px;
   margin-bottom: var(--cio-spacing-xl);
 }
 
 .cio-agent-overview__skeleton__products {
   display: flex;
-  gap: var(--cio-product-card-gap);
+  gap: 24px;
+  overflow: hidden;
 }
 
 .cio-agent-overview__skeleton__product {
   display: flex;
   flex-direction: column;
+  min-width: 176px;
+  max-width: 256px;
 }
 
 .cio-agent-overview__skeleton__product-image {

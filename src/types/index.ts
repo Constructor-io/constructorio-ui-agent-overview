@@ -8,9 +8,14 @@ export interface CioAgentOverviewTheme {
 }
 
 export interface IAgentOverviewCallbacks {
-  onProductClick?: (product: IProduct, section: IRecommendationSection) => void;
+  onProductClick?: (
+    event: React.MouseEvent,
+    product: IProduct,
+    section: IRecommendationSection
+  ) => void;
   onCategoryClick?: (category: ICategory) => void;
   onSectionView?: (section: IRecommendationSection) => void;
+  getProductUrl?: (product: IProduct) => string;
 }
 
 export interface IAgentOverviewProps {

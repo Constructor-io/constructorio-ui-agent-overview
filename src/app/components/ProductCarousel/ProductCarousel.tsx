@@ -8,11 +8,13 @@ import './ProductCarousel.css';
 
 interface IProductCarouselProps {
   products: IProduct[];
-  onProductClick?: (product: IProduct) => void;
+  getProductUrl?: (product: IProduct) => string;
+  onProductClick?: (event: React.MouseEvent, product: IProduct) => void;
 }
 
 export default function ProductCarousel({
   products,
+  getProductUrl,
   onProductClick,
 }: IProductCarouselProps) {
   const libraryProducts = products.map(toLibraryProduct);
@@ -34,7 +36,12 @@ export default function ProductCarousel({
                   <Carousel.Item key={item.id} item={item} index={index}>
                     <ProductCard
                       product={product}
-                      onClick={() => onProductClick?.(product)}
+                      href={getProductUrl?.(product)}
+                      onClick={
+                        onProductClick
+                          ? (e: React.MouseEvent) => onProductClick(e, product)
+                          : undefined
+                      }
                     />
                   </Carousel.Item>
                 );

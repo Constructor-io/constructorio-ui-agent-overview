@@ -9,11 +9,13 @@ import './RecommendationSection.css';
 
 interface IRecommendationSectionProps {
   section: IRecommendationSection;
-  onProductClick?: (product: IProduct) => void;
+  getProductUrl?: (product: IProduct) => string;
+  onProductClick?: (event: React.MouseEvent, product: IProduct) => void;
 }
 
 export default function RecommendationSection({
   section,
+  getProductUrl,
   onProductClick,
 }: IRecommendationSectionProps) {
   return (
@@ -45,6 +47,7 @@ export default function RecommendationSection({
       </div>
       <ProductCarousel
         products={section.products}
+        getProductUrl={getProductUrl}
         onProductClick={onProductClick}
       />
     </div>

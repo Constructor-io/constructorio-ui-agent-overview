@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import RecommendationSection from '@src/app/components/RecommendationSection/RecommendationSection';
-import type { IRecommendationSection } from '@src/types';
+import type { IProduct, IRecommendationSection } from '@src/types';
 
 const section: IRecommendationSection = {
   title: 'Running Shoes',
@@ -53,5 +54,29 @@ describe('RecommendationSection', () => {
   it('does not render view more link when viewMoreUrl is absent', () => {
     render(<RecommendationSection section={section} />);
     expect(screen.queryByText('View More')).toBeNull();
+  });
+
+  it('passes getProductUrl through to product cards', () => {
+    const getProductUrl = (product: IProduct) =>
+      `/custom/${product.itemName}`;
+    render(
+      <RecommendationSection section={section} getProductUrl={getProductUrl} />
+    );
+    const links = screen.getAllByRole('link');
+    expect(links[0].getAttribute('href')).toBe('/custom/Shoe A');
+    expect(links[1].getAttribute('href')).toBe('/custom/Shoe B');
+  });
+
+  it('passes onProductClick through to product cards', async () => {
+    const user = userEvent.setup();
+    const handleClick = vi.fn();
+    render(
+      <RecommendationSection section={section} onProductClick={handleClick} />
+    );
+    const links = screen.getAllByRole('link');
+    await user.click(links[0]);
+    expect(handleClick).toHaveBeenCalledOnce();
+    expect(handleClick.mock.calls[0][0].type).toBe('click');
+    expect(handleClick.mock.calls[0][1]).toBe(section.products[0]);
   });
 });

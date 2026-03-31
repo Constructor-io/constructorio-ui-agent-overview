@@ -36,7 +36,7 @@ describe('ProductCarousel', () => {
     expect(screen.queryByLabelText('Scroll right')).toBeNull();
   });
 
-  it('passes onProductClick to product cards', async () => {
+  it('calls onProductClick with event and product when clicked', async () => {
     const user = userEvent.setup();
     const handleClick = vi.fn();
     render(
@@ -44,13 +44,25 @@ describe('ProductCarousel', () => {
     );
     const links = screen.getAllByRole('link');
     await user.click(links[0]);
-    expect(handleClick).toHaveBeenCalledWith(products[0]);
+    expect(handleClick).toHaveBeenCalledOnce();
+    expect(handleClick.mock.calls[0][0].type).toBe('click');
+    expect(handleClick.mock.calls[0][1]).toBe(products[0]);
   });
 
-  it('does not pass onClick to product cards when onProductClick is undefined', () => {
+  it('uses getProductUrl to set product card href', () => {
+    const getProductUrl = (product: IProduct) =>
+      `/products/${product.itemName}`;
+    render(
+      <ProductCarousel products={products} getProductUrl={getProductUrl} />
+    );
+    const links = screen.getAllByRole('link');
+    expect(links[0].getAttribute('href')).toBe('/products/Shoe A');
+    expect(links[1].getAttribute('href')).toBe('/products/Shoe B');
+  });
+
+  it('falls back to product.url when getProductUrl is not provided', () => {
     render(<ProductCarousel products={products} />);
     const links = screen.getAllByRole('link');
-    // Links should navigate normally (href present, no onClick interception)
     expect(links[0].getAttribute('href')).toBe('https://example.com/a');
     expect(links[1].getAttribute('href')).toBe('https://example.com/b');
   });

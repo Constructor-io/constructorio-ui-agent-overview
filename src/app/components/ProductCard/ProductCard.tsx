@@ -7,7 +7,8 @@ import './ProductCard.css';
 
 interface IProductCardProps {
   product: IProduct;
-  onClick?: () => void;
+  href?: string;
+  onClick?: (event: React.MouseEvent) => void;
 }
 
 export function toLibraryProduct(product: IProduct): Product {
@@ -19,21 +20,15 @@ export function toLibraryProduct(product: IProduct): Product {
   };
 }
 
-export default function ProductCard({ product, onClick }: IProductCardProps) {
+export default function ProductCard({ product, href, onClick }: IProductCardProps) {
   const libraryProduct = toLibraryProduct(product);
+  const resolvedHref = href ?? product.url;
 
   return (
     <a
       className="cio-agent-overview__product-card"
-      href={product.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={(e) => {
-        if (onClick) {
-          e.preventDefault();
-          onClick();
-        }
-      }}
+      href={resolvedHref || undefined}
+      onClick={onClick}
     >
       <CioProductCard
         product={libraryProduct}

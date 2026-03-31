@@ -1,4 +1,8 @@
-import type { CioAgentOverviewTheme, IAgentOverviewProps } from '../types';
+import type {
+  CioAgentOverviewTheme,
+  IAgentOverviewProps,
+  IProduct,
+} from '../types';
 
 import CategorySection from './components/CategorySection/CategorySection';
 import RecommendationSection from './components/RecommendationSection/RecommendationSection';
@@ -57,7 +61,7 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
   return (
     <div className="cio-agent-overview-root" style={themeStyles}>
       {isLoading && categories.length === 0 && sections.length === 0 && (
-        <Skeleton />
+        <Skeleton rows={1} showTitle={false} cards={4} />
       )}
       {error && categories.length === 0 && sections.length === 0 && (
         <div className="cio-agent-overview__error">
@@ -84,13 +88,16 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
       )}
       {phase === 'products' && isLoading && <Skeleton />}
       {phase === 'products' &&
+        !isLoading &&
         sections.map((section) => (
           <RecommendationSection
             key={section.title}
             section={section}
+            getProductUrl={callbacks?.getProductUrl}
             onProductClick={
               callbacks?.onProductClick
-                ? (product) => callbacks.onProductClick?.(product, section)
+                ? (event: React.MouseEvent, product: IProduct) =>
+                    callbacks.onProductClick!(event, product, section)
                 : undefined
             }
           />
