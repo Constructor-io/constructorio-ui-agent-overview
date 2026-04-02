@@ -1,11 +1,11 @@
-.cio-agent-overview__section {
+.cio-agent-overview-section {
   display: flex;
   flex-direction: column;
   padding-bottom: var(--cio-spacing-xl);
   border-bottom: 1px solid var(--cio-color-border);
 }
 
-.cio-agent-overview__section__badge {
+.cio-agent-overview-section-badge {
   display: flex;
   align-items: center;
   gap: var(--cio-spacing-sm);
@@ -13,12 +13,12 @@
   font-size: var(--cio-font-size-sm);
   font-weight: var(--cio-font-weight-normal);
   color: var(--cio-color-subtle);
-  line-height: var(--cio-line-height-base);
+  line-height: var(--cio-line-height);
   letter-spacing: 0%;
   margin-bottom: var(--cio-spacing-md);
 }
 
-.cio-agent-overview__section__header {
+.cio-agent-overview-section-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -26,34 +26,34 @@
   margin-bottom: var(--cio-spacing-xl);
 }
 
-.cio-agent-overview__section__header__text {
+.cio-agent-overview-section-header-text {
   display: flex;
   flex-direction: column;
   gap: var(--cio-spacing-md);
   min-width: 0;
 }
 
-.cio-agent-overview__section__title {
+.cio-agent-overview-section-title {
   font-family: var(--cio-font-family);
   font-size: var(--cio-font-size-lg);
   font-weight: var(--cio-font-weight-semibold);
   color: var(--cio-color-primary);
   margin: 0;
-  line-height: var(--cio-line-height-lg);
+  line-height: var(--cio-line-height);
   letter-spacing: 0%;
 }
 
-.cio-agent-overview__section__description {
+.cio-agent-overview-section-description {
   font-family: var(--cio-font-family);
   font-size: var(--cio-font-size-sm);
   font-weight: var(--cio-font-weight-normal);
   color: var(--cio-color-muted);
   margin: 0;
-  line-height: var(--cio-line-height-base);
+  line-height: var(--cio-line-height);
   letter-spacing: 0%;
 }
 
-.cio-agent-overview__section__view-more {
+.cio-agent-overview-section-view-more {
   display: flex;
   align-items: center;
   gap: var(--cio-spacing-sm);
@@ -61,7 +61,7 @@
   font-size: var(--cio-font-size-sm);
   font-weight: var(--cio-font-weight-medium);
   color: var(--cio-color-secondary);
-  line-height: var(--cio-line-height-sm);
+  line-height: var(--cio-line-height);
   letter-spacing: 0%;
   text-align: center;
   vertical-align: middle;
@@ -71,6 +71,6 @@
   margin-top: var(--cio-spacing-xs);
 }
 
-.cio-agent-overview__section__view-more:hover {
+.cio-agent-overview-section-view-more:hover {
   color: var(--cio-color-hover-accent);
 }

@@ -1,0 +1,32 @@
+import { fireEvent, render, screen } from '@testing-library/react';
+
+import CategoryCarousel from '@src/app/components/CategoryCarousel/CategoryCarousel';
+import type { ICategory } from '@src/types';
+
+const categories: ICategory[] = [
+  { title: 'Running Shoes', imageUrl: 'https://example.com/running.jpg' },
+  { title: 'Hiking Boots', imageUrl: 'https://example.com/hiking.jpg' },
+];
+
+describe('CategoryCarousel', () => {
+  it('renders all categories', () => {
+    render(<CategoryCarousel categories={categories} />);
+    expect(screen.getByText('Running Shoes')).toBeTruthy();
+    expect(screen.getByText('Hiking Boots')).toBeTruthy();
+  });
+
+  it('renders without crashing when categories is empty', () => {
+    expect(() => render(<CategoryCarousel categories={[]} />)).not.toThrow();
+  });
+
+  it('calls onCategoryClick with the clicked category', () => {
+    const handleClick = vi.fn();
+    render(
+      <CategoryCarousel categories={categories} onCategoryClick={handleClick} />
+    );
+    // eslint-disable-next-line testing-library/no-node-access
+    const button = screen.getByText('Running Shoes').closest('button')!;
+    fireEvent.click(button);
+    expect(handleClick).toHaveBeenCalledExactlyOnceWith(categories[0]);
+  });
+});

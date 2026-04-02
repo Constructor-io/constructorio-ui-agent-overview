@@ -13,20 +13,11 @@ import type {
   AgentStreamResultItem,
   AgentStreamSearchResultEvent,
 } from '../services/agentStreamTypes';
-import { createMockCategoryStream } from '../services/mockCategoryStream';
-
 type Phase = 'categories' | 'products';
 
-function toProducts(event: AgentStreamSearchResultEvent): IProduct[] {
-  const results = event.data.response?.results ?? [];
-  const products: IProduct[] = [];
-  for (const item of results) {
-    const parsed = toProduct(item);
-    if (parsed) {
-      products.push(parsed);
-    }
-  }
-  return products;
+interface CategoriesResult {
+  categories: ICategory[];
+  description: string;
 }
 
 function toProduct(item: AgentStreamResultItem): IProduct | null {
@@ -41,12 +32,104 @@ function toProduct(item: AgentStreamResultItem): IProduct | null {
   };
 }
 
+function toProducts(event: AgentStreamSearchResultEvent): IProduct[] {
+  return (event.data.response?.results ?? [])
+    .map(toProduct)
+    .filter((p): p is IProduct => p !== null);
+}
+
 function toCategory(event: AgentStreamSearchResultEvent): ICategory | null {
   const title = event.data.title ?? '';
-  const firstResult = event.data.response?.results?.[0];
-  const imageUrl = firstResult?.data?.image_url ?? '';
+  const imageUrl = event.data.response?.results?.[0]?.data?.image_url ?? '';
   if (!title || !imageUrl) return null;
   return { title, imageUrl };
+}
+
+async function consumeCategories(
+  props: Pick<
+    IAgentOverviewProps,
+    'apiKey' | 'cioJsClient' | 'intent' | 'domains'
+  >,
+  abortRef: React.RefObject<boolean>
+): Promise<CategoriesResult> {
+  const minDelay = new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const rawStream = createAgentStream(
+    { apiKey: props.apiKey, cioJsClient: props.cioJsClient },
+    props.intent,
+    props.domains.suggestions
+  );
+  const events = parseAgentStream(rawStream);
+  const categories: ICategory[] = [];
+  let description = '';
+
+  for await (const event of events) {
+    if (abortRef.current) break;
+
+    if (event.type === 'message') {
+      description = event.data.text;
+    } else if (event.type === 'search_result') {
+      const category = toCategory(event);
+      if (category) categories.push(category);
+    }
+  }
+
+  await minDelay;
+  return { categories, description };
+}
+
+async function consumeProducts(
+  props: Pick<
+    IAgentOverviewProps,
+    'apiKey' | 'cioJsClient' | 'intent' | 'domains'
+  >,
+  abortRef: React.RefObject<boolean>,
+  onSection: (section: IRecommendationSection) => void
+): Promise<{ error: string | null }> {
+  const rawStream = createAgentStream(
+    { apiKey: props.apiKey, cioJsClient: props.cioJsClient },
+    props.intent,
+    props.domains.results
+  );
+  const events = parseAgentStream(rawStream);
+
+  let currentTitle = '';
+  let currentDescription = '';
+  let currentProducts: IProduct[] = [];
+
+  function flushSection() {
+    if (currentProducts.length > 0) {
+      onSection({
+        title: currentTitle,
+        description: currentDescription,
+        products: [...currentProducts],
+      });
+    }
+    currentTitle = '';
+    currentProducts = [];
+  }
+
+  for await (const event of events) {
+    if (abortRef.current) break;
+
+    if (event.type === 'message') {
+      currentDescription = event.data.text;
+    } else if (event.type === 'group') {
+      flushSection();
+      currentTitle = event.data.title;
+      currentDescription = event.data.description;
+    } else if (event.type === 'search_result') {
+      const products = toProducts(event);
+      if (event.data.title) {
+        flushSection();
+        currentTitle = event.data.title;
+      }
+      currentProducts.push(...products);
+    }
+  }
+  flushSection();
+
+  return { error: null };
 }
 
 export default function useAgentOverview(props: IAgentOverviewProps): {
@@ -58,7 +141,7 @@ export default function useAgentOverview(props: IAgentOverviewProps): {
   isLoading: boolean;
   error: string | null;
 } {
-  const { apiKey, cioJsClient, intent, categoryDomain, productDomain } = props;
+  const { apiKey, cioJsClient, intent, domains } = props;
   const [phase, setPhase] = useState<Phase>('categories');
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [categoryDescription, setCategoryDescription] = useState('');
@@ -66,166 +149,103 @@ export default function useAgentOverview(props: IAgentOverviewProps): {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const sectionsRef = useRef<IRecommendationSection[]>([]);
-  const sectionsLoadedRef = useRef(false);
-  const sectionsErrorRef = useRef<string | null>(null);
   const abortRef = useRef(false);
+  const phaseRef = useRef<Phase>('categories');
+  const bufferedSectionsRef = useRef<IRecommendationSection[]>([]);
+  const productsDoneRef = useRef(false);
+  const productsErrorRef = useRef<string | null>(null);
 
   useEffect(() => {
-    if (!intent || !categoryDomain || !productDomain) return;
+    if (!intent || !domains?.suggestions || !domains?.results) return;
 
     abortRef.current = false;
-    setPhase('categories');
-    setIsLoading(true);
-    setError(null);
-    setCategories([]);
-    setCategoryDescription('');
-    setSections([]);
-    sectionsRef.current = [];
-    sectionsLoadedRef.current = false;
-    sectionsErrorRef.current = null;
+    phaseRef.current = 'categories';
+    bufferedSectionsRef.current = [];
+    productsDoneRef.current = false;
+    productsErrorRef.current = null;
 
-    async function consumeCategories() {
-      const minDelay = new Promise((resolve) => setTimeout(resolve, 1000));
+    function resetAndFetch() {
+      setPhase('categories');
+      setIsLoading(true);
+      setError(null);
+      setCategories([]);
+      setCategoryDescription('');
+      setSections([]);
 
-      try {
-        // TODO: Remove mock once searchbar_agent returns categories
-        const rawStream = createMockCategoryStream();
-        const events = parseAgentStream(rawStream);
-        const collectedCategories: ICategory[] = [];
-        let description = '';
+      consumeCategories({ apiKey, cioJsClient, intent, domains }, abortRef)
+        .then((result) => {
+          if (abortRef.current) return;
+          setCategoryDescription(result.description);
+          setCategories(result.categories);
+        })
+        .catch((err: unknown) => {
+          if (!abortRef.current) {
+            setError(
+              err instanceof Error ? err.message : 'Failed to load categories'
+            );
+          }
+        })
+        .finally(() => setIsLoading(false));
 
-        for await (const event of events) {
-          if (abortRef.current) break;
-
-          switch (event.type) {
-            case 'message':
-              description = event.data.text;
-              break;
-            case 'search_result': {
-              const category = toCategory(event);
-              if (category) {
-                collectedCategories.push(category);
-              }
-              break;
-            }
-            default:
-              break;
+      consumeProducts(
+        { apiKey, cioJsClient, intent, domains },
+        abortRef,
+        (section) => {
+          if (abortRef.current) return;
+          if (phaseRef.current === 'products') {
+            setSections((prev) => [...prev, section]);
+          } else {
+            bufferedSectionsRef.current.push(section);
           }
         }
-
-        await minDelay;
-        if (abortRef.current) return;
-
-        setCategoryDescription(description);
-        setCategories(collectedCategories);
-      } catch (err) {
-        if (!abortRef.current) {
-          setError(
-            err instanceof Error ? err.message : 'Failed to load categories'
-          );
-        }
-      } finally {
-        setIsLoading(false);
-      }
+      )
+        .then((result) => {
+          productsDoneRef.current = true;
+          productsErrorRef.current = result.error;
+        })
+        .catch((err: unknown) => {
+          productsDoneRef.current = true;
+          productsErrorRef.current =
+            err instanceof Error ? err.message : 'Failed to load results';
+        });
     }
 
-    async function consumeProducts() {
-      try {
-        const rawStream = createAgentStream(
-          { apiKey, cioJsClient },
-          intent,
-          productDomain
-        );
-        const events = parseAgentStream(rawStream);
-        const collected: IRecommendationSection[] = [];
-
-        let currentTitle = '';
-        let currentDescription = '';
-        let currentProducts: IProduct[] = [];
-
-        function flushSection() {
-          if (currentProducts.length > 0) {
-            collected.push({
-              title: currentTitle,
-              description: currentDescription,
-              products: [...currentProducts],
-            });
-          }
-          currentTitle = '';
-          currentProducts = [];
-        }
-
-        for await (const event of events) {
-          if (abortRef.current) break;
-
-          switch (event.type) {
-            case 'message':
-              currentDescription = event.data.text;
-              break;
-            case 'group':
-              flushSection();
-              currentTitle = event.data.title;
-              currentDescription = event.data.description;
-              break;
-            case 'search_result': {
-              const products = toProducts(event);
-              if (event.data.title) {
-                flushSection();
-                currentTitle = event.data.title;
-              }
-              currentProducts.push(...products);
-              break;
-            }
-            default:
-              break;
-          }
-        }
-        flushSection();
-        sectionsRef.current = collected;
-      } catch (err) {
-        sectionsErrorRef.current =
-          err instanceof Error ? err.message : 'Failed to load results';
-      } finally {
-        sectionsLoadedRef.current = true;
-      }
-    }
-
-    // Fire both streams in parallel
-    void consumeCategories();
-    void consumeProducts();
+    resetAndFetch();
 
     return () => {
       abortRef.current = true;
     };
-  }, [apiKey, cioJsClient, intent, categoryDomain, productDomain]);
+  }, [apiKey, cioJsClient, intent, domains]);
 
   function selectCategory(_category: ICategory) {
-    if (sectionsLoadedRef.current) {
-      if (sectionsErrorRef.current) {
-        setError(sectionsErrorRef.current);
-      } else {
-        setSections(sectionsRef.current);
-      }
-      setPhase('products');
-      setIsLoading(false);
-    } else {
-      // Products still loading — show skeleton
-      setPhase('products');
-      setIsLoading(true);
+    setPhase('products');
+    phaseRef.current = 'products';
 
-      const interval = setInterval(() => {
-        if (sectionsLoadedRef.current) {
-          clearInterval(interval);
-          if (sectionsErrorRef.current) {
-            setError(sectionsErrorRef.current);
-          } else {
-            setSections(sectionsRef.current);
-          }
-          setIsLoading(false);
-        }
-      }, 100);
+    // Flush any sections that arrived while in categories phase
+    if (bufferedSectionsRef.current.length > 0) {
+      setSections(bufferedSectionsRef.current);
+      bufferedSectionsRef.current = [];
     }
+
+    if (productsDoneRef.current) {
+      if (productsErrorRef.current) {
+        setError(productsErrorRef.current);
+      }
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+
+    const interval = setInterval(() => {
+      if (!productsDoneRef.current) return;
+
+      clearInterval(interval);
+      if (productsErrorRef.current) {
+        setError(productsErrorRef.current);
+      }
+      setIsLoading(false);
+    }, 100);
   }
 
   return {

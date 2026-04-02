@@ -20,16 +20,16 @@ export default function ProductCarousel({
   const libraryProducts = products.map(toLibraryProduct);
 
   return (
-    <div className="cio-agent-overview__carousel">
+    <div className="cio-agent-overview-carousel">
       <Carousel
         items={libraryProducts}
         loop={false}
-        className="cio-agent-overview__carousel__inner"
+        className="cio-agent-overview-carousel-inner"
       >
         {({ items }) => (
           <>
             <Carousel.Previous />
-            <Carousel.Content className="cio-agent-overview__carousel__content">
+            <Carousel.Content className="cio-agent-overview-carousel-content">
               {items?.map((item, index) => {
                 const product = products[index];
                 return (

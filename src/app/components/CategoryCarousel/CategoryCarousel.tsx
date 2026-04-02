@@ -26,16 +26,16 @@ export default function CategoryCarousel({
   const items = categories.map(toCategoryItem);
 
   return (
-    <div className="cio-agent-overview__category-carousel">
+    <div className="cio-agent-overview-category-carousel">
       <Carousel
         items={items}
         loop={false}
-        className="cio-agent-overview__category-carousel__inner"
+        className="cio-agent-overview-category-carousel-inner"
       >
         {({ items: carouselItems }) => (
           <>
             <Carousel.Previous />
-            <Carousel.Content className="cio-agent-overview__category-carousel__content">
+            <Carousel.Content className="cio-agent-overview-category-carousel-content">
               {carouselItems?.map((item, index) => {
                 const category = categories[index];
                 return (

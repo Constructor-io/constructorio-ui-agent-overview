@@ -12,7 +12,7 @@ describe('Skeleton', () => {
     expect(screen.getAllByText('Thinking').length).toBe(3);
     // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
     const products = container.querySelectorAll(
-      '.cio-agent-overview__skeleton__product'
+      '.cio-agent-overview-skeleton-product'
     );
     expect(products.length).toBe(15);
   });
@@ -30,7 +30,7 @@ describe('Skeleton', () => {
     );
     // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
     const products = container.querySelectorAll(
-      '.cio-agent-overview__skeleton__product'
+      '.cio-agent-overview-skeleton-product'
     );
     expect(products.length).toBe(4);
   });
@@ -42,9 +42,7 @@ describe('Skeleton', () => {
       </div>
     );
     // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    const title = container.querySelector(
-      '.cio-agent-overview__skeleton__title'
-    );
+    const title = container.querySelector('.cio-agent-overview-skeleton-title');
     expect(title).toBeNull();
   });
 
@@ -55,9 +53,7 @@ describe('Skeleton', () => {
       </div>
     );
     // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    const title = container.querySelector(
-      '.cio-agent-overview__skeleton__title'
-    );
+    const title = container.querySelector('.cio-agent-overview-skeleton-title');
     expect(title).toBeTruthy();
   });
 });

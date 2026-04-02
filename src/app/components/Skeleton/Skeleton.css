@@ -7,7 +7,7 @@
   }
 }
 
-.cio-agent-overview__skeleton-bone {
+.cio-agent-overview-skeleton-bone {
   background: linear-gradient(
     90deg,
     var(--cio-color-background-muted) 25%,
@@ -19,14 +19,14 @@
   border-radius: 4px;
 }
 
-.cio-agent-overview__skeleton__section {
+.cio-agent-overview-skeleton-section {
   display: flex;
   flex-direction: column;
   padding: var(--cio-spacing-xl);
   border-bottom: 1px solid var(--cio-color-border);
 }
 
-.cio-agent-overview__skeleton__badge {
+.cio-agent-overview-skeleton-badge {
   display: flex;
   align-items: center;
   gap: var(--cio-spacing-sm);
@@ -34,7 +34,7 @@
   font-size: var(--cio-font-size-sm);
   font-weight: var(--cio-font-weight-normal);
   color: var(--cio-color-subtle);
-  line-height: var(--cio-line-height-base);
+  line-height: var(--cio-line-height);
   margin-bottom: var(--cio-spacing-md);
 }
 
@@ -45,51 +45,51 @@
   75% { content: '...'; }
 }
 
-.cio-agent-overview__skeleton__thinking-dots::after {
+.cio-agent-overview-skeleton-thinking-dots::after {
   content: '';
   animation: cio-thinking-dots 1.5s infinite steps(1);
 }
 
-.cio-agent-overview__skeleton__title {
+.cio-agent-overview-skeleton-title {
   width: 200px;
   height: 22px;
   margin-bottom: var(--cio-spacing-md);
 }
 
-.cio-agent-overview__skeleton__description {
+.cio-agent-overview-skeleton-description {
   width: 100%;
   max-width: 500px;
   height: 21px;
   margin-bottom: var(--cio-spacing-xl);
 }
 
-.cio-agent-overview__skeleton__products {
+.cio-agent-overview-skeleton-products {
   display: flex;
   gap: 24px;
   overflow: hidden;
 }
 
-.cio-agent-overview__skeleton__product {
+.cio-agent-overview-skeleton-product {
   display: flex;
   flex-direction: column;
   min-width: 176px;
   max-width: 256px;
 }
 
-.cio-agent-overview__skeleton__product-image {
+.cio-agent-overview-skeleton-product-image {
   width: 100%;
   aspect-ratio: 3 / 4;
   border-radius: 0;
 }
 
-.cio-agent-overview__skeleton__product-price {
+.cio-agent-overview-skeleton-product-price {
   width: 60px;
   height: 14px;
   margin-top: var(--cio-spacing-md);
   margin-bottom: var(--cio-spacing-xs);
 }
 
-.cio-agent-overview__skeleton__product-name {
+.cio-agent-overview-skeleton-product-name {
   width: 120px;
   height: 14px;
 }

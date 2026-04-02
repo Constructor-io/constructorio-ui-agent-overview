@@ -30,16 +30,13 @@ export default function ProductCard({
 
   return (
     <a
-      className="cio-agent-overview__product-card"
+      className="cio-agent-overview-product-card"
       href={resolvedHref || undefined}
       onClick={onClick}
     >
-      <CioProductCard
-        product={libraryProduct}
-        className="cio-agent-overview__product-card__inner"
-      >
-        <CioProductCard.ImageSection className="cio-agent-overview__product-card__image" />
-        <CioProductCard.Content className="cio-agent-overview__product-card__content">
+      <CioProductCard product={libraryProduct}>
+        <CioProductCard.ImageSection />
+        <CioProductCard.Content>
           <CioProductCard.PriceSection />
           <CioProductCard.TitleSection />
         </CioProductCard.Content>

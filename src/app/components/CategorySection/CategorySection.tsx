@@ -1,14 +1,16 @@
-import type { ICategory } from '@src/types';
+import type { ICategory, Translations } from '@src/types';
+import translate from '@src/utils/translate';
 
 import CategoryCarousel from '../CategoryCarousel/CategoryCarousel';
-import ChevronRightSVG from '../RecommendationSection/ChevronRightSVG';
-import SparkleSVG from '../RecommendationSection/SparkleSVG';
+import ChevronRightSVG from '../icons/ChevronRightSVG';
+import SparkleSVG from '../icons/SparkleSVG';
 
 import './CategorySection.css';
 
 interface ICategorySectionProps {
   description: string;
   categories: ICategory[];
+  translations?: Translations;
   onCategoryClick?: (category: ICategory) => void;
   onViewSuggestions?: () => void;
 }
@@ -16,28 +18,34 @@ interface ICategorySectionProps {
 export default function CategorySection({
   description,
   categories,
+  translations,
   onCategoryClick,
   onViewSuggestions,
 }: ICategorySectionProps) {
   return (
-    <div className="cio-agent-overview__category-section">
-      <div className="cio-agent-overview__section__badge">
+    <div className="cio-agent-overview-category-section">
+      <div className="cio-agent-overview-section-badge">
         <SparkleSVG />
-        <span>Generated with AI</span>
+        <span>
+          {translate('CioAgentOverview.section.aiBadge', translations)}
+        </span>
       </div>
-      <div className="cio-agent-overview__section__header">
-        <div className="cio-agent-overview__section__header__text">
-          <p className="cio-agent-overview__section__description">
+      <div className="cio-agent-overview-section-header">
+        <div className="cio-agent-overview-section-header-text">
+          <p className="cio-agent-overview-section-description">
             {description}
           </p>
         </div>
         {onViewSuggestions && (
           <button
             type="button"
-            className="cio-agent-overview__category-section__view-suggestions"
+            className="cio-agent-overview-category-section-view-suggestions"
             onClick={onViewSuggestions}
           >
-            View suggestions
+            {translate(
+              'CioAgentOverview.categories.viewSuggestions',
+              translations
+            )}
             <ChevronRightSVG />
           </button>
         )}

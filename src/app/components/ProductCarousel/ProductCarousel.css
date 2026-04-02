@@ -1,30 +1,30 @@
-.cio-agent-overview__carousel {
+.cio-agent-overview-carousel {
   position: relative;
   max-width: 100%;
 }
 
 /* Position nav buttons absolutely over the carousel */
-.cio-agent-overview__carousel [data-slot='carousel'] {
+.cio-agent-overview-carousel [data-slot='carousel'] {
   position: relative;
 }
 
-.cio-agent-overview__carousel [data-slot='carousel-previous'],
-.cio-agent-overview__carousel [data-slot='carousel-next'] {
+.cio-agent-overview-carousel [data-slot='carousel-previous'],
+.cio-agent-overview-carousel [data-slot='carousel-next'] {
   position: absolute;
   top: 50%;
   transform: translateY(-100%);
   z-index: 2;
 }
 
-.cio-agent-overview__carousel [data-slot='carousel-previous'] {
+.cio-agent-overview-carousel [data-slot='carousel-previous'] {
   left: 0;
 }
 
-.cio-agent-overview__carousel [data-slot='carousel-next'] {
+.cio-agent-overview-carousel [data-slot='carousel-next'] {
   right: 0;
 }
 
 
-.cio-agent-overview__carousel__content {
+.cio-agent-overview-carousel-content {
   padding-left: 0;
 }

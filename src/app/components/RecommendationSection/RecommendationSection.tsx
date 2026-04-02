@@ -1,46 +1,52 @@
-import type { IProduct, IRecommendationSection } from '@src/types';
+import type {
+  IProduct,
+  IRecommendationSection,
+  Translations,
+} from '@src/types';
+import translate from '@src/utils/translate';
 
+import ChevronRightSVG from '../icons/ChevronRightSVG';
+import SparkleSVG from '../icons/SparkleSVG';
 import ProductCarousel from '../ProductCarousel/ProductCarousel';
-
-import ChevronRightSVG from './ChevronRightSVG';
-import SparkleSVG from './SparkleSVG';
 
 import './RecommendationSection.css';
 
 interface IRecommendationSectionProps {
   section: IRecommendationSection;
+  translations?: Translations;
   getProductUrl?: (product: IProduct) => string;
   onProductClick?: (event: React.MouseEvent, product: IProduct) => void;
 }
 
 export default function RecommendationSection({
   section,
+  translations,
   getProductUrl,
   onProductClick,
 }: IRecommendationSectionProps) {
   return (
-    <div className="cio-agent-overview__section">
-      <div className="cio-agent-overview__section__badge">
+    <div className="cio-agent-overview-section">
+      <div className="cio-agent-overview-section-badge">
         <SparkleSVG />
-        <span>Generated with AI</span>
+        <span>
+          {translate('CioAgentOverview.section.aiBadge', translations)}
+        </span>
       </div>
-      <div className="cio-agent-overview__section__header">
-        <div className="cio-agent-overview__section__header__text">
-          <h2 className="cio-agent-overview__section__title">
-            {section.title}
-          </h2>
-          <p className="cio-agent-overview__section__description">
+      <div className="cio-agent-overview-section-header">
+        <div className="cio-agent-overview-section-header-text">
+          <h2 className="cio-agent-overview-section-title">{section.title}</h2>
+          <p className="cio-agent-overview-section-description">
             {section.description}
           </p>
         </div>
         {section.viewMoreUrl && (
           <a
-            className="cio-agent-overview__section__view-more"
+            className="cio-agent-overview-section-view-more"
             href={section.viewMoreUrl}
             target="_blank"
             rel="noopener noreferrer"
           >
-            View More
+            {translate('CioAgentOverview.section.viewMore', translations)}
             <ChevronRightSVG />
           </a>
         )}

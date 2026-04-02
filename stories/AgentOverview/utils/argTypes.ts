@@ -18,18 +18,11 @@ export const argTypes: Partial<ArgTypes<IAgentOverviewProps>> = {
       type: { summary: 'string' },
     },
   },
-  categoryDomain: {
-    description: 'Domain for category suggestions',
-    control: 'text',
+  domains: {
+    description: 'Domains for suggestions and results',
+    control: 'object',
     table: {
-      type: { summary: 'string' },
-    },
-  },
-  productDomain: {
-    description: 'Domain for product recommendations',
-    control: 'text',
-    table: {
-      type: { summary: 'string' },
+      type: { summary: '{ suggestions: string; results: string }' },
     },
   },
 };
@@ -39,6 +32,5 @@ export const storiesControls = {
   hideNoControlsWarning: true,
   apiKey: { type: 'text' },
   intent: { type: 'text' },
-  categoryDomain: { type: 'text' },
-  productDomain: { type: 'text' },
+  domains: { type: 'object' },
 };

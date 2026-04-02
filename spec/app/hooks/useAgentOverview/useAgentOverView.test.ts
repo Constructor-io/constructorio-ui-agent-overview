@@ -4,6 +4,77 @@ import * as factories from '@spec/factory';
 
 import useAgentOverview from '@src/app/hooks/useAgentOverview';
 
+function createFakeCategoryStream(): ReadableStream<unknown> {
+  return new ReadableStream({
+    start(controller) {
+      controller.enqueue({
+        type: 'message',
+        data: { text: 'Here are some categories for you.' },
+      });
+      controller.enqueue({
+        type: 'search_result',
+        data: {
+          title: 'Running Shoes',
+          response: {
+            results: [
+              {
+                value: 'Running Shoes',
+                data: {
+                  image_url: 'https://example.com/run.jpg',
+                  url: '',
+                  price: 0,
+                },
+              },
+            ],
+          },
+        },
+      });
+      controller.close();
+    },
+  });
+}
+
+function createFakeProductStream(): ReadableStream<unknown> {
+  return new ReadableStream({
+    start(controller) {
+      controller.enqueue({
+        type: 'group',
+        data: { title: 'Top Picks', description: 'Best products' },
+      });
+      controller.enqueue({
+        type: 'search_result',
+        data: {
+          title: '',
+          response: {
+            results: [
+              {
+                value: 'Shoe A',
+                data: {
+                  image_url: 'https://example.com/a.jpg',
+                  url: '/a',
+                  price: 100,
+                },
+              },
+            ],
+          },
+        },
+      });
+      controller.close();
+    },
+  });
+}
+
+vi.mock('@src/app/services/agentOverviewClient', () => ({
+  createAgentStream: vi.fn(
+    (_options: unknown, _intent: string, domain: string) => {
+      if (domain === 'searchbar_agent') {
+        return createFakeCategoryStream();
+      }
+      return createFakeProductStream();
+    }
+  ),
+}));
+
 describe(`${useAgentOverview.name}: client`, () => {
   const props = factories.agentOverviewProps.build();
 
@@ -26,7 +97,7 @@ describe(`${useAgentOverview.name}: client`, () => {
     expect(result.current.sections).toEqual([]);
   });
 
-  it('should load categories from mock stream', async () => {
+  it('should load categories from stream', async () => {
     const { result } = renderHook(() => useAgentOverview(props));
 
     await act(async () => {

@@ -27,15 +27,12 @@ export default function CategoryCard({
   return (
     <button
       type="button"
-      className="cio-agent-overview__category-card"
+      className="cio-agent-overview-category-card"
       onClick={onClick}
     >
-      <CioProductCard
-        product={libraryProduct}
-        className="cio-agent-overview__category-card__inner"
-      >
-        <CioProductCard.ImageSection className="cio-agent-overview__category-card__image" />
-        <CioProductCard.Content className="cio-agent-overview__category-card__content">
+      <CioProductCard product={libraryProduct}>
+        <CioProductCard.ImageSection />
+        <CioProductCard.Content>
           <CioProductCard.TitleSection />
         </CioProductCard.Content>
       </CioProductCard>
