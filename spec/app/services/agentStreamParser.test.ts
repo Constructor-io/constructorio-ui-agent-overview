@@ -125,4 +125,78 @@ describe('parseAgentStream', () => {
     const events = await collectEvents(stream);
     expect(events).toHaveLength(0);
   });
+
+  it('should skip group events with non-string title', async () => {
+    const stream = createStream([
+      { type: 'group', data: { title: 123, description: 'Desc' } },
+    ]);
+    const events = await collectEvents(stream);
+    expect(events).toHaveLength(0);
+  });
+
+  it('should skip group events with non-string description', async () => {
+    const stream = createStream([
+      { type: 'group', data: { title: 'Title', description: 42 } },
+    ]);
+    const events = await collectEvents(stream);
+    expect(events).toHaveLength(0);
+  });
+
+  it('should skip search_result events without response', async () => {
+    const stream = createStream([
+      { type: 'search_result', data: { title: 'No response' } },
+    ]);
+    const events = await collectEvents(stream);
+    expect(events).toHaveLength(0);
+  });
+
+  it('should skip search_result events with non-array results', async () => {
+    const stream = createStream([
+      {
+        type: 'search_result',
+        data: { title: 'Bad', response: { results: 'not-array' } },
+      },
+    ]);
+    const events = await collectEvents(stream);
+    expect(events).toHaveLength(0);
+  });
+
+  it('should skip chunks with null data field', async () => {
+    const stream = createStream([
+      { type: 'message', data: null },
+      { type: 'message', data: { text: 'valid' } },
+    ]);
+    const events = await collectEvents(stream);
+    expect(events).toHaveLength(1);
+    expect(events[0].type).toBe('message');
+  });
+
+  it('should skip message events with missing text field', async () => {
+    const stream = createStream([{ type: 'message', data: {} }]);
+    const events = await collectEvents(stream);
+    expect(events).toHaveLength(0);
+  });
+
+  it('should pass through optional title and text in search_result', async () => {
+    const stream = createStream([
+      {
+        type: 'search_result',
+        data: {
+          title: 'Section Title',
+          text: 'Some description',
+          response: { results: [] },
+        },
+      },
+    ]);
+    const events = await collectEvents(stream);
+    expect(events).toHaveLength(1);
+    expect(events[0]).toEqual({
+      type: 'search_result',
+      data: {
+        title: 'Section Title',
+        text: 'Some description',
+        response: { results: [] },
+      },
+    });
+  });
 });

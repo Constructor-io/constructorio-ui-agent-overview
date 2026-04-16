@@ -17,6 +17,7 @@ import '@src/styles.css';
 const meta: Meta<typeof HooksTemplate> = {
   title: 'AgentOverview/useAgentOverview Hooks',
   component: HooksTemplate,
+  tags: ['autodocs'],
   parameters: {
     controls: storiesControls,
     docs: {
@@ -38,3 +39,19 @@ export default meta;
 type Story = StoryObj<typeof HooksTemplate>;
 
 export const BasicUsage: Story = {};
+
+export const DifferentIntent: Story = {
+  args: {
+    intent: 'Show me summer dresses',
+  },
+};
+
+export const WithCallbacks: Story = {
+  args: {
+    callbacks: {
+      onCategoryClick: (category) => console.log('Category clicked:', category),
+      onProductClick: (_e, product, section) =>
+        console.log('Product clicked:', product, 'in section:', section),
+    },
+  },
+};

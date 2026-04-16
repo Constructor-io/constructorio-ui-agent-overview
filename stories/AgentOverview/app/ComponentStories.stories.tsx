@@ -9,6 +9,7 @@ import { apiKey, domains, intent } from '../utils/constants';
 const meta: Meta<typeof CioAgentOverview> = {
   title: 'AgentOverview/CioAgentOverview',
   component: CioAgentOverview,
+  tags: ['autodocs'],
   parameters: {
     controls: storiesControls,
   },
@@ -20,7 +21,15 @@ export default meta;
 type Story = StoryObj<typeof CioAgentOverview>;
 
 export const BasicUsage: Story = {
-  args: { apiKey, intent, domains },
+  args: {
+    apiKey,
+    intent,
+    domains,
+    callbacks: {
+      getViewMoreUrl: (section) =>
+        `/search?q=${encodeURIComponent(section.title)}`,
+    },
+  },
 };
 
 function RenderInASmallContainerTemplate(args: IAgentOverviewProps) {
@@ -34,6 +43,14 @@ function RenderInASmallContainerTemplate(args: IAgentOverviewProps) {
 }
 
 export const RenderInASmallContainer: Story = {
-  args: { apiKey, intent, domains },
+  args: {
+    apiKey,
+    intent,
+    domains,
+    callbacks: {
+      getViewMoreUrl: (section) =>
+        `/search?q=${encodeURIComponent(section.title)}`,
+    },
+  },
   render: (args) => <RenderInASmallContainerTemplate {...args} />,
 };

@@ -133,20 +133,26 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
       )}
       {phase === 'products' &&
         !isLoading &&
-        sections.map((section) => (
-          <RecommendationSection
-            key={section.title}
-            section={section}
-            translations={translations}
-            getProductUrl={callbacks?.getProductUrl}
-            onProductClick={
-              callbacks?.onProductClick
-                ? (event: React.MouseEvent, product: IProduct) =>
-                    callbacks.onProductClick!(event, product, section)
-                : undefined
-            }
-          />
-        ))}
+        sections.map((section) => {
+          const sectionWithUrl = callbacks?.getViewMoreUrl
+            ? { ...section, viewMoreUrl: callbacks.getViewMoreUrl(section) }
+            : section;
+
+          return (
+            <RecommendationSection
+              key={section.title}
+              section={sectionWithUrl}
+              translations={translations}
+              getProductUrl={callbacks?.getProductUrl}
+              onProductClick={
+                callbacks?.onProductClick
+                  ? (event: React.MouseEvent, product: IProduct) =>
+                      callbacks.onProductClick!(event, product, section)
+                  : undefined
+              }
+            />
+          );
+        })}
     </div>
   );
 }
