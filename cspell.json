@@ -2,12 +2,13 @@
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
   "version": "0.2",
   "language": "en",
-  "words": ["constructorio", "cio", "CIOAgentOverview", "autodocs", "prefixer", "embla", "Embla", "Jetsetter"],
+  "words": ["constructorio", "cio", "CIOAgentOverview", "autodocs", "prefixer", "embla", "Embla", "Jetsetter", "searchbar"],
   "flagWords": [],
   "ignorePaths": [
     "node_modules",
     "dist",
     "coverage",
+    "storybook-static",
     "*.log",
     "package-lock.json",
     "yarn.lock"
