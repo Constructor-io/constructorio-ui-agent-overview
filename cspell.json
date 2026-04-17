@@ -2,17 +2,18 @@
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
   "version": "0.2",
   "language": "en",
-  "words": ["constructorio", "cio", "CIOAgentOverview", "autodocs", "prefixer"],
+  "words": ["constructorio", "cio", "CIOAgentOverview", "autodocs", "prefixer", "embla", "Embla", "Jetsetter", "searchbar"],
   "flagWords": [],
   "ignorePaths": [
     "node_modules",
     "dist",
     "coverage",
+    "storybook-static",
     "*.log",
     "package-lock.json",
     "yarn.lock"
   ],
   "dictionaryDefinitions": [],
   "dictionaries": ["typescript", "node", "npm", "html", "css", "softwareTerms"],
-  "ignoreRegExpList": ["/\\b\\d{4}-\\d{2}-\\d{2}\\b/", "/\\b[0-9a-f]{8,}\\b/"]
+  "ignoreRegExpList": ["/\\b\\d{4}-\\d{2}-\\d{2}\\b/", "/\\b[0-9a-f]{8,}\\b/", "/key_[A-Za-z0-9]+/"]
 }

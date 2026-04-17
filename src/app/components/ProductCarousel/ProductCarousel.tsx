@@ -1,0 +1,56 @@
+import { Carousel } from '@constructor-io/constructorio-ui-components';
+
+import type { IProduct } from '@src/types';
+
+import ProductCard, { toLibraryProduct } from '../ProductCard/ProductCard';
+
+import './ProductCarousel.css';
+
+interface IProductCarouselProps {
+  products: IProduct[];
+  getProductUrl?: (product: IProduct) => string;
+  onProductClick?: (event: React.MouseEvent, product: IProduct) => void;
+}
+
+export default function ProductCarousel({
+  products,
+  getProductUrl,
+  onProductClick,
+}: IProductCarouselProps) {
+  const libraryProducts = products.map(toLibraryProduct);
+
+  return (
+    <div className="cio-agent-overview-carousel">
+      <Carousel
+        items={libraryProducts}
+        loop={false}
+        className="cio-agent-overview-carousel-inner"
+      >
+        {({ items }) => (
+          <>
+            <Carousel.Previous />
+            <Carousel.Content className="cio-agent-overview-carousel-content">
+              {items?.map((item, index) => {
+                const product = products[index];
+                return (
+                  <Carousel.Item key={item.id} item={item} index={index}>
+                    <ProductCard
+                      product={product}
+                      href={getProductUrl?.(product)}
+                      onClick={
+                        onProductClick
+                          ? (e: React.MouseEvent) => onProductClick(e, product)
+                          : undefined
+                      }
+                    />
+                  </Carousel.Item>
+                );
+              })}
+            </Carousel.Content>
+            <Carousel.Next />
+          </>
+        )}
+      </Carousel>
+    </div>
+  );
+}

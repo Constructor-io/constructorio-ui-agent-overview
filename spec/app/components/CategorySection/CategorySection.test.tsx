@@ -1,0 +1,94 @@
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+import CategorySection from '@src/app/components/CategorySection/CategorySection';
+import type { ICategory } from '@src/types';
+
+const categories: ICategory[] = [
+  { title: 'Running Shoes', imageUrl: 'https://example.com/running.jpg' },
+  { title: 'Hiking Boots', imageUrl: 'https://example.com/hiking.jpg' },
+];
+
+describe('CategorySection', () => {
+  it('renders the AI badge', () => {
+    render(
+      <CategorySection
+        description="Here are some categories"
+        categories={categories}
+      />
+    );
+    expect(screen.getByText('Generated with AI')).toBeTruthy();
+  });
+
+  it('renders the description', () => {
+    render(
+      <CategorySection
+        description="Here are some categories"
+        categories={categories}
+      />
+    );
+    expect(screen.getByText('Here are some categories')).toBeTruthy();
+  });
+
+  it('renders category cards', () => {
+    render(
+      <CategorySection
+        description="Here are some categories"
+        categories={categories}
+      />
+    );
+    expect(screen.getByText('Running Shoes')).toBeTruthy();
+    expect(screen.getByText('Hiking Boots')).toBeTruthy();
+  });
+
+  it('renders view suggestions button when onViewSuggestions is provided', () => {
+    const handleViewSuggestions = vi.fn();
+    render(
+      <CategorySection
+        description="Here are some categories"
+        categories={categories}
+        onViewSuggestions={handleViewSuggestions}
+      />
+    );
+    expect(screen.getByText('View suggestions')).toBeTruthy();
+  });
+
+  it('does not render view suggestions button when onViewSuggestions is absent', () => {
+    render(
+      <CategorySection
+        description="Here are some categories"
+        categories={categories}
+      />
+    );
+    expect(screen.queryByText('View suggestions')).toBeNull();
+  });
+
+  it('calls onViewSuggestions when view suggestions is clicked', async () => {
+    const user = userEvent.setup();
+    const handleViewSuggestions = vi.fn();
+    render(
+      <CategorySection
+        description="Here are some categories"
+        categories={categories}
+        onViewSuggestions={handleViewSuggestions}
+      />
+    );
+    await user.click(screen.getByText('View suggestions'));
+    expect(handleViewSuggestions).toHaveBeenCalledOnce();
+  });
+
+  it('calls onCategoryClick when a category is clicked', () => {
+    const handleCategoryClick = vi.fn();
+    render(
+      <CategorySection
+        description="Here are some categories"
+        categories={categories}
+        onCategoryClick={handleCategoryClick}
+      />
+    );
+    // eslint-disable-next-line testing-library/no-node-access
+    const button = screen.getByText('Running Shoes').closest('button')!;
+    fireEvent.click(button);
+    expect(handleCategoryClick).toHaveBeenCalledExactlyOnceWith(categories[0]);
+  });
+});

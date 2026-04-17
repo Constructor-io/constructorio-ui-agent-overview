@@ -1,33 +1,56 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+@import '@constructor-io/constructorio-ui-components/styles.css';
 
 .cio-agent-overview-root {
-  --primary-color: #007bff;
-  --secondary-color: #6c757d;
-  --background: #ffffff;
-  --font-size-base: 16px;
+  /* Typography */
+  --cio-font-family: 'Inter', sans-serif;
 
-  --font-family: 'Inter', sans-serif;
+  /* Font sizes */
+  --cio-font-size-xs: 13px;
+  --cio-font-size-sm: 14px;
+  --cio-font-size-base: 16px;
+  --cio-font-size-lg: 18px;
+
+  /* Line height */
+  --cio-line-height: 1.5;
+
+  /* Font weights */
+  --cio-font-weight-normal: 400;
+  --cio-font-weight-medium: 500;
+  --cio-font-weight-semibold: 600;
+  --cio-font-weight-bold: 700;
+
+  /* Colors */
+  --cio-color-primary: #1c1917;
+  --cio-color-secondary: #1a1a1a;
+  --cio-color-muted: #6b7280;
+  --cio-color-subtle: #9ca3af;
+  --cio-color-product-name: #666;
+  --cio-color-border: #e5e7eb;
+  --cio-color-background: #ffffff;
+  --cio-color-background-muted: #f5f5f5;
+  --cio-color-hover-accent: #6366f1;
+
+  /* Carousel arrows */
+  --cio-arrow-size: 40px;
+  --cio-arrow-border-radius: 12px;
+  --cio-arrow-border-color: #e0e0e0;
+  --cio-arrow-border-color-hover: #ccc;
+  --cio-arrow-color: #2a2a2a;
+  --cio-arrow-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --cio-arrow-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
+
+  /* Spacing */
+  --cio-spacing-xs: 2px;
+  --cio-spacing-sm: 5px;
+  --cio-spacing-md: 8px;
+  --cio-spacing-lg: 16px;
+  --cio-spacing-xl: 24px;
+  --cio-spacing-2xl: 32px;
 
   /* Base styles */
-  font-family: var(--font-family);
-  font-size: var(--font-size-base);
-  color: var(--primary-color);
-  background: var(--background);
-}
-
-@keyframes cio-spinner {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@container cio-agent-overview-root {
-  .cio-agent-overview__header {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+  font-family: var(--cio-font-family);
+  font-size: var(--cio-font-size-base);
+  color: var(--cio-color-primary);
+  background: var(--cio-color-background);
 }

@@ -1,0 +1,54 @@
+name: Create Version Tag
+description: Bumps the version, creates a git tag, and pushes it
+
+inputs:
+  last-version:
+    description: The current/last version
+    required: true
+  version-strategy:
+    description: The version bump strategy (patch, minor, major)
+    required: true
+  slack-webhook-url:
+    description: Slack webhook URL for notifications
+    required: true
+
+outputs:
+  next-version:
+    description: The next version (with v prefix)
+    value: ${{ steps.bump.outputs.next_version }}
+
+runs:
+  using: composite
+  steps:
+    - name: Remove version prefix
+      id: version
+      uses: ./.github/actions/remove-version-prefix
+      with:
+        version: ${{ inputs.last-version }}
+
+    - name: Set current version in package.json
+      shell: bash
+      run: |
+        jq --arg v "${{ steps.version.outputs.without_prefix }}" '.version = $v' package.json > tmp.json && mv tmp.json package.json
+
+    - name: Bump version
+      id: bump
+      shell: bash
+      run: |
+        npm version ${{ inputs.version-strategy }} --git-tag-version=false --allow-same-version
+        NEXT_VERSION="v$(jq -r '.version' package.json)"
+        echo "next_version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+
+    - name: Create and push tag
+      shell: bash
+      run: |
+        git tag -a ${{ steps.bump.outputs.next_version }} -m "${{ github.event.inputs.title }}"
+        git push origin ${{ steps.bump.outputs.next_version }}
+
+    - name: Notify Slack
+      uses: ravsamhq/notify-slack-action@bca2d7f5660b833a27bda4f6b8bef389ebfefd25 # v2.3.0
+      with:
+        status: ${{ job.status }}
+        notification_title: 'constructorio-ui-agent-overview package version bumped to ${{ steps.bump.outputs.next_version }}'
+      env:
+        SLACK_WEBHOOK_URL: ${{ inputs.slack-webhook-url }}

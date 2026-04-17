@@ -1,0 +1,24 @@
+name: Compile
+description: Compiles the library with a specific version
+
+inputs:
+  version:
+    description: Version to compile with (e.g. v1.2.3)
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Remove version prefix
+      id: version
+      uses: ./.github/actions/remove-version-prefix
+      with:
+        version: ${{ inputs.version }}
+
+    - name: Generate version file
+      shell: bash
+      run: echo "export default '${{ steps.version.outputs.without_prefix }}';" > src/version.ts
+
+    - name: Compile
+      shell: bash
+      run: npm run build

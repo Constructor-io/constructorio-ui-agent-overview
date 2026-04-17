@@ -19,6 +19,10 @@ export default defineConfig({
             '@src': path.resolve(dirname, 'src'),
             '@spec': path.resolve(dirname, 'spec'),
             '@stories': path.resolve(dirname, 'stories'),
+            'embla-carousel-react': path.resolve(
+              dirname,
+              'spec/__mocks__/embla-carousel-react.ts'
+            ),
           },
         },
         test: {
@@ -31,6 +35,11 @@ export default defineConfig({
             'stories/**/*.stories.{js,jsx}',
           ],
           globals: true,
+          server: {
+            deps: {
+              inline: ['@constructor-io/constructorio-ui-components'],
+            },
+          },
         },
       },
       {

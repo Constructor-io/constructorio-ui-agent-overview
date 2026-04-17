@@ -1,0 +1,46 @@
+name: Create GitHub Release
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: Version tag (e.g. v1.2.3)
+        required: true
+        type: string
+      title:
+        description: Release title
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version tag (e.g. v1.2.3)
+        required: true
+        type: string
+      title:
+        description: Release title
+        required: true
+        type: string
+
+permissions: write-all
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@6c75be85e571768fa31b40abf38de58ba0397db5 # v1.13.0
+        with:
+          tag: ${{ inputs.version }}
+          name: '${{ inputs.version }} - ${{ inputs.title }}'
+          generateReleaseNotes: true
+
+      - name: Notify Slack
+        uses: ravsamhq/notify-slack-action@bca2d7f5660b833a27bda4f6b8bef389ebfefd25 # v2.3.0
+        with:
+          status: ${{ job.status }}
+          notification_title: 'New constructorio-ui-agent-overview GitHub release created at version ${{ inputs.version }}'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
