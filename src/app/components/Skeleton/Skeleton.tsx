@@ -50,9 +50,13 @@ function SkeletonSection({
 }
 
 interface SkeletonProps {
+  /** Number of skeleton section rows to render. @default 3 */
   rows?: number;
+  /** Whether to show a title placeholder in each section. @default true */
   showTitle?: boolean;
+  /** Number of product card placeholders per row. @default 5 */
   cards?: number;
+  /** Translation overrides for UI strings. */
   translations?: Translations;
 }
 

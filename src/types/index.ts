@@ -2,44 +2,72 @@ import type ConstructorIOClient from '@constructor-io/constructorio-client-javas
 
 /** Theme customization for the Agent Overview component. All properties map to CSS custom properties. */
 export interface CioAgentOverviewTheme {
-  /* Typography */
+  /** Font family for all text in the component. Maps to `--cio-font-family`. */
   fontFamily?: React.CSSProperties['fontFamily'];
+  /** Extra-small font size (e.g. badges). Maps to `--cio-font-size-xs`. */
   fontSizeXs?: React.CSSProperties['fontSize'];
+  /** Small font size (e.g. prices). Maps to `--cio-font-size-sm`. */
   fontSizeSm?: React.CSSProperties['fontSize'];
+  /** Base font size. Maps to `--cio-font-size-base`. */
   fontSizeBase?: React.CSSProperties['fontSize'];
+  /** Large font size (e.g. section titles). Maps to `--cio-font-size-lg`. */
   fontSizeLg?: React.CSSProperties['fontSize'];
+  /** Line height for text. Maps to `--cio-line-height`. */
   lineHeight?: React.CSSProperties['lineHeight'];
+  /** Normal font weight. Maps to `--cio-font-weight-normal`. */
   fontWeightNormal?: React.CSSProperties['fontWeight'];
+  /** Medium font weight. Maps to `--cio-font-weight-medium`. */
   fontWeightMedium?: React.CSSProperties['fontWeight'];
+  /** Semibold font weight. Maps to `--cio-font-weight-semibold`. */
   fontWeightSemibold?: React.CSSProperties['fontWeight'];
+  /** Bold font weight. Maps to `--cio-font-weight-bold`. */
   fontWeightBold?: React.CSSProperties['fontWeight'];
 
-  /* Colors */
+  /** Primary text color. Maps to `--cio-color-primary`. */
   primaryColor?: React.CSSProperties['color'];
+  /** Secondary text color. Maps to `--cio-color-secondary`. */
   secondaryColor?: React.CSSProperties['color'];
+  /** Muted text color (e.g. descriptions). Maps to `--cio-color-muted`. */
   mutedColor?: React.CSSProperties['color'];
+  /** Subtle color for light accents. Maps to `--cio-color-subtle`. */
   subtleColor?: React.CSSProperties['color'];
+  /** Product name text color. Maps to `--cio-color-product-name`. */
   productNameColor?: React.CSSProperties['color'];
+  /** Border color for cards and sections. Maps to `--cio-color-border`. */
   borderColor?: React.CSSProperties['color'];
+  /** Background color of the root container. Maps to `--cio-color-background`. */
   background?: React.CSSProperties['backgroundColor'];
+  /** Muted background color for sections. Maps to `--cio-color-background-muted`. */
   backgroundMuted?: React.CSSProperties['backgroundColor'];
+  /** Accent color on hover states. Maps to `--cio-color-hover-accent`. */
   hoverAccentColor?: React.CSSProperties['color'];
 
-  /* Carousel arrows */
+  /** Size of carousel navigation arrows. Maps to `--cio-arrow-size`. */
   arrowSize?: React.CSSProperties['width'];
+  /** Border radius of carousel arrows. Maps to `--cio-arrow-border-radius`. */
   arrowBorderRadius?: React.CSSProperties['borderRadius'];
+  /** Border color of carousel arrows. Maps to `--cio-arrow-border-color`. */
   arrowBorderColor?: React.CSSProperties['color'];
+  /** Border color of carousel arrows on hover. Maps to `--cio-arrow-border-color-hover`. */
   arrowBorderColorHover?: React.CSSProperties['color'];
+  /** Icon color of carousel arrows. Maps to `--cio-arrow-color`. */
   arrowColor?: React.CSSProperties['color'];
+  /** Box shadow of carousel arrows. Maps to `--cio-arrow-shadow`. */
   arrowShadow?: React.CSSProperties['boxShadow'];
+  /** Box shadow of carousel arrows on hover. Maps to `--cio-arrow-shadow-hover`. */
   arrowShadowHover?: React.CSSProperties['boxShadow'];
 
-  /* Spacing */
+  /** Extra-small spacing unit. Maps to `--cio-spacing-xs`. */
   spacingXs?: React.CSSProperties['gap'];
+  /** Small spacing unit. Maps to `--cio-spacing-sm`. */
   spacingSm?: React.CSSProperties['gap'];
+  /** Medium spacing unit. Maps to `--cio-spacing-md`. */
   spacingMd?: React.CSSProperties['gap'];
+  /** Large spacing unit. Maps to `--cio-spacing-lg`. */
   spacingLg?: React.CSSProperties['gap'];
+  /** Extra-large spacing unit. Maps to `--cio-spacing-xl`. */
   spacingXl?: React.CSSProperties['gap'];
+  /** Double extra-large spacing unit. Maps to `--cio-spacing-2xl`. */
   spacing2xl?: React.CSSProperties['gap'];
 }
 

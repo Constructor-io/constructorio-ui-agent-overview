@@ -6,11 +6,15 @@ import type { IProduct } from '@src/types';
 import './ProductCard.css';
 
 interface IProductCardProps {
+  /** Product data to render. */
   product: IProduct;
+  /** Custom link URL. Falls back to the product's default URL if not provided. */
   href?: string;
+  /** Click handler for the product card. */
   onClick?: (event: React.MouseEvent) => void;
 }
 
+/** Converts an IProduct to the format expected by the shared UI components library. */
 export function toLibraryProduct(product: IProduct): Product {
   return {
     id: product.url,

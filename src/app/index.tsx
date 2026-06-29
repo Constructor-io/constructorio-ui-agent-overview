@@ -80,6 +80,19 @@ function buildThemeStyles(
   return styles as React.CSSProperties;
 }
 
+/**
+ * Pre-built Agent Overview component that streams AI-generated category suggestions
+ * and product recommendation sections in real time.
+ *
+ * @example
+ * ```tsx
+ * <CioAgentOverview
+ *   apiKey="YOUR_API_KEY"
+ *   intent="I want to buy shoes"
+ *   domains={{ suggestions: 'searchbar', results: 'explorer' }}
+ * />
+ * ```
+ */
 export default function CioAgentOverview(props: IAgentOverviewProps) {
   const {
     phase,

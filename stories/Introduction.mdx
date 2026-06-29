@@ -1,0 +1,92 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="General/Introduction" />
+
+# Constructor.io Agent Overview UI Library
+
+A UI library that streams AI-generated product recommendation sections in real time for [Constructor.io](https://constructor.io/). Given a user intent, it presents category suggestions followed by detailed product results.
+
+## Getting Started
+
+### Installation
+
+```bash
+npm i @constructor-io/constructorio-ui-agent-overview
+```
+
+### Prerequisites
+
+- Node.js >= 20
+- React >= 16.12.0
+- React DOM >= 16.12.0
+
+## Components
+
+### [CioAgentOverview](?path=/docs/agentoverview-cioagentoverview--docs)
+
+The pre-built component that handles streaming, rendering categories, and displaying product recommendation sections. Accepts theming, callbacks, and translation props for full customization.
+
+## Hooks
+
+### [useAgentOverview](?path=/docs/agentoverview-useagentoverview-hooks--docs)
+
+The underlying hook that manages the full Agent Overview lifecycle. Use this when you need full control over the rendering while still leveraging the streaming and state management logic.
+
+## Usage
+
+### Using the React Component
+
+```jsx
+import CioAgentOverview from '@constructor-io/constructorio-ui-agent-overview';
+import '@constructor-io/constructorio-ui-agent-overview/styles.css';
+
+function App() {
+  return (
+    <CioAgentOverview
+      apiKey="YOUR_API_KEY"
+      intent="I want to buy shoes"
+      domains={{ suggestions: 'searchbar', results: 'explorer' }}
+    />
+  );
+}
+```
+
+### Using the React Hook
+
+```jsx
+import { useAgentOverview, RecommendationSection } from '@constructor-io/constructorio-ui-agent-overview';
+import '@constructor-io/constructorio-ui-agent-overview/styles.css';
+
+function MyAgentOverview() {
+  const { phase, categories, sections, selectCategory, isLoading, error } =
+    useAgentOverview({
+      apiKey: 'YOUR_API_KEY',
+      intent: 'I want to buy shoes',
+      domains: { suggestions: 'searchbar', results: 'explorer' },
+    });
+
+  // Render categories, then product sections based on phase
+}
+```
+
+### Using the JavaScript Bundle
+
+For non-React environments, use the standalone bundle:
+
+```js
+import CioAgentOverview from '@constructor-io/constructorio-ui-agent-overview/constructorio-ui-agent-overview-standalone';
+
+CioAgentOverview.init({
+  selector: '#agent-overview',
+  includeCSS: true,
+  apiKey: 'YOUR_API_KEY',
+  intent: 'I want to buy shoes',
+  domains: { suggestions: 'searchbar', results: 'explorer' },
+});
+```
+
+## Resources
+
+- [GitHub Repository](https://github.com/Constructor-io/constructorio-ui-agent-overview)
+- [npm Package](https://www.npmjs.com/package/@constructor-io/constructorio-ui-agent-overview)
+- [Constructor.io API Docs](https://docs.constructor.io/)
