@@ -12,6 +12,7 @@ export default defineConfig({
   plugins: [react()],
   test: {
     coverage: {
+      exclude: ['stories/**'],
       thresholds: {
         branches: 85,
         functions: 85,
