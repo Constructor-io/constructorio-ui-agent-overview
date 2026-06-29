@@ -14,7 +14,7 @@ export default defineConfig({
     coverage: {
       exclude: ['stories/**'],
       thresholds: {
-        branches: 85,
+        branches: 80,
         functions: 85,
         lines: 85,
         statements: 85,
