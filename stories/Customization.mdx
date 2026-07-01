@@ -1,0 +1,159 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="General/Customization" />
+
+# Customization
+
+The Agent Overview component supports customization through theming, translations, and callbacks.
+
+## Styling
+
+By default, importing React components from this library does not pull any CSS into your project.
+
+To use the starter styles, add the following import:
+
+```js
+import '@constructor-io/constructorio-ui-agent-overview/styles.css';
+```
+
+- All starter styles are scoped within the `.cio-agent-overview-root` CSS selector.
+- These styles are intended to be extended by layering in your own CSS rules.
+- To opt out completely, simply do not import the stylesheet.
+
+> When using the JavaScript Bundle, CSS is included by default via the `includeCSS` option (defaults to `true`).
+
+## Theming
+
+The `theme` prop provides fine-grained control over the component's visual appearance via CSS custom properties. All theme values are sanitized before being applied.
+
+```jsx
+<CioAgentOverview
+  apiKey="YOUR_API_KEY"
+  intent="I want to buy shoes"
+  domains={{ suggestions: 'searchbar', results: 'explorer' }}
+  theme={{
+    fontFamily: 'Inter, sans-serif',
+    primaryColor: '#1a1a1a',
+    secondaryColor: '#4a4a4a',
+    borderColor: '#e0e0e0',
+    background: '#ffffff',
+    spacingMd: '16px',
+  }}
+/>
+```
+
+### Available Theme Properties
+
+#### Typography
+
+| Property | CSS Variable | Description |
+|----------|-------------|-------------|
+| `fontFamily` | `--cio-font-family` | Font family for all text |
+| `fontSizeXs` | `--cio-font-size-xs` | Extra-small font size (badges) |
+| `fontSizeSm` | `--cio-font-size-sm` | Small font size (prices) |
+| `fontSizeBase` | `--cio-font-size-base` | Base font size |
+| `fontSizeLg` | `--cio-font-size-lg` | Large font size (section titles) |
+| `lineHeight` | `--cio-line-height` | Line height |
+| `fontWeightNormal` | `--cio-font-weight-normal` | Normal weight |
+| `fontWeightMedium` | `--cio-font-weight-medium` | Medium weight |
+| `fontWeightSemibold` | `--cio-font-weight-semibold` | Semibold weight |
+| `fontWeightBold` | `--cio-font-weight-bold` | Bold weight |
+
+#### Colors
+
+| Property | CSS Variable | Description |
+|----------|-------------|-------------|
+| `primaryColor` | `--cio-color-primary` | Primary text color |
+| `secondaryColor` | `--cio-color-secondary` | Secondary text color |
+| `mutedColor` | `--cio-color-muted` | Muted text color (descriptions) |
+| `subtleColor` | `--cio-color-subtle` | Subtle accent color |
+| `productNameColor` | `--cio-color-product-name` | Product name text color |
+| `borderColor` | `--cio-color-border` | Border color for cards/sections |
+| `background` | `--cio-color-background` | Root container background |
+| `backgroundMuted` | `--cio-color-background-muted` | Muted background for sections |
+| `hoverAccentColor` | `--cio-color-hover-accent` | Accent on hover states |
+
+#### Carousel Arrows
+
+| Property | CSS Variable | Description |
+|----------|-------------|-------------|
+| `arrowSize` | `--cio-arrow-size` | Arrow button size |
+| `arrowBorderRadius` | `--cio-arrow-border-radius` | Arrow border radius |
+| `arrowBorderColor` | `--cio-arrow-border-color` | Arrow border color |
+| `arrowBorderColorHover` | `--cio-arrow-border-color-hover` | Arrow border color on hover |
+| `arrowColor` | `--cio-arrow-color` | Arrow icon color |
+| `arrowShadow` | `--cio-arrow-shadow` | Arrow box shadow |
+| `arrowShadowHover` | `--cio-arrow-shadow-hover` | Arrow box shadow on hover |
+
+#### Spacing
+
+| Property | CSS Variable | Description |
+|----------|-------------|-------------|
+| `spacingXs` | `--cio-spacing-xs` | Extra-small spacing |
+| `spacingSm` | `--cio-spacing-sm` | Small spacing |
+| `spacingMd` | `--cio-spacing-md` | Medium spacing |
+| `spacingLg` | `--cio-spacing-lg` | Large spacing |
+| `spacingXl` | `--cio-spacing-xl` | Extra-large spacing |
+| `spacing2xl` | `--cio-spacing-2xl` | Double extra-large spacing |
+
+## Translations
+
+All UI strings can be customized via the `translations` prop for internationalization:
+
+```jsx
+<CioAgentOverview
+  apiKey="YOUR_API_KEY"
+  intent="I want to buy shoes"
+  domains={{ suggestions: 'searchbar', results: 'explorer' }}
+  translations={{
+    'CioAgentOverview.section.aiBadge': 'IA',
+    'CioAgentOverview.categories.viewSuggestions': 'Ver sugerencias',
+    'CioAgentOverview.section.viewMore': 'Ver todo',
+    'CioAgentOverview.skeleton.thinking': 'Cargando...',
+    'CioAgentOverview.error.message': 'Algo salió mal',
+  }}
+/>
+```
+
+### Available Translation Keys
+
+| Key | Default (English) | Description |
+|-----|-------------------|-------------|
+| `CioAgentOverview.section.aiBadge` | "AI" | Badge label on recommendation sections |
+| `CioAgentOverview.categories.viewSuggestions` | "View suggestions" | Button text to proceed from categories |
+| `CioAgentOverview.section.viewMore` | "View more" | Link text to see more products in a section |
+| `CioAgentOverview.skeleton.thinking` | "Thinking..." | Loading skeleton text |
+| `CioAgentOverview.error.message` | "Something went wrong" | Error state message |
+
+> Translations only apply to hardcoded UI strings — not to content returned by the API (such as category titles, product names, or descriptions).
+
+## Callbacks
+
+The `callbacks` prop lets you handle user interactions:
+
+```jsx
+<CioAgentOverview
+  apiKey="YOUR_API_KEY"
+  intent="I want to buy shoes"
+  domains={{ suggestions: 'searchbar', results: 'explorer' }}
+  callbacks={{
+    onProductClick: (event, product, section) => {
+      console.log('Product clicked:', product.itemName);
+    },
+    onCategoryClick: (category) => {
+      console.log('Category selected:', category.title);
+    },
+    getProductUrl: (product) => `/products/${encodeURIComponent(product.url)}`,
+    getViewMoreUrl: (section) => `/search?q=${encodeURIComponent(section.title)}`,
+  }}
+/>
+```
+
+### Available Callbacks
+
+| Callback | Type | Description |
+|----------|------|-------------|
+| `onProductClick` | `(event: MouseEvent, product: IProduct, section: IRecommendationSection) => void` | Called when a product card is clicked |
+| `onCategoryClick` | `(category: ICategory) => void` | Called when a category card is clicked |
+| `getProductUrl` | `(product: IProduct) => string` | Builds a URL for product card links. Falls back to the product's default URL if not provided. |
+| `getViewMoreUrl` | `(section: IRecommendationSection) => string` | Builds a "View more" URL. The link is hidden if not provided. |

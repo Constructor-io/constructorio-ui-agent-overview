@@ -132,6 +132,16 @@ async function consumeProducts(
   return { error: null };
 }
 
+/**
+ * Hook that manages the full Agent Overview lifecycle: streaming categories,
+ * handling user selection, and streaming product recommendation sections.
+ *
+ * @example
+ * ```tsx
+ * const { phase, categories, sections, selectCategory, isLoading, error } =
+ *   useAgentOverview({ apiKey: 'YOUR_API_KEY', intent: 'I want to buy shoes', domains });
+ * ```
+ */
 export default function useAgentOverview(props: IAgentOverviewProps): {
   phase: Phase;
   categories: ICategory[];

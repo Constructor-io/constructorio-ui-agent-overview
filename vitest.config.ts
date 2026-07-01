@@ -11,6 +11,15 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   plugins: [react()],
   test: {
+    coverage: {
+      exclude: ['stories/**'],
+      thresholds: {
+        branches: 80,
+        functions: 85,
+        lines: 85,
+        statements: 85,
+      },
+    },
     projects: [
       {
         extends: true,

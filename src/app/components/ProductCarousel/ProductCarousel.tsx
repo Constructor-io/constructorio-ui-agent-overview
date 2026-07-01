@@ -7,11 +7,15 @@ import ProductCard, { toLibraryProduct } from '../ProductCard/ProductCard';
 import './ProductCarousel.css';
 
 interface IProductCarouselProps {
+  /** Array of products to display in the carousel. */
   products: IProduct[];
+  /** Builds a custom URL for each product card link. */
   getProductUrl?: (product: IProduct) => string;
+  /** Called when a product card is clicked. */
   onProductClick?: (event: React.MouseEvent, product: IProduct) => void;
 }
 
+/** Horizontal carousel of product cards with navigation arrows. */
 export default function ProductCarousel({
   products,
   getProductUrl,

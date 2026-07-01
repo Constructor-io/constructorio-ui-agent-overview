@@ -5,7 +5,7 @@ import {
   storiesControls,
 } from '@stories/AgentOverview/utils/argTypes';
 import {
-  apiKey,
+  DEMO_API_KEY,
   domains,
   intent,
 } from '@stories/AgentOverview/utils/constants';
@@ -27,7 +27,7 @@ const meta: Meta<typeof HooksTemplate> = {
     },
   },
   args: {
-    apiKey,
+    apiKey: DEMO_API_KEY,
     intent,
     domains,
   },

@@ -6,7 +6,9 @@ import type { ICategory } from '@src/types';
 import './CategoryCard.css';
 
 interface ICategoryCardProps {
+  /** Category data to render. */
   category: ICategory;
+  /** Called when the category card is clicked. */
   onClick?: () => void;
 }
 

@@ -4,7 +4,7 @@ import CioAgentOverview from '@src/app';
 import type { IAgentOverviewProps } from '@src/types';
 
 import { argTypes, storiesControls } from '../utils/argTypes';
-import { apiKey, domains, intent } from '../utils/constants';
+import { DEMO_API_KEY, domains, intent } from '../utils/constants';
 
 const meta: Meta<typeof CioAgentOverview> = {
   title: 'AgentOverview/CioAgentOverview',
@@ -22,7 +22,7 @@ type Story = StoryObj<typeof CioAgentOverview>;
 
 export const BasicUsage: Story = {
   args: {
-    apiKey,
+    apiKey: DEMO_API_KEY,
     intent,
     domains,
     callbacks: {
@@ -44,7 +44,7 @@ function RenderInASmallContainerTemplate(args: IAgentOverviewProps) {
 
 export const RenderInASmallContainer: Story = {
   args: {
-    apiKey,
+    apiKey: DEMO_API_KEY,
     intent,
     domains,
     callbacks: {

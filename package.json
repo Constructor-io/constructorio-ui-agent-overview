@@ -12,6 +12,16 @@
   "bugs": {
     "url": "https://github.com/Constructor-io/constructorio-ui-agent-overview/issues"
   },
+  "keywords": [
+    "constructor.io",
+    "ai",
+    "agent",
+    "product recommendations",
+    "ecommerce",
+    "react",
+    "ui",
+    "product discovery"
+  ],
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
   "types": "dist/types/index.d.ts",
@@ -34,7 +44,7 @@
     "dist/styles.css"
   ],
   "engines": {
-    "node": ">=14"
+    "node": ">=20"
   },
   "scripts": {
     "build:lib": "vite build --config vite.lib.config.ts",
