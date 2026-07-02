@@ -10,10 +10,10 @@
     "allowJs": false,
     "types": [],
     "paths": {
-      "@src/*": ["src/*"]
+      "@src/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "css.d.ts"],
   "exclude": [
     "node_modules",
     "**/*.test.ts",
