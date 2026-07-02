@@ -21,11 +21,10 @@
     "importHelpers": true,
     "noEmit": true,
     "allowJs": true,
-    "baseUrl": ".",
     "paths": {
-      "@src/*": ["src/*"],
-      "@spec/*": ["spec/*"],
-      "@stories/*": ["stories/*"]
+      "@src/*": ["./src/*"],
+      "@spec/*": ["./spec/*"],
+      "@stories/*": ["./stories/*"]
     },
     "types": ["vitest/globals", "node", "@testing-library/jest-dom"]
   },
@@ -37,6 +36,7 @@
     "vite.**.ts",
     "vitest.config.ts",
     "vitest.shims.d.ts",
+    "css.d.ts",
     "eslint.config.mjs"
   ],
   "exclude": ["node_modules", "dist", "coverage"]

@@ -77,7 +77,7 @@ function buildThemeStyles(
       }
     }
   }
-  return styles as React.CSSProperties;
+  return styles;
 }
 
 /**

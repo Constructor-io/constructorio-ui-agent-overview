@@ -54,7 +54,7 @@ function isMessageData(data: unknown): data is { text: string } {
     typeof data === 'object' &&
     data !== null &&
     'text' in data &&
-    typeof (data as { text: unknown }).text === 'string'
+    typeof data.text === 'string'
   );
 }
 
@@ -87,6 +87,6 @@ function isSearchResultData(data: unknown): data is SearchResultData {
   ) {
     return false;
   }
-  const resp = obj.response as { results: unknown };
+  const resp = obj.response;
   return Array.isArray(resp.results);
 }
