@@ -1,0 +1,53 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import Flow from './assets/flow.svg';
+import Repo from './assets/repo.svg';
+import Plugin from './assets/plugin.svg';
+import './assets/storybook-styles.css';
+
+<Meta title='General/Introduction' />
+
+# Welcome to Constructor's Agent Overview UI
+
+Integration with Constructor's Agent APIs has never been easier with **comprehensive components** that take care of both the tracking and results retrieval,
+allowing you to focus on developing your own unique site experience.
+
+<div className='subheading subheading--compact'>Getting Started</div>
+
+<div className='link-list link-list--compact'>
+  <a className='link-item' href='/?path=/docs/general-integration-guide--docs'>
+    <img src={Flow} alt='integration-guide' />
+    <span>
+      <strong>Integration Guide</strong>
+      Step-by-step setup: installation, rendering, callbacks, and theming
+    </span>
+  </a>
+</div>
+
+<div className='subheading subheading--compact'>Components</div>
+
+<div className='link-list link-list--compact'>
+  <a className='link-item' href='./?path=/docs/agentoverview-cioagentoverview--docs'>
+    <img src={Repo} alt='cio-agent-overview' />
+    <span>
+      <strong>CioAgentOverview</strong>
+      An all-in-one component that renders category suggestions, product recommendations, and "View more" links
+    </span>
+  </a>
+</div>
+
+<div className='subheading subheading--compact'>Hooks</div>
+
+<div className='link-list link-list--compact'>
+  <a className='link-item' href='./?path=/docs/agentoverview-useagentoverview-hooks--docs'>
+    <img src={Plugin} alt='use-agent-overview' />
+    <span>
+      <strong>useAgentOverview</strong>
+      A headless hook that returns agent stream state — categories, products, loading, and error — so you can build your own UI
+    </span>
+  </a>
+</div>
+
+<div className='badge-wrapper tip-wrapper'>
+  <span className='badge tip'>Tip</span>Having trouble with a unique use case? Contact your friendly
+  Integration Engineers for support!
+</div>
