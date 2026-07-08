@@ -4,6 +4,11 @@ import './storybook-styles.css';
 
 const preview: Preview = {
   parameters: {
+    options: {
+      storySort: {
+        order: ['General', ['Introduction'], 'AgentOverview'],
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

@@ -1,0 +1,328 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import './assets/storybook-styles.css';
+
+<Meta title="General/Customization" />
+
+# Customization
+
+The Agent Overview component supports customization through theming, translations, and callbacks.
+
+## Styling
+
+By default, importing React components from this library does not pull any CSS into your project.
+
+To use the starter styles, add the following import:
+
+```js
+import '@constructor-io/constructorio-ui-agent-overview/styles.css';
+```
+
+- All starter styles are scoped within the `.cio-agent-overview-root` CSS selector.
+- These styles are intended to be extended by layering in your own CSS rules.
+- To opt out completely, simply do not import the stylesheet.
+
+> When using the JavaScript Bundle, CSS is included by default via the `includeCSS` option (defaults to `true`).
+
+## Theming
+
+The `theme` prop provides fine-grained control over the component's visual appearance via CSS custom properties. All theme values are sanitized before being applied.
+
+```jsx
+<CioAgentOverview
+  apiKey="YOUR_API_KEY"
+  intent="I want to buy shoes"
+  domains={{ suggestions: 'searchbar', results: 'explorer' }}
+  theme={{
+    fontFamily: 'Inter, sans-serif',
+    primaryColor: '#1a1a1a',
+    secondaryColor: '#4a4a4a',
+    borderColor: '#e0e0e0',
+    background: '#ffffff',
+    spacingMd: '16px',
+  }}
+/>
+```
+
+### Available Theme Properties
+
+<div className="theme-section">
+  <h4>Typography</h4>
+  <div className="theme-grid">
+    <div className="theme-item">
+      <code>fontFamily</code>
+      <span className="theme-var">--cio-font-family</span>
+      <span className="theme-desc">Font family for all text</span>
+    </div>
+    <div className="theme-item">
+      <code>fontSizeXs</code>
+      <span className="theme-var">--cio-font-size-xs</span>
+      <span className="theme-desc">Extra-small font size (badges)</span>
+    </div>
+    <div className="theme-item">
+      <code>fontSizeSm</code>
+      <span className="theme-var">--cio-font-size-sm</span>
+      <span className="theme-desc">Small font size (prices)</span>
+    </div>
+    <div className="theme-item">
+      <code>fontSizeBase</code>
+      <span className="theme-var">--cio-font-size-base</span>
+      <span className="theme-desc">Base font size</span>
+    </div>
+    <div className="theme-item">
+      <code>fontSizeLg</code>
+      <span className="theme-var">--cio-font-size-lg</span>
+      <span className="theme-desc">Large font size (section titles)</span>
+    </div>
+    <div className="theme-item">
+      <code>lineHeight</code>
+      <span className="theme-var">--cio-line-height</span>
+      <span className="theme-desc">Line height</span>
+    </div>
+    <div className="theme-item">
+      <code>fontWeightNormal</code>
+      <span className="theme-var">--cio-font-weight-normal</span>
+      <span className="theme-desc">Normal weight</span>
+    </div>
+    <div className="theme-item">
+      <code>fontWeightMedium</code>
+      <span className="theme-var">--cio-font-weight-medium</span>
+      <span className="theme-desc">Medium weight</span>
+    </div>
+    <div className="theme-item">
+      <code>fontWeightSemibold</code>
+      <span className="theme-var">--cio-font-weight-semibold</span>
+      <span className="theme-desc">Semibold weight</span>
+    </div>
+    <div className="theme-item">
+      <code>fontWeightBold</code>
+      <span className="theme-var">--cio-font-weight-bold</span>
+      <span className="theme-desc">Bold weight</span>
+    </div>
+  </div>
+</div>
+
+<div className="theme-section">
+  <h4>Colors</h4>
+  <div className="theme-grid">
+    <div className="theme-item">
+      <code>primaryColor</code>
+      <span className="theme-var">--cio-color-primary</span>
+      <span className="theme-desc">Primary text color</span>
+    </div>
+    <div className="theme-item">
+      <code>secondaryColor</code>
+      <span className="theme-var">--cio-color-secondary</span>
+      <span className="theme-desc">Secondary text color</span>
+    </div>
+    <div className="theme-item">
+      <code>mutedColor</code>
+      <span className="theme-var">--cio-color-muted</span>
+      <span className="theme-desc">Muted text color (descriptions)</span>
+    </div>
+    <div className="theme-item">
+      <code>subtleColor</code>
+      <span className="theme-var">--cio-color-subtle</span>
+      <span className="theme-desc">Subtle accent color</span>
+    </div>
+    <div className="theme-item">
+      <code>productNameColor</code>
+      <span className="theme-var">--cio-color-product-name</span>
+      <span className="theme-desc">Product name text color</span>
+    </div>
+    <div className="theme-item">
+      <code>borderColor</code>
+      <span className="theme-var">--cio-color-border</span>
+      <span className="theme-desc">Border color for cards/sections</span>
+    </div>
+    <div className="theme-item">
+      <code>background</code>
+      <span className="theme-var">--cio-color-background</span>
+      <span className="theme-desc">Root container background</span>
+    </div>
+    <div className="theme-item">
+      <code>backgroundMuted</code>
+      <span className="theme-var">--cio-color-background-muted</span>
+      <span className="theme-desc">Muted background for sections</span>
+    </div>
+    <div className="theme-item">
+      <code>hoverAccentColor</code>
+      <span className="theme-var">--cio-color-hover-accent</span>
+      <span className="theme-desc">Accent on hover states</span>
+    </div>
+  </div>
+</div>
+
+<div className="theme-section">
+  <h4>Carousel Arrows</h4>
+  <div className="theme-grid">
+    <div className="theme-item">
+      <code>arrowSize</code>
+      <span className="theme-var">--cio-arrow-size</span>
+      <span className="theme-desc">Arrow button size</span>
+    </div>
+    <div className="theme-item">
+      <code>arrowBorderRadius</code>
+      <span className="theme-var">--cio-arrow-border-radius</span>
+      <span className="theme-desc">Arrow border radius</span>
+    </div>
+    <div className="theme-item">
+      <code>arrowBorderColor</code>
+      <span className="theme-var">--cio-arrow-border-color</span>
+      <span className="theme-desc">Arrow border color</span>
+    </div>
+    <div className="theme-item">
+      <code>arrowBorderColorHover</code>
+      <span className="theme-var">--cio-arrow-border-color-hover</span>
+      <span className="theme-desc">Arrow border color on hover</span>
+    </div>
+    <div className="theme-item">
+      <code>arrowColor</code>
+      <span className="theme-var">--cio-arrow-color</span>
+      <span className="theme-desc">Arrow icon color</span>
+    </div>
+    <div className="theme-item">
+      <code>arrowShadow</code>
+      <span className="theme-var">--cio-arrow-shadow</span>
+      <span className="theme-desc">Arrow box shadow</span>
+    </div>
+    <div className="theme-item">
+      <code>arrowShadowHover</code>
+      <span className="theme-var">--cio-arrow-shadow-hover</span>
+      <span className="theme-desc">Arrow box shadow on hover</span>
+    </div>
+  </div>
+</div>
+
+<div className="theme-section">
+  <h4>Spacing</h4>
+  <div className="theme-grid">
+    <div className="theme-item">
+      <code>spacingXs</code>
+      <span className="theme-var">--cio-spacing-xs</span>
+      <span className="theme-desc">Extra-small spacing</span>
+    </div>
+    <div className="theme-item">
+      <code>spacingSm</code>
+      <span className="theme-var">--cio-spacing-sm</span>
+      <span className="theme-desc">Small spacing</span>
+    </div>
+    <div className="theme-item">
+      <code>spacingMd</code>
+      <span className="theme-var">--cio-spacing-md</span>
+      <span className="theme-desc">Medium spacing</span>
+    </div>
+    <div className="theme-item">
+      <code>spacingLg</code>
+      <span className="theme-var">--cio-spacing-lg</span>
+      <span className="theme-desc">Large spacing</span>
+    </div>
+    <div className="theme-item">
+      <code>spacingXl</code>
+      <span className="theme-var">--cio-spacing-xl</span>
+      <span className="theme-desc">Extra-large spacing</span>
+    </div>
+    <div className="theme-item">
+      <code>spacing2xl</code>
+      <span className="theme-var">--cio-spacing-2xl</span>
+      <span className="theme-desc">Double extra-large spacing</span>
+    </div>
+  </div>
+</div>
+
+## Translations
+
+All UI strings can be customized via the `translations` prop for internationalization:
+
+```jsx
+<CioAgentOverview
+  apiKey="YOUR_API_KEY"
+  intent="I want to buy shoes"
+  domains={{ suggestions: 'searchbar', results: 'explorer' }}
+  translations={{
+    'CioAgentOverview.section.aiBadge': 'IA',
+    'CioAgentOverview.categories.viewSuggestions': 'Ver sugerencias',
+    'CioAgentOverview.section.viewMore': 'Ver todo',
+    'CioAgentOverview.skeleton.thinking': 'Cargando...',
+    'CioAgentOverview.error.message': 'Algo salió mal',
+  }}
+/>
+```
+
+### Available Translation Keys
+
+<div className="theme-grid">
+  <div className="theme-item">
+    <code>CioAgentOverview.section.aiBadge</code>
+    <span className="theme-var">Default: "AI"</span>
+    <span className="theme-desc">Badge label on recommendation sections</span>
+  </div>
+  <div className="theme-item">
+    <code>CioAgentOverview.categories.viewSuggestions</code>
+    <span className="theme-var">Default: "View suggestions"</span>
+    <span className="theme-desc">Button text to proceed from categories</span>
+  </div>
+  <div className="theme-item">
+    <code>CioAgentOverview.section.viewMore</code>
+    <span className="theme-var">Default: "View more"</span>
+    <span className="theme-desc">Link text to see more products in a section</span>
+  </div>
+  <div className="theme-item">
+    <code>CioAgentOverview.skeleton.thinking</code>
+    <span className="theme-var">Default: "Thinking..."</span>
+    <span className="theme-desc">Loading skeleton text</span>
+  </div>
+  <div className="theme-item">
+    <code>CioAgentOverview.error.message</code>
+    <span className="theme-var">Default: "Something went wrong"</span>
+    <span className="theme-desc">Error state message</span>
+  </div>
+</div>
+
+> Translations only apply to hardcoded UI strings — not to content returned by the API (such as category titles, product names, or descriptions).
+
+## Callbacks
+
+The `callbacks` prop lets you handle user interactions:
+
+```jsx
+<CioAgentOverview
+  apiKey="YOUR_API_KEY"
+  intent="I want to buy shoes"
+  domains={{ suggestions: 'searchbar', results: 'explorer' }}
+  callbacks={{
+    onProductClick: (event, product, section) => {
+      console.log('Product clicked:', product.itemName);
+    },
+    onCategoryClick: (category) => {
+      console.log('Category selected:', category.title);
+    },
+    getProductUrl: (product) => `/products/${encodeURIComponent(product.url)}`,
+    getViewMoreUrl: (section) => `/search?q=${encodeURIComponent(section.title)}`,
+  }}
+/>
+```
+
+### Available Callbacks
+
+<div className="theme-grid">
+  <div className="theme-item">
+    <code>onProductClick</code>
+    <span className="theme-var">(event, product, section) =&gt; void</span>
+    <span className="theme-desc">Called when a product card is clicked</span>
+  </div>
+  <div className="theme-item">
+    <code>onCategoryClick</code>
+    <span className="theme-var">(category) =&gt; void</span>
+    <span className="theme-desc">Called when a category card is clicked</span>
+  </div>
+  <div className="theme-item">
+    <code>getProductUrl</code>
+    <span className="theme-var">(product) =&gt; string</span>
+    <span className="theme-desc">Builds a URL for product card links. Falls back to product's default URL.</span>
+  </div>
+  <div className="theme-item">
+    <code>getViewMoreUrl</code>
+    <span className="theme-var">(section) =&gt; string</span>
+    <span className="theme-desc">Builds a "View more" URL. The link is hidden if not provided.</span>
+  </div>
+</div>

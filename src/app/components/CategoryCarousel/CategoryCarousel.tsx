@@ -7,7 +7,9 @@ import CategoryCard from '../CategoryCard/CategoryCard';
 import './CategoryCarousel.css';
 
 interface ICategoryCarouselProps {
+  /** Array of categories to display in the carousel. */
   categories: ICategory[];
+  /** Called when a category card is clicked. */
   onCategoryClick?: (category: ICategory) => void;
 }
 

@@ -12,12 +12,17 @@ import ProductCarousel from '../ProductCarousel/ProductCarousel';
 import './RecommendationSection.css';
 
 interface IRecommendationSectionProps {
+  /** The section data containing title, description, products, and optional viewMoreUrl. */
   section: IRecommendationSection;
+  /** Translation overrides for UI strings. */
   translations?: Translations;
+  /** Builds a custom URL for each product card link. */
   getProductUrl?: (product: IProduct) => string;
+  /** Called when a product card within this section is clicked. */
   onProductClick?: (event: React.MouseEvent, product: IProduct) => void;
 }
 
+/** Renders a single recommendation section with AI badge, title, description, and product carousel. */
 export default function RecommendationSection({
   section,
   translations,

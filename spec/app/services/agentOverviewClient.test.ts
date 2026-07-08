@@ -51,7 +51,7 @@ describe('createAgentStream', () => {
         getAgentResultsStream: mockGetStream,
       };
       return this as never;
-    } as never);
+    });
 
     const result = createAgentStream(
       { apiKey: 'test-key' },

@@ -8,10 +8,15 @@ import SparkleSVG from '../icons/SparkleSVG';
 import './CategorySection.css';
 
 interface ICategorySectionProps {
+  /** AI-generated description text for the category suggestions. */
   description: string;
+  /** Array of category suggestions to display. */
   categories: ICategory[];
+  /** Translation overrides for UI strings. */
   translations?: Translations;
+  /** Called when a category card is clicked. */
   onCategoryClick?: (category: ICategory) => void;
+  /** Called when the "View suggestions" button is clicked. */
   onViewSuggestions?: () => void;
 }
 
