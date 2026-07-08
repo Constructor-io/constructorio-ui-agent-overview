@@ -58,6 +58,12 @@ a.link-item:hover {
   box-shadow: rgba(0, 0, 0, 0.08) 0 3px 10px 0;
 }
 
+a.link-item:focus-visible {
+  border-color: #1EA7FD;
+  outline: 2px solid #1EA7FD;
+  outline-offset: 2px;
+}
+
 a.link-item:active {
   border-color: #1EA7FD;
   transform: translate3d(0, 0, 0);

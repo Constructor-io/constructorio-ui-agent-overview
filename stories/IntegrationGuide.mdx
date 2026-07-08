@@ -113,8 +113,10 @@ function CustomAgentUI() {
       {phase === 'categories' && (
         <ul>
           {categories.map((cat) => (
-            <li key={cat.title} onClick={() => selectCategory(cat)}>
-              {cat.title}
+            <li key={cat.title}>
+              <button type="button" onClick={() => selectCategory(cat)}>
+                {cat.title}
+              </button>
             </li>
           ))}
         </ul>
