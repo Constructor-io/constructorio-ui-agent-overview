@@ -203,10 +203,20 @@ span.badge {
   border: none;
 }
 
+dl.theme-grid {
+  list-style: none;
+}
+
 .theme-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.theme-item dt,
+.theme-item dd {
   margin: 0;
   padding: 0;
 }
@@ -240,11 +250,11 @@ span.badge {
 }
 
 .theme-item .theme-desc::before {
-  content: '(';
+  content: none;
 }
 
 .theme-item .theme-desc::after {
-  content: ')';
+  content: none;
 }
 
 .theme-item .theme-var {
