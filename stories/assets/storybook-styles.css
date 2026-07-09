@@ -1,5 +1,5 @@
 /* Introduction page */
-div.subheading {
+.subheading {
   font-weight: 700;
   font-size: 13px;
   color: #999;
@@ -10,32 +10,32 @@ div.subheading {
   margin-top: 40px;
 }
 
-div.subheading--compact {
+.subheading--compact {
   margin-top: 20px;
   margin-bottom: 8px;
 }
 
-div.link-list {
+.link-list {
   display: grid;
   grid-template-columns: 1fr;
   row-gap: 10px;
 }
 
 @media (min-width: 620px) {
-  div.link-list {
+  .link-list {
     row-gap: 20px;
     column-gap: 20px;
     grid-template-columns: 1fr 1fr;
   }
 }
 
-div.link-list--compact {
+.link-list--compact {
   grid-template-columns: 1fr;
   row-gap: 10px;
 }
 
 @media (min-width: 620px) {
-  div.link-list--compact {
+  .link-list--compact {
     grid-template-columns: 1fr;
     row-gap: 12px;
   }
@@ -102,14 +102,14 @@ span.badge {
   vertical-align: top;
 }
 
-div.badge-wrapper {
+.badge-wrapper {
   font-size: 13px;
   line-height: 20px;
   margin-top: 40px;
   margin-bottom: 40px;
 }
 
-div.badge-wrapper code {
+.badge-wrapper code {
   font-size: 12px;
   display: inline-block;
 }
