@@ -41,6 +41,8 @@ runs:
 
     - name: Create and push tag
       shell: bash
+      env:
+        HUSKY: '0'
       run: |
         git tag -a ${{ steps.bump.outputs.next_version }} -m "${{ github.event.inputs.title }}"
         git push origin ${{ steps.bump.outputs.next_version }}
