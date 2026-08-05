@@ -25,4 +25,5 @@ jobs:
           node-version: '22.17.1'
           cache: 'npm'
       - run: npm ci
-      - run: npm run test:unit -- --run
+      - run: npx playwright install --with-deps chromium
+      - run: npm test -- --run
