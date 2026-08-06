@@ -36,6 +36,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.17.1'
+          registry-url: 'https://registry.npmjs.org/'
+          scope: '@constructor-io'
           cache: 'npm'
 
       - run: npm ci
@@ -50,7 +52,7 @@ jobs:
           jq --arg v "${{ steps.version.outputs.without_prefix }}" '.version = $v' package.json > tmp.json && mv tmp.json package.json
 
       - name: Publish to npm
-        run: npm publish --access public
+        run: npm publish --provenance --access public
 
       - name: Notify Slack
         uses: ravsamhq/notify-slack-action@bca2d7f5660b833a27bda4f6b8bef389ebfefd25 # v2.3.0
