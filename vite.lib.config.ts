@@ -77,7 +77,10 @@ export default defineConfig({
       external: [
         'react',
         'react-dom',
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime',
         '@constructor-io/constructorio-client-javascript',
+        '@constructor-io/constructorio-ui-components',
       ],
       output: {
         assetFileNames: 'styles.css',
