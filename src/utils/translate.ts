@@ -5,6 +5,7 @@ const defaultTranslations: Translations = {
   'CioAgentOverview.categories.viewSuggestions': 'View suggestions',
   'CioAgentOverview.section.viewMore': 'View More',
   'CioAgentOverview.skeleton.thinking': 'Thinking',
+  'CioAgentOverview.skeleton.loading': 'Loading recommendations',
   'CioAgentOverview.error.message': 'Something went wrong. Please try again.',
 };
 

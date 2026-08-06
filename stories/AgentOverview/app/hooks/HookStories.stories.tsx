@@ -19,6 +19,7 @@ const meta: Meta<typeof HooksTemplate> = {
   component: HooksTemplate,
   tags: ['autodocs'],
   parameters: {
+    a11y: { test: 'error' },
     controls: storiesControls,
     docs: {
       source: {

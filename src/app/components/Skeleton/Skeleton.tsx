@@ -28,7 +28,7 @@ function SkeletonSection({
   translations?: Translations;
 }) {
   return (
-    <div className="cio-agent-overview-skeleton-section">
+    <div className="cio-agent-overview-skeleton-section" aria-hidden="true">
       <div className="cio-agent-overview-skeleton-badge">
         <SparkleSVG />
         <span>
@@ -68,6 +68,13 @@ export default function Skeleton({
 }: SkeletonProps) {
   return (
     <>
+      <span
+        className="cio-agent-overview-sr-only"
+        role="status"
+        aria-busy="true"
+      >
+        {translate('CioAgentOverview.skeleton.loading', translations)}
+      </span>
       {Array.from({ length: rows }, (_, i) => (
         <SkeletonSection
           key={i}

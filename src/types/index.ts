@@ -96,6 +96,7 @@ export type Translations = {
   'CioAgentOverview.categories.viewSuggestions'?: string;
   'CioAgentOverview.section.viewMore'?: string;
   'CioAgentOverview.skeleton.thinking'?: string;
+  'CioAgentOverview.skeleton.loading'?: string;
   'CioAgentOverview.error.message'?: string;
 };
 

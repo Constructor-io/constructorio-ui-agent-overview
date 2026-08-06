@@ -355,6 +355,9 @@ describe(`${CioAgentOverview.name}: client`, () => {
       expect(
         screen.getByText('Something went wrong. Please try again.')
       ).toBeTruthy();
+      expect(screen.getByRole('alert').textContent).toBe(
+        'Something went wrong. Please try again.'
+      );
 
       vi.mocked(mockCreate).mockImplementation(
         (_options: unknown, _intent: string, domain: string) => {

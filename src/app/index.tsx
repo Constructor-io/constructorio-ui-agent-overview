@@ -122,7 +122,7 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
           <div className="cio-agent-overview-error-icon" aria-hidden="true">
             <ErrorIconSVG />
           </div>
-          <p className="cio-agent-overview-error-message">
+          <p className="cio-agent-overview-error-message" role="alert">
             {translate('CioAgentOverview.error.message', translations)}
           </p>
         </div>
