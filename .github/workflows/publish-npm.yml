@@ -14,6 +14,11 @@ on:
         required: true
         type: string
 
+# Required for npm OIDC trusted publishers authentication
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -31,11 +36,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.17.1'
-          registry-url: 'https://registry.npmjs.org/'
-          scope: '@constructor-io'
           cache: 'npm'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - run: npm ci
 
@@ -50,8 +51,6 @@ jobs:
 
       - name: Publish to npm
         run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Notify Slack
         uses: ravsamhq/notify-slack-action@bca2d7f5660b833a27bda4f6b8bef389ebfefd25 # v2.3.0
