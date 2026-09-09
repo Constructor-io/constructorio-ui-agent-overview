@@ -336,6 +336,65 @@ describe(`${CioAgentOverview.name}: client`, () => {
     });
   });
 
+  describe('status region', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('announces loading from a region that is mounted with the root', () => {
+      const props = factories.agentOverviewProps.build();
+      render(<CioAgentOverview {...props} />);
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'Loading recommendations'
+      );
+    });
+
+    it('announces when the categories are ready', async () => {
+      const props = factories.agentOverviewProps.build();
+      render(<CioAgentOverview {...props} />);
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1100);
+      });
+
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'Recommendations ready'
+      );
+    });
+
+    it('announces when the products are ready', async () => {
+      const props = factories.agentOverviewProps.build();
+      render(<CioAgentOverview {...props} />);
+      await transitionToProducts();
+
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'Recommendations ready'
+      );
+      expect(screen.getAllByRole('status')).toHaveLength(1);
+    });
+
+    it('translates the status messages', async () => {
+      const props = factories.agentOverviewProps.build({
+        translations: {
+          'CioAgentOverview.status.loading': 'Custom loading',
+          'CioAgentOverview.status.ready': 'Custom ready',
+        },
+      });
+      render(<CioAgentOverview {...props} />);
+      expect(screen.getByRole('status')).toHaveTextContent('Custom loading');
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1100);
+      });
+
+      expect(screen.getByRole('status')).toHaveTextContent('Custom ready');
+    });
+  });
+
   describe('error state', () => {
     it('renders error message when streams fail', async () => {
       vi.useFakeTimers();
@@ -358,6 +417,7 @@ describe(`${CioAgentOverview.name}: client`, () => {
       expect(screen.getByRole('alert').textContent).toBe(
         'Something went wrong. Please try again.'
       );
+      expect(screen.getByRole('status')).toBeEmptyDOMElement();
 
       vi.mocked(mockCreate).mockImplementation(
         (_options: unknown, _intent: string, domain: string) => {

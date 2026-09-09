@@ -36,6 +36,44 @@ describe('ProductCarousel', () => {
     expect(screen.queryByLabelText('Scroll right')).toBeNull();
   });
 
+  describe('accessibility', () => {
+    it('names the carousel region by the label', () => {
+      render(<ProductCarousel products={products} label="Running Shoes" />);
+      expect(
+        screen.getByRole('region', { name: 'Running Shoes' })
+      ).toBeTruthy();
+    });
+
+    it('leaves the region unnamed when no label is given', () => {
+      render(<ProductCarousel products={products} />);
+      expect(screen.getByRole('region')).not.toHaveAttribute('aria-label');
+    });
+
+    it('names the arrows with translated labels', () => {
+      render(
+        <ProductCarousel
+          products={products}
+          translations={{
+            'CioAgentOverview.carousel.previous': 'Go back',
+            'CioAgentOverview.carousel.next': 'Go forward',
+          }}
+        />
+      );
+      expect(screen.getByRole('button', { name: 'Go back' })).toBeTruthy();
+      expect(screen.getByRole('button', { name: 'Go forward' })).toBeTruthy();
+    });
+
+    it('uses the default arrow labels', () => {
+      render(<ProductCarousel products={products} />);
+      expect(
+        screen.getByRole('button', { name: 'Show previous items' })
+      ).toBeTruthy();
+      expect(
+        screen.getByRole('button', { name: 'Show next items' })
+      ).toBeTruthy();
+    });
+  });
+
   it('calls onProductClick with event and product when clicked', async () => {
     const user = userEvent.setup();
     const handleClick = vi.fn();

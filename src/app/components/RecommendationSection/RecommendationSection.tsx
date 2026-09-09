@@ -8,6 +8,7 @@ import translate from '@src/utils/translate';
 import ChevronRightSVG from '../icons/ChevronRightSVG';
 import SparkleSVG from '../icons/SparkleSVG';
 import ProductCarousel from '../ProductCarousel/ProductCarousel';
+import { SR_ONLY_STYLE } from '../StatusRegion/StatusRegion';
 
 import './RecommendationSection.css';
 
@@ -51,13 +52,21 @@ export default function RecommendationSection({
             target="_blank"
             rel="noopener noreferrer"
           >
-            {translate('CioAgentOverview.section.viewMore', translations)}
+            {translate('CioAgentOverview.section.viewMore', translations)}{' '}
+            <span className="cio-agent-overview-sr-only" style={SR_ONLY_STYLE}>
+              {translate(
+                'CioAgentOverview.section.opensInNewTab',
+                translations
+              )}
+            </span>
             <ChevronRightSVG />
           </a>
         )}
       </div>
       <ProductCarousel
         products={section.products}
+        label={section.title}
+        translations={translations}
         getProductUrl={getProductUrl}
         onProductClick={onProductClick}
       />

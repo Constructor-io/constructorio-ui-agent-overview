@@ -58,24 +58,9 @@ describe('Skeleton', () => {
   });
 
   describe('accessibility', () => {
-    it('announces the loading state through a single status region', () => {
+    it('does not carry a live region of its own', () => {
       render(<Skeleton />);
-      const status = screen.getByRole('status');
-      expect(status).toHaveTextContent('Loading recommendations');
-      expect(status).toHaveAttribute('aria-busy', 'true');
-    });
-
-    it('translates the loading announcement', () => {
-      render(
-        <Skeleton
-          translations={{
-            'CioAgentOverview.skeleton.loading': 'Custom loading label',
-          }}
-        />
-      );
-      expect(screen.getByRole('status')).toHaveTextContent(
-        'Custom loading label'
-      );
+      expect(screen.queryByRole('status')).toBeNull();
     });
 
     it('hides the decorative skeleton bones from assistive technology', () => {

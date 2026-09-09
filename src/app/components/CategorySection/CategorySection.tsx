@@ -57,6 +57,7 @@ export default function CategorySection({
       </div>
       <CategoryCarousel
         categories={categories}
+        translations={translations}
         onCategoryClick={onCategoryClick}
       />
     </div>

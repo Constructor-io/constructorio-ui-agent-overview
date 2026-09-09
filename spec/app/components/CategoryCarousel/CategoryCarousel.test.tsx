@@ -15,6 +15,29 @@ describe('CategoryCarousel', () => {
     expect(screen.getByText('Hiking Boots')).toBeTruthy();
   });
 
+  it('names the carousel region and arrows with translated labels', () => {
+    render(
+      <CategoryCarousel
+        categories={categories}
+        translations={{
+          'CioAgentOverview.categories.carouselLabel': 'Category picks',
+          'CioAgentOverview.carousel.previous': 'Go back',
+          'CioAgentOverview.carousel.next': 'Go forward',
+        }}
+      />
+    );
+    expect(screen.getByRole('region', { name: 'Category picks' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Go back' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Go forward' })).toBeTruthy();
+  });
+
+  it('names the carousel region by default', () => {
+    render(<CategoryCarousel categories={categories} />);
+    expect(
+      screen.getByRole('region', { name: 'Suggested categories' })
+    ).toBeTruthy();
+  });
+
   it('renders without crashing when categories is empty', () => {
     expect(() => render(<CategoryCarousel categories={[]} />)).not.toThrow();
   });

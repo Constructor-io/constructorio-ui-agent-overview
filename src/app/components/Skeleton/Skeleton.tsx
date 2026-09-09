@@ -68,13 +68,6 @@ export default function Skeleton({
 }: SkeletonProps) {
   return (
     <>
-      <span
-        className="cio-agent-overview-sr-only"
-        role="status"
-        aria-busy="true"
-      >
-        {translate('CioAgentOverview.skeleton.loading', translations)}
-      </span>
       {Array.from({ length: rows }, (_, i) => (
         <SkeletonSection
           key={i}

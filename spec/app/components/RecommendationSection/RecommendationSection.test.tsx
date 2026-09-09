@@ -76,13 +76,40 @@ describe('RecommendationSection', () => {
       });
     });
 
-    it('keeps the visible text as the accessible name of the view more link', () => {
+    it('tells that the view more link opens in a new tab', () => {
       const sectionWithViewMore = {
         ...section,
         viewMoreUrl: 'https://example.com/more',
       };
       render(<RecommendationSection section={sectionWithViewMore} />);
-      expect(screen.getByRole('link', { name: 'View More' })).toBeTruthy();
+      expect(
+        screen.getByRole('link', { name: 'View More (opens in a new tab)' })
+      ).toBeTruthy();
+    });
+
+    it('translates the new tab hint', () => {
+      const sectionWithViewMore = {
+        ...section,
+        viewMoreUrl: 'https://example.com/more',
+      };
+      render(
+        <RecommendationSection
+          section={sectionWithViewMore}
+          translations={{
+            'CioAgentOverview.section.opensInNewTab': '(new tab)',
+          }}
+        />
+      );
+      expect(
+        screen.getByRole('link', { name: 'View More (new tab)' })
+      ).toBeTruthy();
+    });
+
+    it('names the product carousel by the section title', () => {
+      render(<RecommendationSection section={section} />);
+      expect(
+        screen.getByRole('region', { name: 'Running Shoes' })
+      ).toBeTruthy();
     });
   });
 

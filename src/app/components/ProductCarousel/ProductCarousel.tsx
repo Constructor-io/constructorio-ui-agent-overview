@@ -1,6 +1,7 @@
 import { Carousel } from '@constructor-io/constructorio-ui-components';
 
-import type { IProduct } from '@src/types';
+import type { IProduct, Translations } from '@src/types';
+import translate from '@src/utils/translate';
 
 import ProductCard, { toLibraryProduct } from '../ProductCard/ProductCard';
 
@@ -9,6 +10,10 @@ import './ProductCarousel.css';
 interface IProductCarouselProps {
   /** Array of products to display in the carousel. */
   products: IProduct[];
+  /** Accessible name of the carousel region. */
+  label?: string;
+  /** Translation overrides for UI strings. */
+  translations?: Translations;
   /** Builds a custom URL for each product card link. */
   getProductUrl?: (product: IProduct) => string;
   /** Called when a product card is clicked. */
@@ -18,6 +23,8 @@ interface IProductCarouselProps {
 /** Horizontal carousel of product cards with navigation arrows. */
 export default function ProductCarousel({
   products,
+  label,
+  translations,
   getProductUrl,
   onProductClick,
 }: IProductCarouselProps) {
@@ -29,10 +36,16 @@ export default function ProductCarousel({
         items={libraryProducts}
         loop={false}
         className="cio-agent-overview-carousel-inner"
+        aria-label={label || undefined}
       >
         {({ items }) => (
           <>
-            <Carousel.Previous />
+            <Carousel.Previous
+              aria-label={translate(
+                'CioAgentOverview.carousel.previous',
+                translations
+              )}
+            />
             <Carousel.Content className="cio-agent-overview-carousel-content">
               {items?.map((item, index) => {
                 const product = products[index];
@@ -51,7 +64,12 @@ export default function ProductCarousel({
                 );
               })}
             </Carousel.Content>
-            <Carousel.Next />
+            <Carousel.Next
+              aria-label={translate(
+                'CioAgentOverview.carousel.next',
+                translations
+              )}
+            />
           </>
         )}
       </Carousel>

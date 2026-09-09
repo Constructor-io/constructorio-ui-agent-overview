@@ -96,7 +96,12 @@ export type Translations = {
   'CioAgentOverview.categories.viewSuggestions'?: string;
   'CioAgentOverview.section.viewMore'?: string;
   'CioAgentOverview.skeleton.thinking'?: string;
-  'CioAgentOverview.skeleton.loading'?: string;
+  'CioAgentOverview.status.loading'?: string;
+  'CioAgentOverview.status.ready'?: string;
+  'CioAgentOverview.carousel.previous'?: string;
+  'CioAgentOverview.carousel.next'?: string;
+  'CioAgentOverview.categories.carouselLabel'?: string;
+  'CioAgentOverview.section.opensInNewTab'?: string;
   'CioAgentOverview.error.message'?: string;
 };
 

@@ -61,6 +61,16 @@ describe('ProductCard', () => {
     expect(handleClick).toHaveBeenCalledOnce();
   });
 
+  it('is named by the product name alone', () => {
+    render(<ProductCard product={product} />);
+    expect(screen.getByRole('link')).toHaveAccessibleName('Test Shoe');
+  });
+
+  it('falls back to the card content as the name when the product name is empty', () => {
+    render(<ProductCard product={{ ...product, itemName: '' }} />);
+    expect(screen.getByRole('link')).not.toHaveAttribute('aria-label');
+  });
+
   it('does not render target="_blank"', () => {
     render(<ProductCard product={product} />);
     const link = screen.getByRole('link');
