@@ -105,10 +105,43 @@ describe('RecommendationSection', () => {
       ).toBeTruthy();
     });
 
-    it('names the product carousel by the section title', () => {
+    it('exposes the section as a region named by its heading and described by its text', () => {
+      render(<RecommendationSection section={section} />);
+      const region = screen.getByRole('region', { name: 'Running Shoes' });
+      expect(region).toHaveAccessibleDescription('Best shoes for running');
+      expect(region.tagName).toBe('SECTION');
+    });
+
+    it('keeps the new tab hint when its translation is blanked', () => {
+      render(
+        <RecommendationSection
+          section={{ ...section, viewMoreUrl: 'https://example.com/more' }}
+          translations={{ 'CioAgentOverview.section.opensInNewTab': '' }}
+        />
+      );
+      expect(
+        screen.getByRole('link', { name: 'View More (opens in a new tab)' })
+      ).toBeTruthy();
+    });
+
+    it('names the product carousel after the section', () => {
       render(<RecommendationSection section={section} />);
       expect(
-        screen.getByRole('region', { name: 'Running Shoes' })
+        screen.getByRole('region', { name: 'Running Shoes products' })
+      ).toBeTruthy();
+    });
+
+    it('translates the carousel name with the title placeholder', () => {
+      render(
+        <RecommendationSection
+          section={section}
+          translations={{
+            'CioAgentOverview.section.carouselLabel': 'Items in {title}',
+          }}
+        />
+      );
+      expect(
+        screen.getByRole('region', { name: 'Items in Running Shoes' })
       ).toBeTruthy();
     });
   });

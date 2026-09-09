@@ -100,7 +100,10 @@ export type Translations = {
   'CioAgentOverview.status.ready'?: string;
   'CioAgentOverview.carousel.previous'?: string;
   'CioAgentOverview.carousel.next'?: string;
+  'CioAgentOverview.categories.sectionLabel'?: string;
   'CioAgentOverview.categories.carouselLabel'?: string;
+  /** `{title}` is replaced with the section title. */
+  'CioAgentOverview.section.carouselLabel'?: string;
   'CioAgentOverview.section.opensInNewTab'?: string;
   'CioAgentOverview.error.message'?: string;
 };

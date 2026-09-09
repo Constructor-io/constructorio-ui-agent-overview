@@ -4,7 +4,7 @@ import type {
   IProduct,
   Translations,
 } from '../types';
-import translate from '../utils/translate';
+import { translateLabel } from '../utils/translate';
 
 import CategorySection from './components/CategorySection/CategorySection';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
@@ -88,10 +88,10 @@ export function statusMessage(
   translations?: Translations
 ): string {
   if (isLoading) {
-    return translate('CioAgentOverview.status.loading', translations);
+    return translateLabel('CioAgentOverview.status.loading', translations);
   }
   if (hasContent) {
-    return translate('CioAgentOverview.status.ready', translations);
+    return translateLabel('CioAgentOverview.status.ready', translations);
   }
   return '';
 }

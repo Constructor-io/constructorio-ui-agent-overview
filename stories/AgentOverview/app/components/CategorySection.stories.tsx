@@ -38,6 +38,7 @@ export const Translated: Story = {
     translations: {
       'CioAgentOverview.section.aiBadge': 'AI picks',
       'CioAgentOverview.categories.viewSuggestions': 'See suggestions',
+      'CioAgentOverview.categories.sectionLabel': 'Picks for you',
       'CioAgentOverview.categories.carouselLabel': 'Suggested picks',
       'CioAgentOverview.carousel.previous': 'Previous picks',
       'CioAgentOverview.carousel.next': 'Next picks',

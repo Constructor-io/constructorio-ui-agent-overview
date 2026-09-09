@@ -3,7 +3,8 @@ import type {
   IRecommendationSection,
   Translations,
 } from '@src/types';
-import translate from '@src/utils/translate';
+import domId from '@src/utils/domId';
+import translate, { translateLabel } from '@src/utils/translate';
 
 import ChevronRightSVG from '../icons/ChevronRightSVG';
 import SparkleSVG from '../icons/SparkleSVG';
@@ -30,8 +31,22 @@ export default function RecommendationSection({
   getProductUrl,
   onProductClick,
 }: IRecommendationSectionProps) {
+  const titleId = domId('cio-agent-overview-section-title', section.title);
+  const descriptionId = domId(
+    'cio-agent-overview-section-description',
+    section.title
+  );
+  const carouselLabel = translateLabel(
+    'CioAgentOverview.section.carouselLabel',
+    translations
+  ).replace('{title}', section.title);
+
   return (
-    <div className="cio-agent-overview-section">
+    <section
+      className="cio-agent-overview-section"
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
+    >
       <div className="cio-agent-overview-section-badge">
         <SparkleSVG />
         <span>
@@ -40,8 +55,13 @@ export default function RecommendationSection({
       </div>
       <div className="cio-agent-overview-section-header">
         <div className="cio-agent-overview-section-header-text">
-          <h2 className="cio-agent-overview-section-title">{section.title}</h2>
-          <p className="cio-agent-overview-section-description">
+          <h2 className="cio-agent-overview-section-title" id={titleId}>
+            {section.title}
+          </h2>
+          <p
+            className="cio-agent-overview-section-description"
+            id={descriptionId}
+          >
             {section.description}
           </p>
         </div>
@@ -54,7 +74,7 @@ export default function RecommendationSection({
           >
             {translate('CioAgentOverview.section.viewMore', translations)}{' '}
             <span className="cio-agent-overview-sr-only" style={SR_ONLY_STYLE}>
-              {translate(
+              {translateLabel(
                 'CioAgentOverview.section.opensInNewTab',
                 translations
               )}
@@ -65,11 +85,11 @@ export default function RecommendationSection({
       </div>
       <ProductCarousel
         products={section.products}
-        label={section.title}
+        label={carouselLabel}
         translations={translations}
         getProductUrl={getProductUrl}
         onProductClick={onProductClick}
       />
-    </div>
+    </section>
   );
 }

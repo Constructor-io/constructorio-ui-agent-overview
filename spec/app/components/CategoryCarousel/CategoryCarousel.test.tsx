@@ -38,16 +38,12 @@ describe('CategoryCarousel', () => {
         translations={{ 'CioAgentOverview.categories.carouselLabel': '' }}
       />
     );
-    expect(
-      screen.getByRole('region', { name: 'Suggested categories' })
-    ).toBeTruthy();
+    expect(screen.getByRole('region', { name: 'Categories' })).toBeTruthy();
   });
 
   it('names the carousel region by default', () => {
     render(<CategoryCarousel categories={categories} />);
-    expect(
-      screen.getByRole('region', { name: 'Suggested categories' })
-    ).toBeTruthy();
+    expect(screen.getByRole('region', { name: 'Categories' })).toBeTruthy();
   });
 
   it('renders without crashing when categories is empty', () => {

@@ -9,7 +9,9 @@ const defaultTranslations: Translations = {
   'CioAgentOverview.status.ready': 'Recommendations ready',
   'CioAgentOverview.carousel.previous': 'Show previous items',
   'CioAgentOverview.carousel.next': 'Show next items',
-  'CioAgentOverview.categories.carouselLabel': 'Suggested categories',
+  'CioAgentOverview.categories.sectionLabel': 'Category suggestions',
+  'CioAgentOverview.categories.carouselLabel': 'Categories',
+  'CioAgentOverview.section.carouselLabel': '{title} products',
   'CioAgentOverview.section.opensInNewTab': '(opens in a new tab)',
   'CioAgentOverview.error.message': 'Something went wrong. Please try again.',
 };

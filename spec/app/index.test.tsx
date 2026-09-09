@@ -393,6 +393,16 @@ describe(`${CioAgentOverview.name}: client`, () => {
 
       expect(screen.getByRole('status')).toHaveTextContent('Custom ready');
     });
+
+    it('keeps announcing when a status translation is blanked', () => {
+      const props = factories.agentOverviewProps.build({
+        translations: { 'CioAgentOverview.status.loading': '' },
+      });
+      render(<CioAgentOverview {...props} />);
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'Loading recommendations'
+      );
+    });
   });
 
   describe('error state', () => {

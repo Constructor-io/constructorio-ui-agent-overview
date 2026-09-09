@@ -97,6 +97,20 @@ describe('CategorySection', () => {
       });
     });
 
+    it('exposes the section as a named region described by its text', () => {
+      render(
+        <CategorySection
+          description="Here are some categories"
+          categories={categories}
+        />
+      );
+      const region = screen.getByRole('region', {
+        name: 'Category suggestions',
+      });
+      expect(region).toHaveAccessibleDescription('Here are some categories');
+      expect(region.tagName).toBe('SECTION');
+    });
+
     it('exposes category cards as buttons named after the category', () => {
       render(
         <CategorySection
