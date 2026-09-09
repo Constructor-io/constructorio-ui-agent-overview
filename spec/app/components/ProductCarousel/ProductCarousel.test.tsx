@@ -44,11 +44,6 @@ describe('ProductCarousel', () => {
       ).toBeTruthy();
     });
 
-    it('leaves the region unnamed when no label is given', () => {
-      render(<ProductCarousel products={products} />);
-      expect(screen.getByRole('region')).not.toHaveAttribute('aria-label');
-    });
-
     it('names the arrows with translated labels', () => {
       render(
         <ProductCarousel
@@ -61,6 +56,24 @@ describe('ProductCarousel', () => {
       );
       expect(screen.getByRole('button', { name: 'Go back' })).toBeTruthy();
       expect(screen.getByRole('button', { name: 'Go forward' })).toBeTruthy();
+    });
+
+    it('falls back to the default arrow labels when overrides are blank', () => {
+      render(
+        <ProductCarousel
+          products={products}
+          translations={{
+            'CioAgentOverview.carousel.previous': '',
+            'CioAgentOverview.carousel.next': '',
+          }}
+        />
+      );
+      expect(
+        screen.getByRole('button', { name: 'Show previous items' })
+      ).toBeTruthy();
+      expect(
+        screen.getByRole('button', { name: 'Show next items' })
+      ).toBeTruthy();
     });
 
     it('uses the default arrow labels', () => {

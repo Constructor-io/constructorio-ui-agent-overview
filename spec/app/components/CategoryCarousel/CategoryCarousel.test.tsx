@@ -31,6 +31,18 @@ describe('CategoryCarousel', () => {
     expect(screen.getByRole('button', { name: 'Go forward' })).toBeTruthy();
   });
 
+  it('falls back to the default region label when the override is blank', () => {
+    render(
+      <CategoryCarousel
+        categories={categories}
+        translations={{ 'CioAgentOverview.categories.carouselLabel': '' }}
+      />
+    );
+    expect(
+      screen.getByRole('region', { name: 'Suggested categories' })
+    ).toBeTruthy();
+  });
+
   it('names the carousel region by default', () => {
     render(<CategoryCarousel categories={categories} />);
     expect(

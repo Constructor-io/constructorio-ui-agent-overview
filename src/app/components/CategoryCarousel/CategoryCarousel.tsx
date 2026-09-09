@@ -1,7 +1,7 @@
 import { Carousel } from '@constructor-io/constructorio-ui-components';
 
 import type { ICategory, Translations } from '@src/types';
-import translate from '@src/utils/translate';
+import { translateLabel } from '@src/utils/translate';
 
 import CategoryCard from '../CategoryCard/CategoryCard';
 
@@ -37,7 +37,7 @@ export default function CategoryCarousel({
         items={items}
         loop={false}
         className="cio-agent-overview-category-carousel-inner"
-        aria-label={translate(
+        aria-label={translateLabel(
           'CioAgentOverview.categories.carouselLabel',
           translations
         )}
@@ -45,7 +45,7 @@ export default function CategoryCarousel({
         {({ items: carouselItems }) => (
           <>
             <Carousel.Previous
-              aria-label={translate(
+              aria-label={translateLabel(
                 'CioAgentOverview.carousel.previous',
                 translations
               )}
@@ -64,7 +64,7 @@ export default function CategoryCarousel({
               })}
             </Carousel.Content>
             <Carousel.Next
-              aria-label={translate(
+              aria-label={translateLabel(
                 'CioAgentOverview.carousel.next',
                 translations
               )}

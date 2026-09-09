@@ -31,7 +31,10 @@ colour still needs a non-visual equivalent.
   their CSS even when our own rendering looks unchanged.
 - **The stylesheet is optional.** `styles.css` is a separate import. Anything that
   must never be visible needs an inline style, not only a class.
-- **`translate()` returns an explicitly provided string as-is.** Add every
+- **`translate()` returns an explicitly provided string as-is.** Blanking a
+  string is how consumers hide it; do not "fix" that. An accessible name cannot
+  be blank, so `aria-label` values go through `translateLabel()`, which falls
+  back to the default string instead. Add every
   user-facing string, including accessible names and live-region text, to
   `defaultTranslations` (`src/utils/translate.ts`), the `Translations` type
   (`src/types/index.ts`), the README and the `translations` argType.
