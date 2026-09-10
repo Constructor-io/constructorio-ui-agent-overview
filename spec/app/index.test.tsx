@@ -345,12 +345,17 @@ describe(`${CioAgentOverview.name}: client`, () => {
       vi.useRealTimers();
     });
 
-    it('announces loading from a region that is mounted with the root', () => {
+    it('announces loading from a region that is mounted with the root', async () => {
       const props = factories.agentOverviewProps.build();
       render(<CioAgentOverview {...props} />);
       expect(screen.getByRole('status')).toHaveTextContent(
         'Loading recommendations'
       );
+
+      // Let the streams finish before the environment is torn down.
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1100);
+      });
     });
 
     it('announces when the categories are ready', async () => {
@@ -394,7 +399,7 @@ describe(`${CioAgentOverview.name}: client`, () => {
       expect(screen.getByRole('status')).toHaveTextContent('Custom ready');
     });
 
-    it('keeps announcing when a status translation is blanked', () => {
+    it('keeps announcing when a status translation is blanked', async () => {
       const props = factories.agentOverviewProps.build({
         translations: { 'CioAgentOverview.status.loading': '' },
       });
@@ -402,6 +407,10 @@ describe(`${CioAgentOverview.name}: client`, () => {
       expect(screen.getByRole('status')).toHaveTextContent(
         'Loading recommendations'
       );
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1100);
+      });
     });
   });
 
