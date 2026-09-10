@@ -111,6 +111,20 @@ describe('CategorySection', () => {
       expect(region.tagName).toBe('SECTION');
     });
 
+    it('gives each mounted section its own description id', () => {
+      render(
+        <>
+          <CategorySection description="First" categories={categories} />
+          <CategorySection description="Second" categories={categories} />
+        </>
+      );
+      const regions = screen.getAllByRole('region', {
+        name: 'Category suggestions',
+      });
+      expect(regions[0]).toHaveAccessibleDescription('First');
+      expect(regions[1]).toHaveAccessibleDescription('Second');
+    });
+
     it('exposes category cards as buttons named after the category', () => {
       render(
         <CategorySection

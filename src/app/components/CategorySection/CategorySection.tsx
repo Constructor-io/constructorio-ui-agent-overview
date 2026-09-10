@@ -1,5 +1,6 @@
 import type { ICategory, Translations } from '@src/types';
 import translate, { translateLabel } from '@src/utils/translate';
+import useDomId from '@src/utils/useDomId';
 
 import CategoryCarousel from '../CategoryCarousel/CategoryCarousel';
 import ChevronRightSVG from '../icons/ChevronRightSVG';
@@ -27,7 +28,7 @@ export default function CategorySection({
   onCategoryClick,
   onViewSuggestions,
 }: ICategorySectionProps) {
-  const descriptionId = 'cio-agent-overview-category-section-description';
+  const descriptionId = useDomId('category-section-description');
 
   return (
     <section

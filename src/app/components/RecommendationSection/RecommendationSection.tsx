@@ -3,8 +3,8 @@ import type {
   IRecommendationSection,
   Translations,
 } from '@src/types';
-import domId from '@src/utils/domId';
 import translate, { translateLabel } from '@src/utils/translate';
+import useDomId from '@src/utils/useDomId';
 
 import ChevronRightSVG from '../icons/ChevronRightSVG';
 import SparkleSVG from '../icons/SparkleSVG';
@@ -31,11 +31,8 @@ export default function RecommendationSection({
   getProductUrl,
   onProductClick,
 }: IRecommendationSectionProps) {
-  const titleId = domId('cio-agent-overview-section-title', section.title);
-  const descriptionId = domId(
-    'cio-agent-overview-section-description',
-    section.title
-  );
+  const titleId = useDomId('section-title');
+  const descriptionId = useDomId('section-description');
   const carouselLabel = translateLabel(
     'CioAgentOverview.section.carouselLabel',
     translations

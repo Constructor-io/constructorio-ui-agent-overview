@@ -124,6 +124,24 @@ describe('RecommendationSection', () => {
       ).toBeTruthy();
     });
 
+    it('keeps aria references intact when two identical sections are mounted', () => {
+      render(
+        <>
+          <RecommendationSection section={section} />
+          <RecommendationSection section={section} />
+        </>
+      );
+      const regions = screen.getAllByRole('region', { name: 'Running Shoes' });
+      expect(regions).toHaveLength(2);
+      const ids = regions.map((region) =>
+        region.getAttribute('aria-labelledby')
+      );
+      expect(new Set(ids).size).toBe(2);
+      regions.forEach((region) =>
+        expect(region).toHaveAccessibleDescription('Best shoes for running')
+      );
+    });
+
     it('names the product carousel after the section', () => {
       render(<RecommendationSection section={section} />);
       expect(
