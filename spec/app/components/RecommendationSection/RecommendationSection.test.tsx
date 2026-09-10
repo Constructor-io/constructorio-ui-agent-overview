@@ -149,6 +149,22 @@ describe('RecommendationSection', () => {
       ).toBeTruthy();
     });
 
+    it('replaces every title placeholder and keeps special characters in the title', () => {
+      render(
+        <RecommendationSection
+          section={{ ...section, title: 'Shoes & More $&' }}
+          translations={{
+            'CioAgentOverview.section.carouselLabel': '{title}: all {title}',
+          }}
+        />
+      );
+      expect(
+        screen.getByRole('region', {
+          name: 'Shoes & More $&: all Shoes & More $&',
+        })
+      ).toBeTruthy();
+    });
+
     it('translates the carousel name with the title placeholder', () => {
       render(
         <RecommendationSection

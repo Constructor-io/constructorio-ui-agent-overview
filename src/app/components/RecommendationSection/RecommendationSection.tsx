@@ -33,10 +33,13 @@ export default function RecommendationSection({
 }: IRecommendationSectionProps) {
   const titleId = useDomId('section-title');
   const descriptionId = useDomId('section-description');
+  // split/join: every placeholder, and no `$&`-style patterns from the title.
   const carouselLabel = translateLabel(
     'CioAgentOverview.section.carouselLabel',
     translations
-  ).replace('{title}', section.title);
+  )
+    .split('{title}')
+    .join(section.title);
 
   return (
     <section
