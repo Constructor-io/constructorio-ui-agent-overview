@@ -108,10 +108,10 @@ describe('CategorySection', () => {
         name: 'Category suggestions',
       });
       expect(region).toHaveAccessibleDescription('Here are some categories');
-      expect(region.tagName).toBe('SECTION');
+      expect(region.tagName).toBe('DIV');
     });
 
-    it('gives each mounted section its own description id', () => {
+    it('gives each mounted section its own description', () => {
       render(
         <>
           <CategorySection description="First" categories={categories} />

@@ -61,9 +61,9 @@ describe('ProductCard', () => {
     expect(handleClick).toHaveBeenCalledOnce();
   });
 
-  it('is named by the product name and price', () => {
+  it('is named by the product name alone', () => {
     render(<ProductCard product={product} />);
-    expect(screen.getByRole('link')).toHaveAccessibleName('Test Shoe, $ 49.99');
+    expect(screen.getByRole('link')).toHaveAccessibleName('Test Shoe');
   });
 
   it('does not render target="_blank"', () => {

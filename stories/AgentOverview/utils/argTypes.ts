@@ -53,7 +53,7 @@ export const argTypes: Partial<ArgTypes<IAgentOverviewProps>> = {
   },
   translations: {
     description:
-      'Translation overrides for internationalizing UI strings. All keys are optional.\n\n- `CioAgentOverview.section.aiBadge`\n- `CioAgentOverview.categories.viewSuggestions`\n- `CioAgentOverview.section.viewMore`\n- `CioAgentOverview.skeleton.thinking`\n- `CioAgentOverview.status.loading`\n- `CioAgentOverview.status.ready`\n- `CioAgentOverview.carousel.previous`\n- `CioAgentOverview.carousel.next`\n- `CioAgentOverview.categories.sectionLabel`\n- `CioAgentOverview.categories.carouselLabel`\n- `CioAgentOverview.section.carouselLabel`\n- `CioAgentOverview.error.message`',
+      'Translation overrides for internationalizing UI strings. All keys are optional.\n\n- `CioAgentOverview.section.aiBadge`\n- `CioAgentOverview.categories.viewSuggestions`\n- `CioAgentOverview.section.viewMore`\n- `CioAgentOverview.skeleton.thinking`\n- `CioAgentOverview.status.loading`\n- `CioAgentOverview.status.ready`\n- `CioAgentOverview.carousel.previous`\n- `CioAgentOverview.carousel.next`\n- `CioAgentOverview.carousel.label`\n- `CioAgentOverview.categories.sectionLabel`\n- `CioAgentOverview.categories.carouselLabel`\n- `CioAgentOverview.section.carouselLabel`\n- `CioAgentOverview.section.fallbackTitle`\n- `CioAgentOverview.error.message`',
     control: 'object',
     table: {
       type: { summary: 'Translations' },

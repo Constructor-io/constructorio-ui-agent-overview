@@ -10,7 +10,7 @@ import './ProductCarousel.css';
 interface IProductCarouselProps {
   /** Array of products to display in the carousel. */
   products: IProduct[];
-  /** Accessible name of the carousel region. */
+  /** Accessible name of the carousel region. Defaults to a translated generic label. */
   label?: string;
   /** Translation overrides for UI strings. */
   translations?: Translations;
@@ -36,7 +36,10 @@ export default function ProductCarousel({
         items={libraryProducts}
         loop={false}
         className="cio-agent-overview-carousel-inner"
-        aria-label={label}
+        aria-label={
+          label ||
+          translateLabel('CioAgentOverview.carousel.label', translations)
+        }
       >
         {({ items }) => (
           <>

@@ -4,7 +4,7 @@ import type {
   Translations,
 } from '@src/types';
 import translate, { translateLabel } from '@src/utils/translate';
-import useDomId from '@src/utils/useDomId';
+import useOptionalId from '@src/utils/useOptionalId';
 
 import ChevronRightSVG from '../icons/ChevronRightSVG';
 import SparkleSVG from '../icons/SparkleSVG';
@@ -30,20 +30,24 @@ export default function RecommendationSection({
   getProductUrl,
   onProductClick,
 }: IRecommendationSectionProps) {
-  const titleId = useDomId('section-title');
-  const descriptionId = useDomId('section-description');
+  const descriptionId = useOptionalId();
+  // The stream may deliver a section before its title; the region still needs a name.
+  const sectionName =
+    section.title ||
+    translateLabel('CioAgentOverview.section.fallbackTitle', translations);
   // split/join: every placeholder, and no `$&`-style patterns from the title.
   const carouselLabel = translateLabel(
     'CioAgentOverview.section.carouselLabel',
     translations
   )
     .split('{title}')
-    .join(section.title);
+    .join(sectionName);
 
   return (
-    <section
+    <div
       className="cio-agent-overview-section"
-      aria-labelledby={titleId}
+      role="region"
+      aria-label={sectionName}
       aria-describedby={descriptionId}
     >
       <div className="cio-agent-overview-section-badge">
@@ -54,9 +58,7 @@ export default function RecommendationSection({
       </div>
       <div className="cio-agent-overview-section-header">
         <div className="cio-agent-overview-section-header-text">
-          <h2 className="cio-agent-overview-section-title" id={titleId}>
-            {section.title}
-          </h2>
+          <h2 className="cio-agent-overview-section-title">{section.title}</h2>
           <p
             className="cio-agent-overview-section-description"
             id={descriptionId}
@@ -83,6 +85,6 @@ export default function RecommendationSection({
         getProductUrl={getProductUrl}
         onProductClick={onProductClick}
       />
-    </section>
+    </div>
   );
 }

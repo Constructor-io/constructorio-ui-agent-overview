@@ -20,7 +20,11 @@ interface IStatusRegionProps {
  */
 export default function StatusRegion({ message }: IStatusRegionProps) {
   return (
-    <div style={SR_ONLY_STYLE} role="status">
+    <div
+      className="cio-agent-overview-status"
+      style={SR_ONLY_STYLE}
+      role="status"
+    >
       {message}
     </div>
   );

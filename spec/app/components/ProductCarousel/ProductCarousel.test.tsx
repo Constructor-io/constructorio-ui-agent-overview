@@ -44,6 +44,16 @@ describe('ProductCarousel', () => {
       ).toBeTruthy();
     });
 
+    it('names the region with a translated default when no label is given', () => {
+      render(<ProductCarousel products={products} />);
+      expect(screen.getByRole('region', { name: 'Products' })).toBeTruthy();
+    });
+
+    it('treats a blank label as missing', () => {
+      render(<ProductCarousel products={products} label="" />);
+      expect(screen.getByRole('region', { name: 'Products' })).toBeTruthy();
+    });
+
     it('names the arrows with translated labels', () => {
       render(
         <ProductCarousel

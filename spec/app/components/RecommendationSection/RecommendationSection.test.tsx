@@ -76,29 +76,37 @@ describe('RecommendationSection', () => {
       });
     });
 
-    it('exposes the section as a region named by its heading and described by its text', () => {
+    it('exposes the section as a region named by its title and described by its text', () => {
       render(<RecommendationSection section={section} />);
       const region = screen.getByRole('region', { name: 'Running Shoes' });
       expect(region).toHaveAccessibleDescription('Best shoes for running');
-      expect(region.tagName).toBe('SECTION');
+      // The public DOM shape is unchanged: the root stays a div.
+      expect(region.tagName).toBe('DIV');
+      expect(region).toHaveClass('cio-agent-overview-section');
     });
 
-    it('keeps aria references intact when two identical sections are mounted', () => {
+    it('keeps descriptions apart when two identical sections are mounted', () => {
       render(
         <>
           <RecommendationSection section={section} />
-          <RecommendationSection section={section} />
+          <RecommendationSection
+            section={{ ...section, description: 'Second copy' }}
+          />
         </>
       );
       const regions = screen.getAllByRole('region', { name: 'Running Shoes' });
-      expect(regions).toHaveLength(2);
-      const ids = regions.map((region) =>
-        region.getAttribute('aria-labelledby')
-      );
-      expect(new Set(ids).size).toBe(2);
-      regions.forEach((region) =>
-        expect(region).toHaveAccessibleDescription('Best shoes for running')
-      );
+      expect(regions[0]).toHaveAccessibleDescription('Best shoes for running');
+      expect(regions[1]).toHaveAccessibleDescription('Second copy');
+    });
+
+    it('falls back to a translated name when the stream has not delivered a title', () => {
+      render(<RecommendationSection section={{ ...section, title: '' }} />);
+      expect(
+        screen.getByRole('region', { name: 'Recommendations' })
+      ).toBeTruthy();
+      expect(
+        screen.getByRole('region', { name: 'Recommendations products' })
+      ).toBeTruthy();
     });
 
     it('keeps the visible text as the accessible name of the view more link', () => {

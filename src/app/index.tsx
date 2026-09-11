@@ -85,12 +85,14 @@ function buildThemeStyles(
 export function statusMessage(
   isLoading: boolean,
   hasContent: boolean,
+  hasError: boolean,
   translations?: Translations
 ): string {
   if (isLoading) {
     return translateLabel('CioAgentOverview.status.loading', translations);
   }
-  if (hasContent) {
+  // A failed request is announced by the error alert, never as success.
+  if (hasContent && !hasError) {
     return translateLabel('CioAgentOverview.status.ready', translations);
   }
   return '';
@@ -122,13 +124,12 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
   const { callbacks, translations } = props;
 
   const themeStyles = buildThemeStyles(props.theme);
-  const hasContent = categories.length > 0 || sections.length > 0;
+  // Content of the active phase only: categories do not count once products are requested.
+  const hasContent =
+    phase === 'categories' ? categories.length > 0 : sections.length > 0;
 
   return (
     <div className="cio-agent-overview-root" style={themeStyles}>
-      <StatusRegion
-        message={statusMessage(isLoading, hasContent, translations)}
-      />
       {isLoading && !hasContent && (
         <Skeleton
           rows={1}
@@ -177,6 +178,9 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
             />
           );
         })}
+      <StatusRegion
+        message={statusMessage(isLoading, hasContent, !!error, translations)}
+      />
     </div>
   );
 }

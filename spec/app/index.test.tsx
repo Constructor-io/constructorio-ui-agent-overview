@@ -399,6 +399,47 @@ describe(`${CioAgentOverview.name}: client`, () => {
       expect(screen.getByRole('status')).toHaveTextContent('Custom ready');
     });
 
+    it('is rendered after the content so the first child of the root is unchanged', () => {
+      const props = factories.agentOverviewProps.build();
+      const { container } = render(<CioAgentOverview {...props} />);
+      const root = getRootElement(container);
+      // eslint-disable-next-line testing-library/no-node-access
+      expect(root.lastElementChild).toHaveAttribute('role', 'status');
+      // eslint-disable-next-line testing-library/no-node-access
+      expect(root.firstElementChild).not.toHaveAttribute('role', 'status');
+    });
+
+    it('announces the error instead of success when the product stream fails after categories', async () => {
+      const { createAgentStream: mockCreate } =
+        await import('@src/app/services/agentOverviewClient');
+      vi.mocked(mockCreate).mockImplementation(
+        (_options: unknown, _intent: string, domain: string) => {
+          if (domain === 'searchbar_agent') {
+            return createFakeCategoryStream();
+          }
+          throw new Error('Products failed');
+        }
+      );
+
+      const props = factories.agentOverviewProps.build();
+      render(<CioAgentOverview {...props} />);
+      await transitionToProducts();
+
+      expect(screen.getByRole('alert')).toHaveTextContent(
+        'Something went wrong. Please try again.'
+      );
+      expect(screen.getByRole('status')).toBeEmptyDOMElement();
+
+      vi.mocked(mockCreate).mockImplementation(
+        (_options: unknown, _intent: string, domain: string) => {
+          if (domain === 'searchbar_agent') {
+            return createFakeCategoryStream();
+          }
+          return createFakeProductStream();
+        }
+      );
+    });
+
     it('keeps announcing when a status translation is blanked', async () => {
       const props = factories.agentOverviewProps.build({
         translations: { 'CioAgentOverview.status.loading': '' },

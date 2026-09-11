@@ -24,11 +24,6 @@ export function toLibraryProduct(product: IProduct): Product {
   };
 }
 
-/** Accessible name: the visible title plus the price, matching the card's on-screen text. */
-export function productCardLabel(product: IProduct): string {
-  return `${product.itemName}, $ ${product.price.toFixed(2)}`;
-}
-
 export default function ProductCard({
   product,
   href,
@@ -41,7 +36,7 @@ export default function ProductCard({
     <a
       className="cio-agent-overview-product-card"
       href={resolvedHref || undefined}
-      aria-label={productCardLabel(product)}
+      aria-label={product.itemName}
       onClick={onClick}
     >
       <CioProductCard product={libraryProduct}>
