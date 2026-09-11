@@ -16,9 +16,10 @@ Two automated layers are the merge gate, and both already run in CI:
 - `npm test -- --run` — `axe-core` in real Chromium against every story (the
   `storybook` vitest project; `npm run test-storybook` runs it alone)
 
-Every story sets `a11y: { test: 'error' }`. The deterministic component stories
-under `stories/AgentOverview/app/components/` exist so axe sees every state
-(loading, error, categories, products) without the live API.
+Every story sets `a11y: { test: 'error' }`. The stories render against the live
+demo API, so axe checks whichever state is on screen when the story settles;
+state-specific markup (loading, error, carousels) is covered by the jsdom unit
+tests in `spec/`.
 
 Colour is out of scope: `color-contrast` is disabled in the axe run because the
 palette is the consumer's to restyle through `theme`. State conveyed *only* by
