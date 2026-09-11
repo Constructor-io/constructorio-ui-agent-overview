@@ -76,52 +76,11 @@ describe('RecommendationSection', () => {
       });
     });
 
-    it('tells that the view more link opens in a new tab', () => {
-      const sectionWithViewMore = {
-        ...section,
-        viewMoreUrl: 'https://example.com/more',
-      };
-      render(<RecommendationSection section={sectionWithViewMore} />);
-      expect(
-        screen.getByRole('link', { name: 'View More (opens in a new tab)' })
-      ).toBeTruthy();
-    });
-
-    it('translates the new tab hint', () => {
-      const sectionWithViewMore = {
-        ...section,
-        viewMoreUrl: 'https://example.com/more',
-      };
-      render(
-        <RecommendationSection
-          section={sectionWithViewMore}
-          translations={{
-            'CioAgentOverview.section.opensInNewTab': '(new tab)',
-          }}
-        />
-      );
-      expect(
-        screen.getByRole('link', { name: 'View More (new tab)' })
-      ).toBeTruthy();
-    });
-
     it('exposes the section as a region named by its heading and described by its text', () => {
       render(<RecommendationSection section={section} />);
       const region = screen.getByRole('region', { name: 'Running Shoes' });
       expect(region).toHaveAccessibleDescription('Best shoes for running');
       expect(region.tagName).toBe('SECTION');
-    });
-
-    it('keeps the new tab hint when its translation is blanked', () => {
-      render(
-        <RecommendationSection
-          section={{ ...section, viewMoreUrl: 'https://example.com/more' }}
-          translations={{ 'CioAgentOverview.section.opensInNewTab': '' }}
-        />
-      );
-      expect(
-        screen.getByRole('link', { name: 'View More (opens in a new tab)' })
-      ).toBeTruthy();
     });
 
     it('keeps aria references intact when two identical sections are mounted', () => {
@@ -140,6 +99,15 @@ describe('RecommendationSection', () => {
       regions.forEach((region) =>
         expect(region).toHaveAccessibleDescription('Best shoes for running')
       );
+    });
+
+    it('keeps the visible text as the accessible name of the view more link', () => {
+      render(
+        <RecommendationSection
+          section={{ ...section, viewMoreUrl: 'https://example.com/more' }}
+        />
+      );
+      expect(screen.getByRole('link', { name: 'View More' })).toBeTruthy();
     });
 
     it('names the product carousel after the section', () => {

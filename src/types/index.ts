@@ -104,7 +104,6 @@ export type Translations = {
   'CioAgentOverview.categories.carouselLabel'?: string;
   /** `{title}` is replaced with the section title. */
   'CioAgentOverview.section.carouselLabel'?: string;
-  'CioAgentOverview.section.opensInNewTab'?: string;
   'CioAgentOverview.error.message'?: string;
 };
 

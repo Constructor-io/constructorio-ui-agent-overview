@@ -187,13 +187,10 @@ All UI strings can be customized via the `translations` prop for internationaliz
     'CioAgentOverview.categories.sectionLabel': 'Category suggestions',
     'CioAgentOverview.categories.carouselLabel': 'Categories',
     'CioAgentOverview.section.carouselLabel': '{title} products',
-    'CioAgentOverview.section.opensInNewTab': '(opens in a new tab)',
     'CioAgentOverview.error.message': 'Something went wrong',
   }}
 />
 ```
-
-Screen-reader-only strings (`status.*`, `carousel.*`, `categories.sectionLabel`, `categories.carouselLabel`, `section.carouselLabel`, `section.opensInNewTab`) are announced by assistive technology and should be translated together with the visible ones.
 
 ## Troubleshooting
 

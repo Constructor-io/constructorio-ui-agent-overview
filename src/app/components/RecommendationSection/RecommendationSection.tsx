@@ -9,7 +9,6 @@ import useDomId from '@src/utils/useDomId';
 import ChevronRightSVG from '../icons/ChevronRightSVG';
 import SparkleSVG from '../icons/SparkleSVG';
 import ProductCarousel from '../ProductCarousel/ProductCarousel';
-import { SR_ONLY_STYLE } from '../StatusRegion/StatusRegion';
 
 import './RecommendationSection.css';
 
@@ -72,13 +71,7 @@ export default function RecommendationSection({
             target="_blank"
             rel="noopener noreferrer"
           >
-            {translate('CioAgentOverview.section.viewMore', translations)}{' '}
-            <span className="cio-agent-overview-sr-only" style={SR_ONLY_STYLE}>
-              {translateLabel(
-                'CioAgentOverview.section.opensInNewTab',
-                translations
-              )}
-            </span>
+            {translate('CioAgentOverview.section.viewMore', translations)}
             <ChevronRightSVG />
           </a>
         )}

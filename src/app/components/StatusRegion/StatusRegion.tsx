@@ -1,5 +1,4 @@
-// Inline so it stays hidden for consumers who do not load the stylesheet.
-export const SR_ONLY_STYLE: React.CSSProperties = {
+const SR_ONLY_STYLE: React.CSSProperties = {
   position: 'absolute',
   width: 1,
   height: 1,
@@ -21,11 +20,7 @@ interface IStatusRegionProps {
  */
 export default function StatusRegion({ message }: IStatusRegionProps) {
   return (
-    <div
-      className="cio-agent-overview-sr-only"
-      style={SR_ONLY_STYLE}
-      role="status"
-    >
+    <div style={SR_ONLY_STYLE} role="status">
       {message}
     </div>
   );

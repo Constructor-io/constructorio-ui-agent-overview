@@ -34,8 +34,8 @@ colour still needs a non-visual equivalent.
   must never be visible needs an inline style, not only a class.
 - **`translate()` returns an explicitly provided string as-is.** Blanking a
   string is how consumers hide it; do not "fix" that. Strings that exist only
-  for assistive technology (accessible names, live-region messages, sr-only
-  hints) cannot be blank, so they go through `translateLabel()`, which falls
+  for assistive technology (accessible names, live-region messages) cannot be
+  blank, so they go through `translateLabel()`, which falls
   back to the default string instead. Add every
   user-facing string, including accessible names and live-region text, to
   `defaultTranslations` (`src/utils/translate.ts`), the `Translations` type

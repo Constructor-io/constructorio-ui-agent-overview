@@ -12,7 +12,6 @@ const defaultTranslations: Translations = {
   'CioAgentOverview.categories.sectionLabel': 'Category suggestions',
   'CioAgentOverview.categories.carouselLabel': 'Categories',
   'CioAgentOverview.section.carouselLabel': '{title} products',
-  'CioAgentOverview.section.opensInNewTab': '(opens in a new tab)',
   'CioAgentOverview.error.message': 'Something went wrong. Please try again.',
 };
 
