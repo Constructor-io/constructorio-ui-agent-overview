@@ -30,6 +30,7 @@ export default function CategoryCard({
     <button
       type="button"
       className="cio-agent-overview-category-card"
+      aria-label={category.title}
       onClick={onClick}
     >
       <CioProductCard product={libraryProduct}>

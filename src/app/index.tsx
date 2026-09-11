@@ -2,13 +2,15 @@ import type {
   CioAgentOverviewTheme,
   IAgentOverviewProps,
   IProduct,
+  Translations,
 } from '../types';
-import translate from '../utils/translate';
+import translate, { translateLabel } from '../utils/translate';
 
 import CategorySection from './components/CategorySection/CategorySection';
 import ErrorIconSVG from './components/icons/ErrorIconSVG';
 import RecommendationSection from './components/RecommendationSection/RecommendationSection';
 import Skeleton from './components/Skeleton/Skeleton';
+import StatusRegion from './components/StatusRegion/StatusRegion';
 import useAgentOverview from './hooks/useAgentOverview';
 
 import '../styles.css';
@@ -80,6 +82,22 @@ function buildThemeStyles(
   return styles;
 }
 
+export function statusMessage(
+  isLoading: boolean,
+  hasContent: boolean,
+  hasError: boolean,
+  translations?: Translations
+): string {
+  if (isLoading) {
+    return translateLabel('CioAgentOverview.status.loading', translations);
+  }
+  // A failed request is announced by the error alert, never as success.
+  if (hasContent && !hasError) {
+    return translateLabel('CioAgentOverview.status.ready', translations);
+  }
+  return '';
+}
+
 /**
  * Pre-built Agent Overview component that streams AI-generated category suggestions
  * and product recommendation sections in real time.
@@ -106,10 +124,13 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
   const { callbacks, translations } = props;
 
   const themeStyles = buildThemeStyles(props.theme);
+  // Content of the active phase only: categories do not count once products are requested.
+  const hasContent =
+    phase === 'categories' ? categories.length > 0 : sections.length > 0;
 
   return (
     <div className="cio-agent-overview-root" style={themeStyles}>
-      {isLoading && categories.length === 0 && sections.length === 0 && (
+      {isLoading && !hasContent && (
         <Skeleton
           rows={1}
           showTitle={false}
@@ -117,12 +138,12 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
           translations={translations}
         />
       )}
-      {error && categories.length === 0 && sections.length === 0 && (
+      {error && !hasContent && (
         <div className="cio-agent-overview-error">
           <div className="cio-agent-overview-error-icon" aria-hidden="true">
             <ErrorIconSVG />
           </div>
-          <p className="cio-agent-overview-error-message">
+          <p className="cio-agent-overview-error-message" role="alert">
             {translate('CioAgentOverview.error.message', translations)}
           </p>
         </div>
@@ -166,6 +187,9 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
             />
           );
         })}
+      <StatusRegion
+        message={statusMessage(isLoading, hasContent, !!error, translations)}
+      />
     </div>
   );
 }

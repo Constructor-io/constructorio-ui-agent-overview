@@ -36,6 +36,67 @@ describe('ProductCarousel', () => {
     expect(screen.queryByLabelText('Scroll right')).toBeNull();
   });
 
+  describe('accessibility', () => {
+    it('names the carousel region by the label', () => {
+      render(<ProductCarousel products={products} label="Running Shoes" />);
+      expect(
+        screen.getByRole('region', { name: 'Running Shoes' })
+      ).toBeTruthy();
+    });
+
+    it('names the region with a translated default when no label is given', () => {
+      render(<ProductCarousel products={products} />);
+      expect(screen.getByRole('region', { name: 'Products' })).toBeTruthy();
+    });
+
+    it('treats a blank label as missing', () => {
+      render(<ProductCarousel products={products} label="" />);
+      expect(screen.getByRole('region', { name: 'Products' })).toBeTruthy();
+    });
+
+    it('names the arrows with translated labels', () => {
+      render(
+        <ProductCarousel
+          products={products}
+          translations={{
+            'CioAgentOverview.carousel.previous': 'Go back',
+            'CioAgentOverview.carousel.next': 'Go forward',
+          }}
+        />
+      );
+      expect(screen.getByRole('button', { name: 'Go back' })).toBeTruthy();
+      expect(screen.getByRole('button', { name: 'Go forward' })).toBeTruthy();
+    });
+
+    it('falls back to the default arrow labels when overrides are blank', () => {
+      render(
+        <ProductCarousel
+          products={products}
+          translations={{
+            'CioAgentOverview.carousel.previous': '',
+            'CioAgentOverview.carousel.next': '',
+          }}
+        />
+      );
+      expect(
+        screen.getByRole('button', { name: 'Show previous items' })
+      ).toBeTruthy();
+      expect(
+        screen.getByRole('button', { name: 'Show next items' })
+      ).toBeTruthy();
+    });
+
+    it('uses the default arrow labels', () => {
+      render(<ProductCarousel products={products} />);
+      expect(
+        screen.getByRole('button', { name: 'Show previous items' })
+      ).toBeTruthy();
+      expect(
+        screen.getByRole('button', { name: 'Show next items' })
+      ).toBeTruthy();
+    });
+  });
+
   it('calls onProductClick with event and product when clicked', async () => {
     const user = userEvent.setup();
     const handleClick = vi.fn();

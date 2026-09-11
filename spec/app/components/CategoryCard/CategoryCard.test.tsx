@@ -27,6 +27,11 @@ describe('CategoryCard', () => {
     expect(screen.getByRole('button')).toBeTruthy();
   });
 
+  it('is named by the category title alone', () => {
+    render(<CategoryCard category={category} />);
+    expect(screen.getByRole('button')).toHaveAccessibleName('Running Shoes');
+  });
+
   it('calls onClick when clicked', async () => {
     const user = userEvent.setup();
     const handleClick = vi.fn();

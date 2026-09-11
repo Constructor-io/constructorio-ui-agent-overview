@@ -1,4 +1,22 @@
-import translate from '@src/utils/translate';
+import translate, { translateLabel } from '@src/utils/translate';
+
+describe('translateLabel', () => {
+  it('returns the override when it is set', () => {
+    expect(
+      translateLabel('CioAgentOverview.carousel.next', {
+        'CioAgentOverview.carousel.next': 'Forward',
+      })
+    ).toBe('Forward');
+  });
+
+  it('falls back to the default when the override is blank', () => {
+    expect(
+      translateLabel('CioAgentOverview.carousel.next', {
+        'CioAgentOverview.carousel.next': '',
+      })
+    ).toBe('Show next items');
+  });
+});
 
 describe('translate', () => {
   it('returns default translation for known keys', () => {

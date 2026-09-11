@@ -336,6 +336,125 @@ describe(`${CioAgentOverview.name}: client`, () => {
     });
   });
 
+  describe('status region', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('announces loading from a region that is mounted with the root', async () => {
+      const props = factories.agentOverviewProps.build();
+      render(<CioAgentOverview {...props} />);
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'Loading recommendations'
+      );
+
+      // Let the streams finish before the environment is torn down.
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1100);
+      });
+    });
+
+    it('announces when the categories are ready', async () => {
+      const props = factories.agentOverviewProps.build();
+      render(<CioAgentOverview {...props} />);
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1100);
+      });
+
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'Recommendations ready'
+      );
+    });
+
+    it('announces when the products are ready', async () => {
+      const props = factories.agentOverviewProps.build();
+      render(<CioAgentOverview {...props} />);
+      await transitionToProducts();
+
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'Recommendations ready'
+      );
+      expect(screen.getAllByRole('status')).toHaveLength(1);
+    });
+
+    it('translates the status messages', async () => {
+      const props = factories.agentOverviewProps.build({
+        translations: {
+          'CioAgentOverview.status.loading': 'Custom loading',
+          'CioAgentOverview.status.ready': 'Custom ready',
+        },
+      });
+      render(<CioAgentOverview {...props} />);
+      expect(screen.getByRole('status')).toHaveTextContent('Custom loading');
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1100);
+      });
+
+      expect(screen.getByRole('status')).toHaveTextContent('Custom ready');
+    });
+
+    it('is rendered after the content so the first child of the root is unchanged', () => {
+      const props = factories.agentOverviewProps.build();
+      const { container } = render(<CioAgentOverview {...props} />);
+      const root = getRootElement(container);
+      // eslint-disable-next-line testing-library/no-node-access
+      expect(root.lastElementChild).toHaveAttribute('role', 'status');
+      // eslint-disable-next-line testing-library/no-node-access
+      expect(root.firstElementChild).not.toHaveAttribute('role', 'status');
+    });
+
+    it('announces the error instead of success when the product stream fails after categories', async () => {
+      const { createAgentStream: mockCreate } =
+        await import('@src/app/services/agentOverviewClient');
+      vi.mocked(mockCreate).mockImplementation(
+        (_options: unknown, _intent: string, domain: string) => {
+          if (domain === 'searchbar_agent') {
+            return createFakeCategoryStream();
+          }
+          throw new Error('Products failed');
+        }
+      );
+
+      const props = factories.agentOverviewProps.build();
+      render(<CioAgentOverview {...props} />);
+      await transitionToProducts();
+
+      expect(screen.getByRole('alert')).toHaveTextContent(
+        'Something went wrong. Please try again.'
+      );
+      expect(screen.getByRole('status')).toBeEmptyDOMElement();
+
+      vi.mocked(mockCreate).mockImplementation(
+        (_options: unknown, _intent: string, domain: string) => {
+          if (domain === 'searchbar_agent') {
+            return createFakeCategoryStream();
+          }
+          return createFakeProductStream();
+        }
+      );
+    });
+
+    it('keeps announcing when a status translation is blanked', async () => {
+      const props = factories.agentOverviewProps.build({
+        translations: { 'CioAgentOverview.status.loading': '' },
+      });
+      render(<CioAgentOverview {...props} />);
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'Loading recommendations'
+      );
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1100);
+      });
+    });
+  });
+
   describe('error state', () => {
     it('renders error message when streams fail', async () => {
       vi.useFakeTimers();
@@ -355,6 +474,10 @@ describe(`${CioAgentOverview.name}: client`, () => {
       expect(
         screen.getByText('Something went wrong. Please try again.')
       ).toBeTruthy();
+      expect(screen.getByRole('alert').textContent).toBe(
+        'Something went wrong. Please try again.'
+      );
+      expect(screen.getByRole('status')).toBeEmptyDOMElement();
 
       vi.mocked(mockCreate).mockImplementation(
         (_options: unknown, _intent: string, domain: string) => {
