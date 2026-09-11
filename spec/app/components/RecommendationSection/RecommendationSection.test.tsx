@@ -76,39 +76,6 @@ describe('RecommendationSection', () => {
       });
     });
 
-    it('exposes the section as a region named by its title and described by its text', () => {
-      render(<RecommendationSection section={section} />);
-      const region = screen.getByRole('region', { name: 'Running Shoes' });
-      expect(region).toHaveAccessibleDescription('Best shoes for running');
-      // The public DOM shape is unchanged: the root stays a div.
-      expect(region.tagName).toBe('DIV');
-      expect(region).toHaveClass('cio-agent-overview-section');
-    });
-
-    it('keeps descriptions apart when two identical sections are mounted', () => {
-      render(
-        <>
-          <RecommendationSection section={section} />
-          <RecommendationSection
-            section={{ ...section, description: 'Second copy' }}
-          />
-        </>
-      );
-      const regions = screen.getAllByRole('region', { name: 'Running Shoes' });
-      expect(regions[0]).toHaveAccessibleDescription('Best shoes for running');
-      expect(regions[1]).toHaveAccessibleDescription('Second copy');
-    });
-
-    it('falls back to a translated name when the stream has not delivered a title', () => {
-      render(<RecommendationSection section={{ ...section, title: '' }} />);
-      expect(
-        screen.getByRole('region', { name: 'Recommendations' })
-      ).toBeTruthy();
-      expect(
-        screen.getByRole('region', { name: 'Recommendations products' })
-      ).toBeTruthy();
-    });
-
     it('keeps the visible text as the accessible name of the view more link', () => {
       render(
         <RecommendationSection
@@ -118,41 +85,16 @@ describe('RecommendationSection', () => {
       expect(screen.getByRole('link', { name: 'View More' })).toBeTruthy();
     });
 
-    it('names the product carousel after the section', () => {
+    it('names the product carousel by the section title', () => {
       render(<RecommendationSection section={section} />);
       expect(
-        screen.getByRole('region', { name: 'Running Shoes products' })
+        screen.getByRole('region', { name: 'Running Shoes' })
       ).toBeTruthy();
     });
 
-    it('replaces every title placeholder and keeps special characters in the title', () => {
-      render(
-        <RecommendationSection
-          section={{ ...section, title: 'Shoes & More $&' }}
-          translations={{
-            'CioAgentOverview.section.carouselLabel': '{title}: all {title}',
-          }}
-        />
-      );
-      expect(
-        screen.getByRole('region', {
-          name: 'Shoes & More $&: all Shoes & More $&',
-        })
-      ).toBeTruthy();
-    });
-
-    it('translates the carousel name with the title placeholder', () => {
-      render(
-        <RecommendationSection
-          section={section}
-          translations={{
-            'CioAgentOverview.section.carouselLabel': 'Items in {title}',
-          }}
-        />
-      );
-      expect(
-        screen.getByRole('region', { name: 'Items in Running Shoes' })
-      ).toBeTruthy();
+    it('falls back to the generic carousel name when the title is empty', () => {
+      render(<RecommendationSection section={{ ...section, title: '' }} />);
+      expect(screen.getByRole('region', { name: 'Products' })).toBeTruthy();
     });
   });
 

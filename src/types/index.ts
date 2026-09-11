@@ -101,12 +101,7 @@ export type Translations = {
   'CioAgentOverview.carousel.previous'?: string;
   'CioAgentOverview.carousel.next'?: string;
   'CioAgentOverview.carousel.label'?: string;
-  'CioAgentOverview.categories.sectionLabel'?: string;
   'CioAgentOverview.categories.carouselLabel'?: string;
-  /** `{title}` is replaced with the section title. */
-  'CioAgentOverview.section.carouselLabel'?: string;
-  /** Region name for a section the stream delivered without a title. */
-  'CioAgentOverview.section.fallbackTitle'?: string;
   'CioAgentOverview.error.message'?: string;
 };
 

@@ -1,6 +1,5 @@
 import type { ICategory, Translations } from '@src/types';
-import translate, { translateLabel } from '@src/utils/translate';
-import useOptionalId from '@src/utils/useOptionalId';
+import translate from '@src/utils/translate';
 
 import CategoryCarousel from '../CategoryCarousel/CategoryCarousel';
 import ChevronRightSVG from '../icons/ChevronRightSVG';
@@ -28,18 +27,8 @@ export default function CategorySection({
   onCategoryClick,
   onViewSuggestions,
 }: ICategorySectionProps) {
-  const descriptionId = useOptionalId();
-
   return (
-    <div
-      className="cio-agent-overview-category-section"
-      role="region"
-      aria-label={translateLabel(
-        'CioAgentOverview.categories.sectionLabel',
-        translations
-      )}
-      aria-describedby={descriptionId}
-    >
+    <div className="cio-agent-overview-category-section">
       <div className="cio-agent-overview-section-badge">
         <SparkleSVG />
         <span>
@@ -48,10 +37,7 @@ export default function CategorySection({
       </div>
       <div className="cio-agent-overview-section-header">
         <div className="cio-agent-overview-section-header-text">
-          <p
-            className="cio-agent-overview-section-description"
-            id={descriptionId}
-          >
+          <p className="cio-agent-overview-section-description">
             {description}
           </p>
         </div>

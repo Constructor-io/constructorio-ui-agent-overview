@@ -185,10 +185,7 @@ All UI strings can be customized via the `translations` prop for internationaliz
     'CioAgentOverview.carousel.previous': 'Show previous items',
     'CioAgentOverview.carousel.next': 'Show next items',
     'CioAgentOverview.carousel.label': 'Products',
-    'CioAgentOverview.categories.sectionLabel': 'Category suggestions',
     'CioAgentOverview.categories.carouselLabel': 'Categories',
-    'CioAgentOverview.section.carouselLabel': '{title} products',
-    'CioAgentOverview.section.fallbackTitle': 'Recommendations',
     'CioAgentOverview.error.message': 'Something went wrong',
   }}
 />

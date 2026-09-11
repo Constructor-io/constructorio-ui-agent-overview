@@ -4,10 +4,10 @@ import type {
   IProduct,
   Translations,
 } from '../types';
-import { translateLabel } from '../utils/translate';
+import translate, { translateLabel } from '../utils/translate';
 
 import CategorySection from './components/CategorySection/CategorySection';
-import ErrorMessage from './components/ErrorMessage/ErrorMessage';
+import ErrorIconSVG from './components/icons/ErrorIconSVG';
 import RecommendationSection from './components/RecommendationSection/RecommendationSection';
 import Skeleton from './components/Skeleton/Skeleton';
 import StatusRegion from './components/StatusRegion/StatusRegion';
@@ -138,7 +138,16 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
           translations={translations}
         />
       )}
-      {error && !hasContent && <ErrorMessage translations={translations} />}
+      {error && !hasContent && (
+        <div className="cio-agent-overview-error">
+          <div className="cio-agent-overview-error-icon" aria-hidden="true">
+            <ErrorIconSVG />
+          </div>
+          <p className="cio-agent-overview-error-message" role="alert">
+            {translate('CioAgentOverview.error.message', translations)}
+          </p>
+        </div>
+      )}
       {phase === 'categories' && categories.length > 0 && (
         <CategorySection
           description={categoryDescription}

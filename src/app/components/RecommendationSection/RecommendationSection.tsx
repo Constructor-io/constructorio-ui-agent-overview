@@ -3,8 +3,7 @@ import type {
   IRecommendationSection,
   Translations,
 } from '@src/types';
-import translate, { translateLabel } from '@src/utils/translate';
-import useOptionalId from '@src/utils/useOptionalId';
+import translate from '@src/utils/translate';
 
 import ChevronRightSVG from '../icons/ChevronRightSVG';
 import SparkleSVG from '../icons/SparkleSVG';
@@ -30,26 +29,8 @@ export default function RecommendationSection({
   getProductUrl,
   onProductClick,
 }: IRecommendationSectionProps) {
-  const descriptionId = useOptionalId();
-  // The stream may deliver a section before its title; the region still needs a name.
-  const sectionName =
-    section.title ||
-    translateLabel('CioAgentOverview.section.fallbackTitle', translations);
-  // split/join: every placeholder, and no `$&`-style patterns from the title.
-  const carouselLabel = translateLabel(
-    'CioAgentOverview.section.carouselLabel',
-    translations
-  )
-    .split('{title}')
-    .join(sectionName);
-
   return (
-    <div
-      className="cio-agent-overview-section"
-      role="region"
-      aria-label={sectionName}
-      aria-describedby={descriptionId}
-    >
+    <div className="cio-agent-overview-section">
       <div className="cio-agent-overview-section-badge">
         <SparkleSVG />
         <span>
@@ -59,10 +40,7 @@ export default function RecommendationSection({
       <div className="cio-agent-overview-section-header">
         <div className="cio-agent-overview-section-header-text">
           <h2 className="cio-agent-overview-section-title">{section.title}</h2>
-          <p
-            className="cio-agent-overview-section-description"
-            id={descriptionId}
-          >
+          <p className="cio-agent-overview-section-description">
             {section.description}
           </p>
         </div>
@@ -80,7 +58,7 @@ export default function RecommendationSection({
       </div>
       <ProductCarousel
         products={section.products}
-        label={carouselLabel}
+        label={section.title}
         translations={translations}
         getProductUrl={getProductUrl}
         onProductClick={onProductClick}

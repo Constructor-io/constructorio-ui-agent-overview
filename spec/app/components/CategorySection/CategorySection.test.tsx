@@ -97,34 +97,6 @@ describe('CategorySection', () => {
       });
     });
 
-    it('exposes the section as a named region described by its text', () => {
-      render(
-        <CategorySection
-          description="Here are some categories"
-          categories={categories}
-        />
-      );
-      const region = screen.getByRole('region', {
-        name: 'Category suggestions',
-      });
-      expect(region).toHaveAccessibleDescription('Here are some categories');
-      expect(region.tagName).toBe('DIV');
-    });
-
-    it('gives each mounted section its own description', () => {
-      render(
-        <>
-          <CategorySection description="First" categories={categories} />
-          <CategorySection description="Second" categories={categories} />
-        </>
-      );
-      const regions = screen.getAllByRole('region', {
-        name: 'Category suggestions',
-      });
-      expect(regions[0]).toHaveAccessibleDescription('First');
-      expect(regions[1]).toHaveAccessibleDescription('Second');
-    });
-
     it('exposes category cards as buttons named after the category', () => {
       render(
         <CategorySection
