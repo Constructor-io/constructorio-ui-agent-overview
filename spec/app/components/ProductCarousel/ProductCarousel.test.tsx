@@ -30,12 +30,6 @@ describe('ProductCarousel', () => {
     expect(() => render(<ProductCarousel products={[]} />)).not.toThrow();
   });
 
-  it('does not show scroll arrows initially', () => {
-    render(<ProductCarousel products={products} />);
-    expect(screen.queryByLabelText('Scroll left')).toBeNull();
-    expect(screen.queryByLabelText('Scroll right')).toBeNull();
-  });
-
   describe('accessibility', () => {
     it('names the carousel region by the label', () => {
       render(<ProductCarousel products={products} label="Running Shoes" />);

@@ -276,7 +276,7 @@ describe(`${useAgentOverview.name}: client`, () => {
   });
 
   describe('null filtering', () => {
-    it('should filter out categories with missing imageUrl or blank title and trim titles', async () => {
+    it('should filter out categories with missing imageUrl or blank or non-string title and trim titles', async () => {
       mockedCreateAgentStream.mockImplementation(
         (_options: unknown, _intent: string, domain: string) => {
           if (domain === 'searchbar_agent') {
@@ -322,6 +322,20 @@ describe(`${useAgentOverview.name}: client`, () => {
                 controller.enqueue({
                   type: 'search_result',
                   data: {
+                    title: 7 as unknown as string,
+                    response: {
+                      results: [
+                        {
+                          value: 'Numeric Title',
+                          data: { image_url: 'https://example.com/img.jpg' },
+                        },
+                      ],
+                    },
+                  },
+                });
+                controller.enqueue({
+                  type: 'search_result',
+                  data: {
                     title: '   ',
                     response: {
                       results: [
@@ -351,7 +365,7 @@ describe(`${useAgentOverview.name}: client`, () => {
       expect(result.current.categories[0].title).toBe('Valid Category');
     });
 
-    it('should filter out products with blank value or imageUrl and trim names', async () => {
+    it('should filter out products with blank or non-string value or missing imageUrl and trim names', async () => {
       mockedCreateAgentStream.mockImplementation(
         (_options: unknown, _intent: string, domain: string) => {
           if (domain === 'searchbar_agent') {
@@ -383,6 +397,14 @@ describe(`${useAgentOverview.name}: client`, () => {
                           image_url: 'https://example.com/blank.jpg',
                           url: '/blank',
                           price: 40,
+                        },
+                      },
+                      {
+                        value: 42 as unknown as string,
+                        data: {
+                          image_url: 'https://example.com/number.jpg',
+                          url: '/number',
+                          price: 10,
                         },
                       },
                       {

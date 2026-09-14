@@ -21,7 +21,7 @@ interface CategoriesResult {
 }
 
 function toProduct(item: AgentStreamResultItem): IProduct | null {
-  const itemName = (item.value ?? '').trim();
+  const itemName = typeof item.value === 'string' ? item.value.trim() : '';
   const imageUrl = item.data?.image_url ?? '';
   if (!itemName || !imageUrl) return null;
   return {
@@ -39,7 +39,8 @@ function toProducts(event: AgentStreamSearchResultEvent): IProduct[] {
 }
 
 function toCategory(event: AgentStreamSearchResultEvent): ICategory | null {
-  const title = (event.data.title ?? '').trim();
+  const title =
+    typeof event.data.title === 'string' ? event.data.title.trim() : '';
   const imageUrl = event.data.response?.results?.[0]?.data?.image_url ?? '';
   if (!title || !imageUrl) return null;
   return { title, imageUrl };
