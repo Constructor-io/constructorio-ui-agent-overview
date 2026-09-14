@@ -130,7 +130,7 @@ function AgentOverview(props: IAgentOverviewProps) {
   const { callbacks } = props;
 
   const themeStyles = buildThemeStyles(props.theme);
-  const hasContent = !!(phase === 'categories' ? categories : sections).length;
+  const hasContent = categories.length > 0 || sections.length > 0;
 
   const status = statusKey(isLoading, hasContent, !!error);
 
@@ -139,7 +139,7 @@ function AgentOverview(props: IAgentOverviewProps) {
       {isLoading && categories.length === 0 && sections.length === 0 && (
         <Skeleton rows={1} showTitle={false} cards={4} />
       )}
-      {error && !isLoading && (
+      {error && categories.length === 0 && sections.length === 0 && (
         <div className="cio-agent-overview-error">
           <div className="cio-agent-overview-error-icon" aria-hidden="true">
             <ErrorIconSVG />
@@ -149,7 +149,7 @@ function AgentOverview(props: IAgentOverviewProps) {
           </p>
         </div>
       )}
-      {phase === 'categories' && hasContent && (
+      {phase === 'categories' && categories.length > 0 && (
         <CategorySection
           description={categoryDescription}
           categories={categories}
