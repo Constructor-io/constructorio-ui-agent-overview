@@ -4,14 +4,16 @@ import type {
   IProduct,
   Translations,
 } from '../types';
-import translate, { translateLabel } from '../utils/translate';
 
 import CategorySection from './components/CategorySection/CategorySection';
 import ErrorIconSVG from './components/icons/ErrorIconSVG';
 import RecommendationSection from './components/RecommendationSection/RecommendationSection';
 import Skeleton from './components/Skeleton/Skeleton';
 import StatusRegion from './components/StatusRegion/StatusRegion';
-import { TranslationsProvider } from './contexts/TranslationsContext';
+import {
+  TranslationsProvider,
+  useTranslate,
+} from './contexts/TranslationsContext';
 import useAgentOverview from './hooks/useAgentOverview';
 
 import '../styles.css';
@@ -83,19 +85,14 @@ function buildThemeStyles(
   return styles;
 }
 
-export function statusMessage(
+function statusKey(
   isLoading: boolean,
   hasContent: boolean,
-  hasError: boolean,
-  translations?: Translations
-): string {
-  if (isLoading) {
-    return translateLabel('CioAgentOverview.status.loading', translations);
-  }
-  if (hasContent && !hasError) {
-    return translateLabel('CioAgentOverview.status.ready', translations);
-  }
-  return '';
+  hasError: boolean
+): keyof Translations | null {
+  if (isLoading) return 'CioAgentOverview.status.loading';
+  if (hasContent && !hasError) return 'CioAgentOverview.status.ready';
+  return null;
 }
 
 /**
@@ -112,6 +109,15 @@ export function statusMessage(
  * ```
  */
 export default function CioAgentOverview(props: IAgentOverviewProps) {
+  return (
+    <TranslationsProvider translations={props.translations}>
+      <AgentOverview {...props} />
+    </TranslationsProvider>
+  );
+}
+
+function AgentOverview(props: IAgentOverviewProps) {
+  const { translate, translateLabel } = useTranslate();
   const {
     phase,
     categories,
@@ -121,66 +127,64 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
     isLoading,
     error,
   } = useAgentOverview(props);
-  const { callbacks, translations } = props;
+  const { callbacks } = props;
 
   const themeStyles = buildThemeStyles(props.theme);
   const hasContent = !!(phase === 'categories' ? categories : sections).length;
 
-  return (
-    <TranslationsProvider translations={translations}>
-      <div className="cio-agent-overview-root" style={themeStyles}>
-        {phase === 'categories' && isLoading && !hasContent && (
-          <Skeleton rows={1} showTitle={false} cards={4} />
-        )}
-        {error && !isLoading && (
-          <div className="cio-agent-overview-error">
-            <div className="cio-agent-overview-error-icon" aria-hidden="true">
-              <ErrorIconSVG />
-            </div>
-            <p className="cio-agent-overview-error-message" role="alert">
-              {translate('CioAgentOverview.error.message', translations)}
-            </p>
-          </div>
-        )}
-        {phase === 'categories' && hasContent && (
-          <CategorySection
-            description={categoryDescription}
-            categories={categories}
-            onCategoryClick={(category) => {
-              callbacks?.onCategoryClick?.(category);
-              selectCategory(category);
-            }}
-            onViewSuggestions={() => {
-              selectCategory(categories[0]);
-            }}
-          />
-        )}
-        {phase === 'products' && isLoading && <Skeleton />}
-        {phase === 'products' &&
-          !isLoading &&
-          sections.map((section) => {
-            const sectionWithUrl = callbacks?.getViewMoreUrl
-              ? { ...section, viewMoreUrl: callbacks.getViewMoreUrl(section) }
-              : section;
+  const status = statusKey(isLoading, hasContent, !!error);
 
-            return (
-              <RecommendationSection
-                key={section.title}
-                section={sectionWithUrl}
-                getProductUrl={callbacks?.getProductUrl}
-                onProductClick={
-                  callbacks?.onProductClick
-                    ? (event: React.MouseEvent, product: IProduct) =>
-                        callbacks.onProductClick!(event, product, section)
-                    : undefined
-                }
-              />
-            );
-          })}
-        <StatusRegion
-          message={statusMessage(isLoading, hasContent, !!error, translations)}
+  return (
+    <div className="cio-agent-overview-root" style={themeStyles}>
+      {isLoading && categories.length === 0 && sections.length === 0 && (
+        <Skeleton rows={1} showTitle={false} cards={4} />
+      )}
+      {error && !isLoading && (
+        <div className="cio-agent-overview-error">
+          <div className="cio-agent-overview-error-icon" aria-hidden="true">
+            <ErrorIconSVG />
+          </div>
+          <p className="cio-agent-overview-error-message" role="alert">
+            {translate('CioAgentOverview.error.message')}
+          </p>
+        </div>
+      )}
+      {phase === 'categories' && hasContent && (
+        <CategorySection
+          description={categoryDescription}
+          categories={categories}
+          onCategoryClick={(category) => {
+            callbacks?.onCategoryClick?.(category);
+            selectCategory(category);
+          }}
+          onViewSuggestions={() => {
+            selectCategory(categories[0]);
+          }}
         />
-      </div>
-    </TranslationsProvider>
+      )}
+      {phase === 'products' && isLoading && <Skeleton />}
+      {phase === 'products' &&
+        !isLoading &&
+        sections.map((section) => {
+          const sectionWithUrl = callbacks?.getViewMoreUrl
+            ? { ...section, viewMoreUrl: callbacks.getViewMoreUrl(section) }
+            : section;
+
+          return (
+            <RecommendationSection
+              key={section.title}
+              section={sectionWithUrl}
+              getProductUrl={callbacks?.getProductUrl}
+              onProductClick={
+                callbacks?.onProductClick
+                  ? (event: React.MouseEvent, product: IProduct) =>
+                      callbacks.onProductClick!(event, product, section)
+                  : undefined
+              }
+            />
+          );
+        })}
+      <StatusRegion message={status ? translateLabel(status) : ''} />
+    </div>
   );
 }
