@@ -399,14 +399,14 @@ describe(`${CioAgentOverview.name}: client`, () => {
       expect(screen.getByRole('status')).toHaveTextContent('Custom ready');
     });
 
-    it('is rendered after the content so the first child of the root is unchanged', () => {
+    it('is rendered outside the root so its children are unchanged', () => {
       const props = factories.agentOverviewProps.build();
       const { container } = render(<CioAgentOverview {...props} />);
       const root = getRootElement(container);
+      const status = screen.getByRole('status');
+      expect(root).not.toContainElement(status);
       // eslint-disable-next-line testing-library/no-node-access
-      expect(root.lastElementChild).toHaveAttribute('role', 'status');
-      // eslint-disable-next-line testing-library/no-node-access
-      expect(root.firstElementChild).not.toHaveAttribute('role', 'status');
+      expect(root.nextElementSibling).toBe(status);
     });
 
     it('does not announce success when the product stream fails after categories', async () => {
