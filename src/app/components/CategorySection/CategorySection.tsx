@@ -1,5 +1,5 @@
-import { useTranslate } from '@src/app/contexts/TranslationsContext';
-import type { ICategory } from '@src/types';
+import type { ICategory, Translations } from '@src/types';
+import translate from '@src/utils/translate';
 
 import CategoryCarousel from '../CategoryCarousel/CategoryCarousel';
 import ChevronRightSVG from '../icons/ChevronRightSVG';
@@ -12,6 +12,8 @@ interface ICategorySectionProps {
   description: string;
   /** Array of category suggestions to display. */
   categories: ICategory[];
+  /** Translation overrides for UI strings. */
+  translations?: Translations;
   /** Called when a category card is clicked. */
   onCategoryClick?: (category: ICategory) => void;
   /** Called when the "View suggestions" button is clicked. */
@@ -21,16 +23,17 @@ interface ICategorySectionProps {
 export default function CategorySection({
   description,
   categories,
+  translations,
   onCategoryClick,
   onViewSuggestions,
 }: ICategorySectionProps) {
-  const { translate } = useTranslate();
-
   return (
     <div className="cio-agent-overview-category-section">
       <div className="cio-agent-overview-section-badge">
         <SparkleSVG />
-        <span>{translate('CioAgentOverview.section.aiBadge')}</span>
+        <span>
+          {translate('CioAgentOverview.section.aiBadge', translations)}
+        </span>
       </div>
       <div className="cio-agent-overview-section-header">
         <div className="cio-agent-overview-section-header-text">
@@ -44,13 +47,17 @@ export default function CategorySection({
             className="cio-agent-overview-category-section-view-suggestions"
             onClick={onViewSuggestions}
           >
-            {translate('CioAgentOverview.categories.viewSuggestions')}
+            {translate(
+              'CioAgentOverview.categories.viewSuggestions',
+              translations
+            )}
             <ChevronRightSVG />
           </button>
         )}
       </div>
       <CategoryCarousel
         categories={categories}
+        translations={translations}
         onCategoryClick={onCategoryClick}
       />
     </div>

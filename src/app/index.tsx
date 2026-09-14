@@ -4,16 +4,13 @@ import type {
   IProduct,
   Translations,
 } from '../types';
+import translate, { translateLabel } from '../utils/translate';
 
 import CategorySection from './components/CategorySection/CategorySection';
 import ErrorIconSVG from './components/icons/ErrorIconSVG';
 import RecommendationSection from './components/RecommendationSection/RecommendationSection';
 import Skeleton from './components/Skeleton/Skeleton';
 import StatusRegion from './components/StatusRegion/StatusRegion';
-import {
-  TranslationsProvider,
-  useTranslate,
-} from './contexts/TranslationsContext';
 import useAgentOverview from './hooks/useAgentOverview';
 
 import '../styles.css';
@@ -109,15 +106,6 @@ function statusKey(
  * ```
  */
 export default function CioAgentOverview(props: IAgentOverviewProps) {
-  return (
-    <TranslationsProvider translations={props.translations}>
-      <AgentOverview {...props} />
-    </TranslationsProvider>
-  );
-}
-
-function AgentOverview(props: IAgentOverviewProps) {
-  const { translate, translateLabel } = useTranslate();
   const {
     phase,
     categories,
@@ -127,7 +115,7 @@ function AgentOverview(props: IAgentOverviewProps) {
     isLoading,
     error,
   } = useAgentOverview(props);
-  const { callbacks } = props;
+  const { callbacks, translations } = props;
 
   const themeStyles = buildThemeStyles(props.theme);
   const hasContent = categories.length > 0 || sections.length > 0;
@@ -138,7 +126,12 @@ function AgentOverview(props: IAgentOverviewProps) {
     <>
       <div className="cio-agent-overview-root" style={themeStyles}>
         {isLoading && categories.length === 0 && sections.length === 0 && (
-          <Skeleton rows={1} showTitle={false} cards={4} />
+          <Skeleton
+            rows={1}
+            showTitle={false}
+            cards={4}
+            translations={translations}
+          />
         )}
         {error && categories.length === 0 && sections.length === 0 && (
           <div className="cio-agent-overview-error">
@@ -146,7 +139,7 @@ function AgentOverview(props: IAgentOverviewProps) {
               <ErrorIconSVG />
             </div>
             <p className="cio-agent-overview-error-message" role="alert">
-              {translate('CioAgentOverview.error.message')}
+              {translate('CioAgentOverview.error.message', translations)}
             </p>
           </div>
         )}
@@ -154,6 +147,7 @@ function AgentOverview(props: IAgentOverviewProps) {
           <CategorySection
             description={categoryDescription}
             categories={categories}
+            translations={translations}
             onCategoryClick={(category) => {
               callbacks?.onCategoryClick?.(category);
               selectCategory(category);
@@ -163,7 +157,9 @@ function AgentOverview(props: IAgentOverviewProps) {
             }}
           />
         )}
-        {phase === 'products' && isLoading && <Skeleton />}
+        {phase === 'products' && isLoading && (
+          <Skeleton translations={translations} />
+        )}
         {phase === 'products' &&
           !isLoading &&
           sections.map((section) => {
@@ -175,6 +171,7 @@ function AgentOverview(props: IAgentOverviewProps) {
               <RecommendationSection
                 key={section.title}
                 section={sectionWithUrl}
+                translations={translations}
                 getProductUrl={callbacks?.getProductUrl}
                 onProductClick={
                   callbacks?.onProductClick
@@ -186,7 +183,9 @@ function AgentOverview(props: IAgentOverviewProps) {
             );
           })}
       </div>
-      <StatusRegion message={status ? translateLabel(status) : ''} />
+      <StatusRegion
+        message={status ? translateLabel(status, translations) : ''}
+      />
     </>
   );
 }

@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import ProductCarousel from '@src/app/components/ProductCarousel/ProductCarousel';
-import { TranslationsProvider } from '@src/app/contexts/TranslationsContext';
 import type { IProduct } from '@src/types';
 
 const products: IProduct[] = [
@@ -57,14 +56,13 @@ describe('ProductCarousel', () => {
 
     it('names the arrows with translated labels', () => {
       render(
-        <TranslationsProvider
+        <ProductCarousel
+          products={products}
           translations={{
             'CioAgentOverview.carousel.previous': 'Go back',
             'CioAgentOverview.carousel.next': 'Go forward',
           }}
-        >
-          <ProductCarousel products={products} />
-        </TranslationsProvider>
+        />
       );
       expect(screen.getByRole('button', { name: 'Go back' })).toBeTruthy();
       expect(screen.getByRole('button', { name: 'Go forward' })).toBeTruthy();
@@ -72,14 +70,13 @@ describe('ProductCarousel', () => {
 
     it('falls back to the default arrow labels when overrides are blank', () => {
       render(
-        <TranslationsProvider
+        <ProductCarousel
+          products={products}
           translations={{
             'CioAgentOverview.carousel.previous': '',
             'CioAgentOverview.carousel.next': '',
           }}
-        >
-          <ProductCarousel products={products} />
-        </TranslationsProvider>
+        />
       );
       expect(
         screen.getByRole('button', { name: 'Show previous items' })

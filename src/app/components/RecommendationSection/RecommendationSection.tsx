@@ -1,5 +1,9 @@
-import { useTranslate } from '@src/app/contexts/TranslationsContext';
-import type { IProduct, IRecommendationSection } from '@src/types';
+import type {
+  IProduct,
+  IRecommendationSection,
+  Translations,
+} from '@src/types';
+import translate from '@src/utils/translate';
 
 import ChevronRightSVG from '../icons/ChevronRightSVG';
 import SparkleSVG from '../icons/SparkleSVG';
@@ -10,6 +14,8 @@ import './RecommendationSection.css';
 interface IRecommendationSectionProps {
   /** The section data containing title, description, products, and optional viewMoreUrl. */
   section: IRecommendationSection;
+  /** Translation overrides for UI strings. */
+  translations?: Translations;
   /** Builds a custom URL for each product card link. */
   getProductUrl?: (product: IProduct) => string;
   /** Called when a product card within this section is clicked. */
@@ -19,16 +25,17 @@ interface IRecommendationSectionProps {
 /** Renders a single recommendation section with AI badge, title, description, and product carousel. */
 export default function RecommendationSection({
   section,
+  translations,
   getProductUrl,
   onProductClick,
 }: IRecommendationSectionProps) {
-  const { translate } = useTranslate();
-
   return (
     <div className="cio-agent-overview-section">
       <div className="cio-agent-overview-section-badge">
         <SparkleSVG />
-        <span>{translate('CioAgentOverview.section.aiBadge')}</span>
+        <span>
+          {translate('CioAgentOverview.section.aiBadge', translations)}
+        </span>
       </div>
       <div className="cio-agent-overview-section-header">
         <div className="cio-agent-overview-section-header-text">
@@ -44,7 +51,7 @@ export default function RecommendationSection({
             target="_blank"
             rel="noopener noreferrer"
           >
-            {translate('CioAgentOverview.section.viewMore')}
+            {translate('CioAgentOverview.section.viewMore', translations)}
             <ChevronRightSVG />
           </a>
         )}
@@ -52,6 +59,7 @@ export default function RecommendationSection({
       <ProductCarousel
         products={section.products}
         label={section.title}
+        translations={translations}
         getProductUrl={getProductUrl}
         onProductClick={onProductClick}
       />
