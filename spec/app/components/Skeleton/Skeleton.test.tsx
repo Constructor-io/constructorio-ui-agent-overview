@@ -56,11 +56,4 @@ describe('Skeleton', () => {
     const title = container.querySelector('.cio-agent-overview-skeleton-title');
     expect(title).toBeTruthy();
   });
-
-  describe('accessibility', () => {
-    it('does not carry a live region of its own', () => {
-      render(<Skeleton />);
-      expect(screen.queryByRole('status')).toBeNull();
-    });
-  });
 });

@@ -351,7 +351,7 @@ describe(`${useAgentOverview.name}: client`, () => {
       expect(result.current.categories[0].title).toBe('Valid Category');
     });
 
-    it('should filter out products with missing value or imageUrl', async () => {
+    it('should filter out products with blank value or imageUrl and trim names', async () => {
       mockedCreateAgentStream.mockImplementation(
         (_options: unknown, _intent: string, domain: string) => {
           if (domain === 'searchbar_agent') {
@@ -370,11 +370,19 @@ describe(`${useAgentOverview.name}: client`, () => {
                   response: {
                     results: [
                       {
-                        value: 'Good Product',
+                        value: '  Good Product  ',
                         data: {
                           image_url: 'https://example.com/good.jpg',
                           url: '/good',
                           price: 50,
+                        },
+                      },
+                      {
+                        value: '   ',
+                        data: {
+                          image_url: 'https://example.com/blank.jpg',
+                          url: '/blank',
+                          price: 40,
                         },
                       },
                       {
