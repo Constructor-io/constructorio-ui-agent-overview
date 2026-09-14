@@ -243,8 +243,6 @@ All UI strings can be customized via the `translations` prop for internationaliz
     'CioAgentOverview.categories.viewSuggestions': 'Ver sugerencias',
     'CioAgentOverview.section.viewMore': 'Ver todo',
     'CioAgentOverview.skeleton.thinking': 'Cargando',
-    'CioAgentOverview.status.loading': 'Cargando recomendaciones',
-    'CioAgentOverview.status.ready': 'Recomendaciones listas',
     'CioAgentOverview.carousel.previous': 'Mostrar anteriores',
     'CioAgentOverview.carousel.next': 'Mostrar siguientes',
     'CioAgentOverview.carousel.label': 'Productos',
@@ -278,16 +276,6 @@ All UI strings can be customized via the `translations` prop for internationaliz
     <dd className="theme-desc">Loading skeleton text</dd>
   </div>
   <div className="theme-item">
-    <dt><code>CioAgentOverview.status.loading</code></dt>
-    <dd className="theme-var">Default: "Loading recommendations"</dd>
-    <dd className="theme-desc">Screen reader announcement while content loads</dd>
-  </div>
-  <div className="theme-item">
-    <dt><code>CioAgentOverview.status.ready</code></dt>
-    <dd className="theme-var">Default: "Recommendations ready"</dd>
-    <dd className="theme-desc">Screen reader announcement once content is shown</dd>
-  </div>
-  <div className="theme-item">
     <dt><code>CioAgentOverview.carousel.previous</code></dt>
     <dd className="theme-var">Default: "Show previous items"</dd>
     <dd className="theme-desc">Accessible name of the carousel back arrow</dd>
@@ -314,7 +302,7 @@ All UI strings can be customized via the `translations` prop for internationaliz
   </div>
 </dl>
 
-> Translations only apply to hardcoded UI strings — not to content returned by the API (such as category titles, product names, or descriptions). Screen-reader-only strings (`status.*`, `carousel.*`, `categories.carouselLabel`) fall back to the default when overridden with an empty string; visible strings can be blanked to hide them.
+> Translations only apply to hardcoded UI strings — not to content returned by the API (such as category titles, product names, or descriptions). Screen-reader-only strings (`carousel.*`, `categories.carouselLabel`) fall back to the default when overridden with an empty string; visible strings can be blanked to hide them.
 
 ## Callbacks
 

@@ -5,8 +5,6 @@ const defaultTranslations: Translations = {
   'CioAgentOverview.categories.viewSuggestions': 'View suggestions',
   'CioAgentOverview.section.viewMore': 'View More',
   'CioAgentOverview.skeleton.thinking': 'Thinking',
-  'CioAgentOverview.status.loading': 'Loading recommendations',
-  'CioAgentOverview.status.ready': 'Recommendations ready',
   'CioAgentOverview.carousel.previous': 'Show previous items',
   'CioAgentOverview.carousel.next': 'Show next items',
   'CioAgentOverview.carousel.label': 'Products',

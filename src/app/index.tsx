@@ -2,15 +2,13 @@ import type {
   CioAgentOverviewTheme,
   IAgentOverviewProps,
   IProduct,
-  Translations,
 } from '../types';
-import translate, { translateLabel } from '../utils/translate';
+import translate from '../utils/translate';
 
 import CategorySection from './components/CategorySection/CategorySection';
 import ErrorIconSVG from './components/icons/ErrorIconSVG';
 import RecommendationSection from './components/RecommendationSection/RecommendationSection';
 import Skeleton from './components/Skeleton/Skeleton';
-import StatusRegion from './components/StatusRegion/StatusRegion';
 import useAgentOverview from './hooks/useAgentOverview';
 
 import '../styles.css';
@@ -82,16 +80,6 @@ function buildThemeStyles(
   return styles;
 }
 
-function statusKey(
-  isLoading: boolean,
-  hasContent: boolean,
-  hasError: boolean
-): keyof Translations | null {
-  if (isLoading) return 'CioAgentOverview.status.loading';
-  if (hasContent && !hasError) return 'CioAgentOverview.status.ready';
-  return null;
-}
-
 /**
  * Pre-built Agent Overview component that streams AI-generated category suggestions
  * and product recommendation sections in real time.
@@ -118,74 +106,65 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
   const { callbacks, translations } = props;
 
   const themeStyles = buildThemeStyles(props.theme);
-  const hasContent = !!(phase === 'categories' ? categories : sections).length;
-
-  const status = statusKey(isLoading, hasContent, !!error);
-
   return (
-    <>
-      <div className="cio-agent-overview-root" style={themeStyles}>
-        {isLoading && categories.length === 0 && sections.length === 0 && (
-          <Skeleton
-            rows={1}
-            showTitle={false}
-            cards={4}
-            translations={translations}
-          />
-        )}
-        {error && !isLoading && (
-          <div className="cio-agent-overview-error">
-            <div className="cio-agent-overview-error-icon" aria-hidden="true">
-              <ErrorIconSVG />
-            </div>
-            <p className="cio-agent-overview-error-message" role="alert">
-              {translate('CioAgentOverview.error.message', translations)}
-            </p>
+    <div className="cio-agent-overview-root" style={themeStyles}>
+      {isLoading && categories.length === 0 && sections.length === 0 && (
+        <Skeleton
+          rows={1}
+          showTitle={false}
+          cards={4}
+          translations={translations}
+        />
+      )}
+      {error && !isLoading && (
+        <div className="cio-agent-overview-error">
+          <div className="cio-agent-overview-error-icon" aria-hidden="true">
+            <ErrorIconSVG />
           </div>
-        )}
-        {phase === 'categories' && categories.length > 0 && (
-          <CategorySection
-            description={categoryDescription}
-            categories={categories}
-            translations={translations}
-            onCategoryClick={(category) => {
-              callbacks?.onCategoryClick?.(category);
-              selectCategory(category);
-            }}
-            onViewSuggestions={() => {
-              selectCategory(categories[0]);
-            }}
-          />
-        )}
-        {phase === 'products' && isLoading && (
-          <Skeleton translations={translations} />
-        )}
-        {phase === 'products' &&
-          !isLoading &&
-          sections.map((section) => {
-            const sectionWithUrl = callbacks?.getViewMoreUrl
-              ? { ...section, viewMoreUrl: callbacks.getViewMoreUrl(section) }
-              : section;
+          <p className="cio-agent-overview-error-message" role="alert">
+            {translate('CioAgentOverview.error.message', translations)}
+          </p>
+        </div>
+      )}
+      {phase === 'categories' && categories.length > 0 && (
+        <CategorySection
+          description={categoryDescription}
+          categories={categories}
+          translations={translations}
+          onCategoryClick={(category) => {
+            callbacks?.onCategoryClick?.(category);
+            selectCategory(category);
+          }}
+          onViewSuggestions={() => {
+            selectCategory(categories[0]);
+          }}
+        />
+      )}
+      {phase === 'products' && isLoading && (
+        <Skeleton translations={translations} />
+      )}
+      {phase === 'products' &&
+        !isLoading &&
+        sections.map((section) => {
+          const sectionWithUrl = callbacks?.getViewMoreUrl
+            ? { ...section, viewMoreUrl: callbacks.getViewMoreUrl(section) }
+            : section;
 
-            return (
-              <RecommendationSection
-                key={section.title}
-                section={sectionWithUrl}
-                translations={translations}
-                getProductUrl={callbacks?.getProductUrl}
-                onProductClick={
-                  callbacks?.onProductClick
-                    ? (event: React.MouseEvent, product: IProduct) =>
-                        callbacks.onProductClick!(event, product, section)
-                    : undefined
-                }
-              />
-            );
-          })}
-      </div>
-      <StatusRegion
-        message={status ? translateLabel(status, translations) : ''}
-      />
-    </>
+          return (
+            <RecommendationSection
+              key={section.title}
+              section={sectionWithUrl}
+              translations={translations}
+              getProductUrl={callbacks?.getProductUrl}
+              onProductClick={
+                callbacks?.onProductClick
+                  ? (event: React.MouseEvent, product: IProduct) =>
+                      callbacks.onProductClick!(event, product, section)
+                  : undefined
+              }
+            />
+          );
+        })}
+    </div>
   );
 }

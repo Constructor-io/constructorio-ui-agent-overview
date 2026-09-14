@@ -12,20 +12,16 @@ export default function HooksTemplate(args: IAgentOverviewProps) {
     error,
   } = useAgentOverview(args);
 
-  let status = '';
-  if (isLoading) {
-    status = phase === 'categories' ? 'Loading...' : 'Loading products...';
+  if (error) {
+    return <div style={{ color: 'red' }}>Error: {error}</div>;
   }
 
-  let content: React.ReactNode = null;
-  if (error) {
-    content = (
-      <div role="alert" style={{ color: 'red' }}>
-        Error: {error}
-      </div>
-    );
-  } else if (phase === 'categories' && !isLoading) {
-    content = (
+  if (isLoading && categories.length === 0 && sections.length === 0) {
+    return <div>Loading...</div>;
+  }
+
+  if (phase === 'categories') {
+    return (
       <div>
         <h3>{categoryDescription}</h3>
         <div style={{ display: 'flex', gap: '12px' }}>
@@ -43,37 +39,35 @@ export default function HooksTemplate(args: IAgentOverviewProps) {
         </div>
       </div>
     );
-  } else if (phase === 'products' && !isLoading) {
-    content = (
-      <div>
-        {sections.map((section) => (
-          <div key={section.title} style={{ marginBottom: '24px' }}>
-            <h3>{section.title}</h3>
-            <p>{section.description}</p>
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-              {section.products.map((product) => (
-                <div key={product.url} style={{ width: '150px' }}>
-                  <img
-                    src={product.imageUrl}
-                    alt={product.itemName}
-                    width={150}
-                  />
-                  <div>{product.itemName}</div>
-                  <div>${product.price}</div>
-                </div>
-              ))}
-            </div>
-            {section.viewMoreUrl && <a href={section.viewMoreUrl}>View more</a>}
-          </div>
-        ))}
-      </div>
-    );
+  }
+
+  // phase === 'products'
+  if (isLoading) {
+    return <div>Loading products...</div>;
   }
 
   return (
     <div>
-      <div role="status">{status}</div>
-      {content}
+      {sections.map((section) => (
+        <div key={section.title} style={{ marginBottom: '24px' }}>
+          <h3>{section.title}</h3>
+          <p>{section.description}</p>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            {section.products.map((product) => (
+              <div key={product.url} style={{ width: '150px' }}>
+                <img
+                  src={product.imageUrl}
+                  alt={product.itemName}
+                  width={150}
+                />
+                <div>{product.itemName}</div>
+                <div>${product.price}</div>
+              </div>
+            ))}
+          </div>
+          {section.viewMoreUrl && <a href={section.viewMoreUrl}>View more</a>}
+        </div>
+      ))}
     </div>
   );
 }
