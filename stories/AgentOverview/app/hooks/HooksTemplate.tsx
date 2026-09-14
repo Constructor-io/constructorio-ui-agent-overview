@@ -13,11 +13,15 @@ export default function HooksTemplate(args: IAgentOverviewProps) {
   } = useAgentOverview(args);
 
   if (error) {
-    return <div style={{ color: 'red' }}>Error: {error}</div>;
+    return (
+      <div role="alert" style={{ color: 'red' }}>
+        Error: {error}
+      </div>
+    );
   }
 
   if (isLoading && categories.length === 0 && sections.length === 0) {
-    return <div>Loading...</div>;
+    return <div role="status">Loading...</div>;
   }
 
   if (phase === 'categories') {
@@ -43,7 +47,7 @@ export default function HooksTemplate(args: IAgentOverviewProps) {
 
   // phase === 'products'
   if (isLoading) {
-    return <div>Loading products...</div>;
+    return <div role="status">Loading products...</div>;
   }
 
   return (

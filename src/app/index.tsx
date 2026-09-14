@@ -130,7 +130,7 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
 
   return (
     <div className="cio-agent-overview-root" style={themeStyles}>
-      {isLoading && !hasContent && (
+      {phase === 'categories' && isLoading && !hasContent && (
         <Skeleton
           rows={1}
           showTitle={false}
@@ -138,7 +138,8 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
           translations={translations}
         />
       )}
-      {error && !hasContent && (
+      {/* A failed request is shown even next to sections that arrived before the failure. */}
+      {error && !isLoading && (
         <div className="cio-agent-overview-error">
           <div className="cio-agent-overview-error-icon" aria-hidden="true">
             <ErrorIconSVG />

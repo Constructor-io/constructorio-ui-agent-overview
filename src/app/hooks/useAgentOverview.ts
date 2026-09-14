@@ -230,6 +230,7 @@ export default function useAgentOverview(props: IAgentOverviewProps): {
   function selectCategory(_category: ICategory) {
     setPhase('products');
     phaseRef.current = 'products';
+    setError(null);
 
     // Flush any sections that arrived while in categories phase
     if (bufferedSectionsRef.current.length > 0) {
