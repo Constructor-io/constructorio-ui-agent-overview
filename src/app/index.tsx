@@ -124,8 +124,7 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
   const { callbacks, translations } = props;
 
   const themeStyles = buildThemeStyles(props.theme);
-  const hasContent =
-    phase === 'categories' ? categories.length > 0 : sections.length > 0;
+  const hasContent = !!(phase === 'categories' ? categories : sections).length;
 
   return (
     <TranslationsProvider translations={translations}>
@@ -143,7 +142,7 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
             </p>
           </div>
         )}
-        {phase === 'categories' && categories.length > 0 && (
+        {phase === 'categories' && hasContent && (
           <CategorySection
             description={categoryDescription}
             categories={categories}
