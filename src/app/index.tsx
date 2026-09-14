@@ -91,7 +91,6 @@ export function statusMessage(
   if (isLoading) {
     return translateLabel('CioAgentOverview.status.loading', translations);
   }
-  // A failed request is announced by the error alert, never as success.
   if (hasContent && !hasError) {
     return translateLabel('CioAgentOverview.status.ready', translations);
   }
@@ -124,7 +123,6 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
   const { callbacks, translations } = props;
 
   const themeStyles = buildThemeStyles(props.theme);
-  // Content of the active phase only: categories do not count once products are requested.
   const hasContent =
     phase === 'categories' ? categories.length > 0 : sections.length > 0;
 
@@ -138,7 +136,6 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
           translations={translations}
         />
       )}
-      {/* A failed request is shown even next to sections that arrived before the failure. */}
       {error && !isLoading && (
         <div className="cio-agent-overview-error">
           <div className="cio-agent-overview-error-icon" aria-hidden="true">
