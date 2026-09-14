@@ -118,7 +118,7 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
   const { callbacks, translations } = props;
 
   const themeStyles = buildThemeStyles(props.theme);
-  const hasContent = categories.length > 0 || sections.length > 0;
+  const hasContent = !!(phase === 'categories' ? categories : sections).length;
 
   const status = statusKey(isLoading, hasContent, !!error);
 
@@ -133,7 +133,7 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
             translations={translations}
           />
         )}
-        {error && categories.length === 0 && sections.length === 0 && (
+        {error && !isLoading && (
           <div className="cio-agent-overview-error">
             <div className="cio-agent-overview-error-icon" aria-hidden="true">
               <ErrorIconSVG />
