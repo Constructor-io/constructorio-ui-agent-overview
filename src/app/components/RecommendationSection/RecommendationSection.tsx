@@ -58,6 +58,8 @@ export default function RecommendationSection({
       </div>
       <ProductCarousel
         products={section.products}
+        label={section.title}
+        translations={translations}
         getProductUrl={getProductUrl}
         onProductClick={onProductClick}
       />

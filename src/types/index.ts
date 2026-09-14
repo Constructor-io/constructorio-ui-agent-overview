@@ -96,6 +96,10 @@ export type Translations = {
   'CioAgentOverview.categories.viewSuggestions'?: string;
   'CioAgentOverview.section.viewMore'?: string;
   'CioAgentOverview.skeleton.thinking'?: string;
+  'CioAgentOverview.carousel.previous'?: string;
+  'CioAgentOverview.carousel.next'?: string;
+  'CioAgentOverview.carousel.label'?: string;
+  'CioAgentOverview.categories.carouselLabel'?: string;
   'CioAgentOverview.error.message'?: string;
 };
 

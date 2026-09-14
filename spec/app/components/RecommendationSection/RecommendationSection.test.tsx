@@ -56,6 +56,48 @@ describe('RecommendationSection', () => {
     expect(screen.queryByText('View More')).toBeNull();
   });
 
+  describe('accessibility', () => {
+    it('hides the decorative badge and chevron icons from assistive technology', () => {
+      const sectionWithViewMore = {
+        ...section,
+        viewMoreUrl: 'https://example.com/more',
+      };
+      const { container } = render(
+        <RecommendationSection section={sectionWithViewMore} />
+      );
+      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+      const icons = container.querySelectorAll(
+        '.cio-agent-overview-section-badge svg, .cio-agent-overview-section-view-more svg'
+      );
+      expect(icons.length).toBe(2);
+      icons.forEach((icon) => {
+        expect(icon).toHaveAttribute('aria-hidden', 'true');
+        expect(icon).toHaveAttribute('focusable', 'false');
+      });
+    });
+
+    it('keeps the visible text as the accessible name of the view more link', () => {
+      render(
+        <RecommendationSection
+          section={{ ...section, viewMoreUrl: 'https://example.com/more' }}
+        />
+      );
+      expect(screen.getByRole('link', { name: 'View More' })).toBeTruthy();
+    });
+
+    it('names the product carousel by the section title', () => {
+      render(<RecommendationSection section={section} />);
+      expect(
+        screen.getByRole('region', { name: 'Running Shoes' })
+      ).toBeTruthy();
+    });
+
+    it('falls back to the generic carousel name when the title is empty', () => {
+      render(<RecommendationSection section={{ ...section, title: '' }} />);
+      expect(screen.getByRole('region', { name: 'Products' })).toBeTruthy();
+    });
+  });
+
   it('passes getProductUrl through to product cards', () => {
     const getProductUrl = (product: IProduct) => `/custom/${product.itemName}`;
     render(

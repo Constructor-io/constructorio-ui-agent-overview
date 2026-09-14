@@ -242,7 +242,11 @@ All UI strings can be customized via the `translations` prop for internationaliz
     'CioAgentOverview.section.aiBadge': 'IA',
     'CioAgentOverview.categories.viewSuggestions': 'Ver sugerencias',
     'CioAgentOverview.section.viewMore': 'Ver todo',
-    'CioAgentOverview.skeleton.thinking': 'Cargando...',
+    'CioAgentOverview.skeleton.thinking': 'Cargando',
+    'CioAgentOverview.carousel.previous': 'Mostrar anteriores',
+    'CioAgentOverview.carousel.next': 'Mostrar siguientes',
+    'CioAgentOverview.carousel.label': 'Productos',
+    'CioAgentOverview.categories.carouselLabel': 'Categorías',
     'CioAgentOverview.error.message': 'Algo salió mal',
   }}
 />
@@ -253,8 +257,8 @@ All UI strings can be customized via the `translations` prop for internationaliz
 <dl className="theme-grid">
   <div className="theme-item">
     <dt><code>CioAgentOverview.section.aiBadge</code></dt>
-    <dd className="theme-var">Default: "AI"</dd>
-    <dd className="theme-desc">Badge label on recommendation sections</dd>
+    <dd className="theme-var">Default: "Generated with AI"</dd>
+    <dd className="theme-desc">Badge label on category and recommendation sections</dd>
   </div>
   <div className="theme-item">
     <dt><code>CioAgentOverview.categories.viewSuggestions</code></dt>
@@ -263,22 +267,42 @@ All UI strings can be customized via the `translations` prop for internationaliz
   </div>
   <div className="theme-item">
     <dt><code>CioAgentOverview.section.viewMore</code></dt>
-    <dd className="theme-var">Default: "View more"</dd>
+    <dd className="theme-var">Default: "View More"</dd>
     <dd className="theme-desc">Link text to see more products in a section</dd>
   </div>
   <div className="theme-item">
     <dt><code>CioAgentOverview.skeleton.thinking</code></dt>
-    <dd className="theme-var">Default: "Thinking..."</dd>
+    <dd className="theme-var">Default: "Thinking"</dd>
     <dd className="theme-desc">Loading skeleton text</dd>
   </div>
   <div className="theme-item">
+    <dt><code>CioAgentOverview.carousel.previous</code></dt>
+    <dd className="theme-var">Default: "Show previous items"</dd>
+    <dd className="theme-desc">Accessible name of the carousel back arrow</dd>
+  </div>
+  <div className="theme-item">
+    <dt><code>CioAgentOverview.carousel.next</code></dt>
+    <dd className="theme-var">Default: "Show next items"</dd>
+    <dd className="theme-desc">Accessible name of the carousel forward arrow</dd>
+  </div>
+  <div className="theme-item">
+    <dt><code>CioAgentOverview.carousel.label</code></dt>
+    <dd className="theme-var">Default: "Products"</dd>
+    <dd className="theme-desc">Accessible name of a product carousel without a section title</dd>
+  </div>
+  <div className="theme-item">
+    <dt><code>CioAgentOverview.categories.carouselLabel</code></dt>
+    <dd className="theme-var">Default: "Categories"</dd>
+    <dd className="theme-desc">Accessible name of the category carousel</dd>
+  </div>
+  <div className="theme-item">
     <dt><code>CioAgentOverview.error.message</code></dt>
-    <dd className="theme-var">Default: "Something went wrong"</dd>
+    <dd className="theme-var">Default: "Something went wrong. Please try again."</dd>
     <dd className="theme-desc">Error state message</dd>
   </div>
 </dl>
 
-> Translations only apply to hardcoded UI strings — not to content returned by the API (such as category titles, product names, or descriptions).
+> Translations only apply to hardcoded UI strings — not to content returned by the API (such as category titles, product names, or descriptions). Screen-reader-only strings (`carousel.*`, `categories.carouselLabel`) fall back to the default when overridden with an empty string; visible strings can be blanked to hide them.
 
 ## Callbacks
 

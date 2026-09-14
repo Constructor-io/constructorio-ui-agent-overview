@@ -6,6 +6,7 @@ export default function ChevronRightSVG() {
       viewBox="0 0 7 12"
       fill="none"
       aria-hidden="true"
+      focusable="false"
     >
       <path
         d="M1 1L6 6L1 11"

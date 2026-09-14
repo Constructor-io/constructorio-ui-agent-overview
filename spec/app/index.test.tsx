@@ -41,6 +41,50 @@ function createFakeCategoryStream(): ReadableStream<unknown> {
   });
 }
 
+/** Emits one section, then fails: the partial-result error path. */
+function createFailingProductStream(): ReadableStream<unknown> {
+  const chunks: unknown[] = [
+    {
+      type: 'group',
+      data: { title: 'Top Picks', description: 'Best products' },
+    },
+    {
+      type: 'search_result',
+      data: {
+        title: '',
+        response: {
+          results: [
+            {
+              value: 'Shoe A',
+              data: {
+                image_url: 'https://example.com/a.jpg',
+                url: '/a',
+                price: 100,
+              },
+            },
+          ],
+        },
+      },
+    },
+    // A section is flushed when the next group starts; the stream fails after that.
+    {
+      type: 'group',
+      data: { title: 'Second Group', description: 'Never completes' },
+    },
+  ];
+  // Erroring a stream discards queued chunks, so hand them out one per read.
+  return new ReadableStream({
+    pull(controller) {
+      const chunk = chunks.shift();
+      if (chunk === undefined) {
+        controller.error(new Error('Stream broke'));
+        return;
+      }
+      controller.enqueue(chunk);
+    },
+  });
+}
+
 function createFakeProductStream(): ReadableStream<unknown> {
   return new ReadableStream({
     start(controller) {
@@ -337,6 +381,112 @@ describe(`${CioAgentOverview.name}: client`, () => {
   });
 
   describe('error state', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('renders the error when the product stream fails after categories', async () => {
+      const { createAgentStream: mockCreate } =
+        await import('@src/app/services/agentOverviewClient');
+      vi.mocked(mockCreate).mockImplementation(
+        (_options: unknown, _intent: string, domain: string) => {
+          if (domain === 'searchbar_agent') {
+            return createFakeCategoryStream();
+          }
+          throw new Error('Products failed');
+        }
+      );
+
+      const props = factories.agentOverviewProps.build();
+      render(<CioAgentOverview {...props} />);
+      await transitionToProducts();
+
+      expect(screen.getByRole('alert')).toHaveTextContent(
+        'Something went wrong. Please try again.'
+      );
+
+      vi.mocked(mockCreate).mockImplementation(
+        (_options: unknown, _intent: string, domain: string) => {
+          if (domain === 'searchbar_agent') {
+            return createFakeCategoryStream();
+          }
+          return createFakeProductStream();
+        }
+      );
+    });
+
+    it('shows the error next to sections that arrived before the stream failed', async () => {
+      const { createAgentStream: mockCreate } =
+        await import('@src/app/services/agentOverviewClient');
+      vi.mocked(mockCreate).mockImplementation(
+        (_options: unknown, _intent: string, domain: string) => {
+          if (domain === 'searchbar_agent') {
+            return createFakeCategoryStream();
+          }
+          return createFailingProductStream();
+        }
+      );
+
+      const props = factories.agentOverviewProps.build();
+      render(<CioAgentOverview {...props} />);
+      await transitionToProducts();
+
+      expect(screen.getByRole('heading', { name: 'Top Picks' })).toBeTruthy();
+      expect(screen.getByRole('alert')).toHaveTextContent(
+        'Something went wrong. Please try again.'
+      );
+
+      vi.mocked(mockCreate).mockImplementation(
+        (_options: unknown, _intent: string, domain: string) => {
+          if (domain === 'searchbar_agent') {
+            return createFakeCategoryStream();
+          }
+          return createFakeProductStream();
+        }
+      );
+    });
+
+    it('renders a single skeleton while products load', async () => {
+      const { createAgentStream: mockCreate } =
+        await import('@src/app/services/agentOverviewClient');
+      vi.mocked(mockCreate).mockImplementation(
+        (_options: unknown, _intent: string, domain: string) => {
+          if (domain === 'searchbar_agent') {
+            return createFakeCategoryStream();
+          }
+          // Never resolves, so the products phase stays in its loading state.
+          return new ReadableStream({ start() {} });
+        }
+      );
+
+      const props = factories.agentOverviewProps.build();
+      const { container } = render(<CioAgentOverview {...props} />);
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1100);
+      });
+      fireEvent.click(screen.getByRole('button', { name: /Running Shoes/i }));
+
+      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+      const skeletons = container.querySelectorAll(
+        '.cio-agent-overview-skeleton-section'
+      );
+      // The default products skeleton has 3 rows; a second skeleton tree would add a 4th.
+      expect(skeletons).toHaveLength(3);
+
+      vi.mocked(mockCreate).mockImplementation(
+        (_options: unknown, _intent: string, domain: string) => {
+          if (domain === 'searchbar_agent') {
+            return createFakeCategoryStream();
+          }
+          return createFakeProductStream();
+        }
+      );
+    });
+
     it('renders error message when streams fail', async () => {
       vi.useFakeTimers();
       const { createAgentStream: mockCreate } =
@@ -355,6 +505,9 @@ describe(`${CioAgentOverview.name}: client`, () => {
       expect(
         screen.getByText('Something went wrong. Please try again.')
       ).toBeTruthy();
+      expect(screen.getByRole('alert').textContent).toBe(
+        'Something went wrong. Please try again.'
+      );
 
       vi.mocked(mockCreate).mockImplementation(
         (_options: unknown, _intent: string, domain: string) => {

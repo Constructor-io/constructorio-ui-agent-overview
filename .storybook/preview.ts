@@ -21,6 +21,19 @@ const preview: Preview = {
       // 'error' - fail CI on a11y violations
       // 'off' - skip a11y checks entirely
       test: 'todo',
+      options: {
+        runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'],
+        rules: {
+          // Colors come from the design system and are not checked here
+          'color-contrast': { enabled: false },
+          'target-size': { enabled: true },
+          'aria-dialog-name': { enabled: true },
+          'aria-allowed-role': { enabled: true },
+          'presentation-role-conflict': { enabled: true },
+          'focus-order-semantics': { enabled: true },
+          tabindex: { enabled: true },
+        },
+      },
     },
   },
 };

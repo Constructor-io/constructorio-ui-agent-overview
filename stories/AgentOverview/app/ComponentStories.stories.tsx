@@ -11,6 +11,7 @@ const meta: Meta<typeof CioAgentOverview> = {
   component: CioAgentOverview,
   tags: ['autodocs'],
   parameters: {
+    a11y: { test: 'error' },
     controls: storiesControls,
   },
   argTypes,

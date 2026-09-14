@@ -1,6 +1,13 @@
 export default function ErrorIconSVG() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      focusable="false"
+    >
       <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
       <path
         d="M12 8v5"
