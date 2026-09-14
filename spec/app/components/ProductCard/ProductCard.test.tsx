@@ -61,13 +61,10 @@ describe('ProductCard', () => {
     expect(handleClick).toHaveBeenCalledOnce();
   });
 
-  it('is named by the product name alone', () => {
+  it('is named by its content so the price is announced', () => {
     render(<ProductCard product={product} />);
-    expect(screen.getByRole('link')).toHaveAccessibleName('Test Shoe');
-  });
-
-  it('lets the content name the link when the product name is empty', () => {
-    render(<ProductCard product={{ ...product, itemName: '  ' }} />);
+    expect(screen.getByRole('link')).toHaveAccessibleName(/Test Shoe/);
+    expect(screen.getByRole('link')).toHaveAccessibleName(/49\.99/);
     expect(screen.getByRole('link')).not.toHaveAttribute('aria-label');
   });
 

@@ -31,13 +31,11 @@ export default function ProductCard({
 }: IProductCardProps) {
   const libraryProduct = toLibraryProduct(product);
   const resolvedHref = href ?? product.url;
-  const accessibleName = product.itemName.trim() || undefined;
 
   return (
     <a
       className="cio-agent-overview-product-card"
       href={resolvedHref || undefined}
-      aria-label={accessibleName}
       onClick={onClick}
     >
       <CioProductCard product={libraryProduct}>
