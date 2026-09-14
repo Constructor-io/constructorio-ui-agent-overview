@@ -21,9 +21,9 @@ demo API, so axe checks whichever state is on screen when the story settles;
 state-specific markup (loading, error, carousels) is covered by the jsdom unit
 tests in `spec/`.
 
-Colour is out of scope: `color-contrast` is disabled in the axe run because the
+Color is out of scope: `color-contrast` is disabled in the axe run because the
 palette is the consumer's to restyle through `theme`. State conveyed *only* by
-colour still needs a non-visual equivalent.
+color still needs a non-visual equivalent.
 
 ## Constraints that shape the code
 
