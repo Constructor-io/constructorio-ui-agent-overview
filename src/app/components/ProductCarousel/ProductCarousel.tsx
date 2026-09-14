@@ -37,7 +37,7 @@ export default function ProductCarousel({
         loop={false}
         className="cio-agent-overview-carousel-inner"
         aria-label={
-          label ||
+          label?.trim() ||
           translateLabel('CioAgentOverview.carousel.label', translations)
         }
       >

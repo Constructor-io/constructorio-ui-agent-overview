@@ -86,6 +86,11 @@ describe('ProductCarousel', () => {
       ).toBeTruthy();
     });
 
+    it('falls back to the default region label when label is blank', () => {
+      render(<ProductCarousel products={products} label="  " />);
+      expect(screen.getByRole('region', { name: 'Products' })).toBeTruthy();
+    });
+
     it('uses the default arrow labels', () => {
       render(<ProductCarousel products={products} />);
       expect(

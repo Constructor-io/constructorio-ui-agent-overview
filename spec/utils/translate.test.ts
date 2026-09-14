@@ -16,6 +16,14 @@ describe('translateLabel', () => {
       })
     ).toBe('Show next items');
   });
+
+  it('falls back to the default when the override is whitespace', () => {
+    expect(
+      translateLabel('CioAgentOverview.carousel.next', {
+        'CioAgentOverview.carousel.next': '   ',
+      })
+    ).toBe('Show next items');
+  });
 });
 
 describe('translate', () => {

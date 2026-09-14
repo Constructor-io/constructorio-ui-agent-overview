@@ -25,12 +25,13 @@ export default function CategoryCard({
   onClick,
 }: ICategoryCardProps) {
   const libraryProduct = toLibraryProduct(category);
+  const accessibleName = category.title.trim() || undefined;
 
   return (
     <button
       type="button"
       className="cio-agent-overview-category-card"
-      aria-label={category.title}
+      aria-label={accessibleName}
       onClick={onClick}
     >
       <CioProductCard product={libraryProduct}>

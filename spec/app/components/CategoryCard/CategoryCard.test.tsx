@@ -32,6 +32,11 @@ describe('CategoryCard', () => {
     expect(screen.getByRole('button')).toHaveAccessibleName('Running Shoes');
   });
 
+  it('lets the content name the button when the title is blank', () => {
+    render(<CategoryCard category={{ ...category, title: '  ' }} />);
+    expect(screen.getByRole('button')).not.toHaveAttribute('aria-label');
+  });
+
   it('calls onClick when clicked', async () => {
     const user = userEvent.setup();
     const handleClick = vi.fn();

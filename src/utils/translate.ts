@@ -22,7 +22,9 @@ export function translateLabel(
   word: keyof Translations,
   translations?: Translations
 ): string {
-  return translate(word, translations) || defaultTranslations[word] || word;
+  return (
+    translate(word, translations).trim() || defaultTranslations[word] || word
+  );
 }
 
 export default function translate(

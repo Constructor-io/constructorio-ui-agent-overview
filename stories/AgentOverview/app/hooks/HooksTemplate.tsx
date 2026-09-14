@@ -13,9 +13,16 @@ export default function HooksTemplate(args: IAgentOverviewProps) {
     error,
   } = useAgentOverview(args);
 
-  const status = isLoading
-    ? translateLabel('CioAgentOverview.status.loading', args.translations)
-    : '';
+  const hasContent = categories.length > 0 || sections.length > 0;
+  let status = '';
+  if (isLoading) {
+    status = translateLabel(
+      'CioAgentOverview.status.loading',
+      args.translations
+    );
+  } else if (hasContent && !error) {
+    status = translateLabel('CioAgentOverview.status.ready', args.translations);
+  }
 
   let content: React.ReactNode = null;
   if (error) {
