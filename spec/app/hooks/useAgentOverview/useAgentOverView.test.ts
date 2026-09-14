@@ -276,7 +276,7 @@ describe(`${useAgentOverview.name}: client`, () => {
   });
 
   describe('null filtering', () => {
-    it('should filter out categories with missing imageUrl', async () => {
+    it('should filter out categories with missing imageUrl or blank title', async () => {
       mockedCreateAgentStream.mockImplementation(
         (_options: unknown, _intent: string, domain: string) => {
           if (domain === 'searchbar_agent') {
@@ -313,6 +313,20 @@ describe(`${useAgentOverview.name}: client`, () => {
                       results: [
                         {
                           value: 'Missing Title',
+                          data: { image_url: 'https://example.com/img.jpg' },
+                        },
+                      ],
+                    },
+                  },
+                });
+                controller.enqueue({
+                  type: 'search_result',
+                  data: {
+                    title: '   ',
+                    response: {
+                      results: [
+                        {
+                          value: 'Blank Title',
                           data: { image_url: 'https://example.com/img.jpg' },
                         },
                       ],

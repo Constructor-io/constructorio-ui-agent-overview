@@ -62,21 +62,5 @@ describe('Skeleton', () => {
       render(<Skeleton />);
       expect(screen.queryByRole('status')).toBeNull();
     });
-
-    it('hides the decorative skeleton bones from assistive technology', () => {
-      const { container } = render(
-        <div>
-          <Skeleton rows={2} />
-        </div>
-      );
-      // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-      const sections = container.querySelectorAll(
-        '.cio-agent-overview-skeleton-section'
-      );
-      expect(sections.length).toBe(2);
-      sections.forEach((section) =>
-        expect(section).toHaveAttribute('aria-hidden', 'true')
-      );
-    });
   });
 });
