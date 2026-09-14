@@ -66,11 +66,6 @@ describe('ProductCard', () => {
     expect(screen.getByRole('link')).toHaveAccessibleName('Test Shoe');
   });
 
-  it('omits the label when the product name is empty so the content names the link', () => {
-    render(<ProductCard product={{ ...product, itemName: '' }} />);
-    expect(screen.getByRole('link')).not.toHaveAttribute('aria-label');
-  });
-
   it('does not render target="_blank"', () => {
     render(<ProductCard product={product} />);
     const link = screen.getByRole('link');

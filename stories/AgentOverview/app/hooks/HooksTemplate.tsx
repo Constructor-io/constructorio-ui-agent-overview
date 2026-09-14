@@ -1,5 +1,6 @@
 import useAgentOverview from '@src/app/hooks/useAgentOverview';
 import type { IAgentOverviewProps } from '@src/types';
+import { translateLabel } from '@src/utils/translate';
 
 export default function HooksTemplate(args: IAgentOverviewProps) {
   const {
@@ -12,10 +13,9 @@ export default function HooksTemplate(args: IAgentOverviewProps) {
     error,
   } = useAgentOverview(args);
 
-  let status = '';
-  if (isLoading) {
-    status = phase === 'categories' ? 'Loading...' : 'Loading products...';
-  }
+  const status = isLoading
+    ? translateLabel('CioAgentOverview.status.loading', args.translations)
+    : '';
 
   let content: React.ReactNode = null;
   if (error) {

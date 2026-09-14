@@ -36,7 +36,7 @@ export default function ProductCard({
     <a
       className="cio-agent-overview-product-card"
       href={resolvedHref || undefined}
-      aria-label={product.itemName || undefined}
+      aria-label={product.itemName}
       onClick={onClick}
     >
       <CioProductCard product={libraryProduct}>
