@@ -11,6 +11,7 @@ import ErrorIconSVG from './components/icons/ErrorIconSVG';
 import RecommendationSection from './components/RecommendationSection/RecommendationSection';
 import Skeleton from './components/Skeleton/Skeleton';
 import StatusRegion from './components/StatusRegion/StatusRegion';
+import { TranslationsProvider } from './contexts/TranslationsContext';
 import useAgentOverview from './hooks/useAgentOverview';
 
 import '../styles.css';
@@ -127,67 +128,60 @@ export default function CioAgentOverview(props: IAgentOverviewProps) {
     phase === 'categories' ? categories.length > 0 : sections.length > 0;
 
   return (
-    <div className="cio-agent-overview-root" style={themeStyles}>
-      {phase === 'categories' && isLoading && !hasContent && (
-        <Skeleton
-          rows={1}
-          showTitle={false}
-          cards={4}
-          translations={translations}
-        />
-      )}
-      {error && !isLoading && (
-        <div className="cio-agent-overview-error">
-          <div className="cio-agent-overview-error-icon" aria-hidden="true">
-            <ErrorIconSVG />
+    <TranslationsProvider translations={translations}>
+      <div className="cio-agent-overview-root" style={themeStyles}>
+        {phase === 'categories' && isLoading && !hasContent && (
+          <Skeleton rows={1} showTitle={false} cards={4} />
+        )}
+        {error && !isLoading && (
+          <div className="cio-agent-overview-error">
+            <div className="cio-agent-overview-error-icon" aria-hidden="true">
+              <ErrorIconSVG />
+            </div>
+            <p className="cio-agent-overview-error-message" role="alert">
+              {translate('CioAgentOverview.error.message', translations)}
+            </p>
           </div>
-          <p className="cio-agent-overview-error-message" role="alert">
-            {translate('CioAgentOverview.error.message', translations)}
-          </p>
-        </div>
-      )}
-      {phase === 'categories' && categories.length > 0 && (
-        <CategorySection
-          description={categoryDescription}
-          categories={categories}
-          translations={translations}
-          onCategoryClick={(category) => {
-            callbacks?.onCategoryClick?.(category);
-            selectCategory(category);
-          }}
-          onViewSuggestions={() => {
-            selectCategory(categories[0]);
-          }}
-        />
-      )}
-      {phase === 'products' && isLoading && (
-        <Skeleton translations={translations} />
-      )}
-      {phase === 'products' &&
-        !isLoading &&
-        sections.map((section) => {
-          const sectionWithUrl = callbacks?.getViewMoreUrl
-            ? { ...section, viewMoreUrl: callbacks.getViewMoreUrl(section) }
-            : section;
+        )}
+        {phase === 'categories' && categories.length > 0 && (
+          <CategorySection
+            description={categoryDescription}
+            categories={categories}
+            onCategoryClick={(category) => {
+              callbacks?.onCategoryClick?.(category);
+              selectCategory(category);
+            }}
+            onViewSuggestions={() => {
+              selectCategory(categories[0]);
+            }}
+          />
+        )}
+        {phase === 'products' && isLoading && <Skeleton />}
+        {phase === 'products' &&
+          !isLoading &&
+          sections.map((section) => {
+            const sectionWithUrl = callbacks?.getViewMoreUrl
+              ? { ...section, viewMoreUrl: callbacks.getViewMoreUrl(section) }
+              : section;
 
-          return (
-            <RecommendationSection
-              key={section.title}
-              section={sectionWithUrl}
-              translations={translations}
-              getProductUrl={callbacks?.getProductUrl}
-              onProductClick={
-                callbacks?.onProductClick
-                  ? (event: React.MouseEvent, product: IProduct) =>
-                      callbacks.onProductClick!(event, product, section)
-                  : undefined
-              }
-            />
-          );
-        })}
-      <StatusRegion
-        message={statusMessage(isLoading, hasContent, !!error, translations)}
-      />
-    </div>
+            return (
+              <RecommendationSection
+                key={section.title}
+                section={sectionWithUrl}
+                getProductUrl={callbacks?.getProductUrl}
+                onProductClick={
+                  callbacks?.onProductClick
+                    ? (event: React.MouseEvent, product: IProduct) =>
+                        callbacks.onProductClick!(event, product, section)
+                    : undefined
+                }
+              />
+            );
+          })}
+        <StatusRegion
+          message={statusMessage(isLoading, hasContent, !!error, translations)}
+        />
+      </div>
+    </TranslationsProvider>
   );
 }

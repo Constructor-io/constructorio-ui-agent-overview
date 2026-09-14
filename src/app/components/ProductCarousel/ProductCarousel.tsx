@@ -1,7 +1,7 @@
 import { Carousel } from '@constructor-io/constructorio-ui-components';
 
-import type { IProduct, Translations } from '@src/types';
-import { translateLabel } from '@src/utils/translate';
+import { useTranslate } from '@src/app/contexts/TranslationsContext';
+import type { IProduct } from '@src/types';
 
 import ProductCard, { toLibraryProduct } from '../ProductCard/ProductCard';
 
@@ -12,8 +12,6 @@ interface IProductCarouselProps {
   products: IProduct[];
   /** Accessible name of the carousel region. Defaults to a translated generic label. */
   label?: string;
-  /** Translation overrides for UI strings. */
-  translations?: Translations;
   /** Builds a custom URL for each product card link. */
   getProductUrl?: (product: IProduct) => string;
   /** Called when a product card is clicked. */
@@ -24,10 +22,10 @@ interface IProductCarouselProps {
 export default function ProductCarousel({
   products,
   label,
-  translations,
   getProductUrl,
   onProductClick,
 }: IProductCarouselProps) {
+  const { translateLabel } = useTranslate();
   const libraryProducts = products.map(toLibraryProduct);
 
   return (
@@ -36,18 +34,12 @@ export default function ProductCarousel({
         items={libraryProducts}
         loop={false}
         className="cio-agent-overview-carousel-inner"
-        aria-label={
-          label ||
-          translateLabel('CioAgentOverview.carousel.label', translations)
-        }
+        aria-label={label || translateLabel('CioAgentOverview.carousel.label')}
       >
         {({ items }) => (
           <>
             <Carousel.Previous
-              aria-label={translateLabel(
-                'CioAgentOverview.carousel.previous',
-                translations
-              )}
+              aria-label={translateLabel('CioAgentOverview.carousel.previous')}
             />
             <Carousel.Content className="cio-agent-overview-carousel-content">
               {items?.map((item, index) => {
@@ -68,10 +60,7 @@ export default function ProductCarousel({
               })}
             </Carousel.Content>
             <Carousel.Next
-              aria-label={translateLabel(
-                'CioAgentOverview.carousel.next',
-                translations
-              )}
+              aria-label={translateLabel('CioAgentOverview.carousel.next')}
             />
           </>
         )}

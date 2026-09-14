@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import CategoryCarousel from '@src/app/components/CategoryCarousel/CategoryCarousel';
+import { TranslationsProvider } from '@src/app/contexts/TranslationsContext';
 import type { ICategory } from '@src/types';
 
 const categories: ICategory[] = [
@@ -17,14 +18,15 @@ describe('CategoryCarousel', () => {
 
   it('names the carousel region and arrows with translated labels', () => {
     render(
-      <CategoryCarousel
-        categories={categories}
+      <TranslationsProvider
         translations={{
           'CioAgentOverview.categories.carouselLabel': 'Category picks',
           'CioAgentOverview.carousel.previous': 'Go back',
           'CioAgentOverview.carousel.next': 'Go forward',
         }}
-      />
+      >
+        <CategoryCarousel categories={categories} />
+      </TranslationsProvider>
     );
     expect(screen.getByRole('region', { name: 'Category picks' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Go back' })).toBeTruthy();
@@ -33,10 +35,11 @@ describe('CategoryCarousel', () => {
 
   it('falls back to the default region label when the override is blank', () => {
     render(
-      <CategoryCarousel
-        categories={categories}
+      <TranslationsProvider
         translations={{ 'CioAgentOverview.categories.carouselLabel': '' }}
-      />
+      >
+        <CategoryCarousel categories={categories} />
+      </TranslationsProvider>
     );
     expect(screen.getByRole('region', { name: 'Categories' })).toBeTruthy();
   });

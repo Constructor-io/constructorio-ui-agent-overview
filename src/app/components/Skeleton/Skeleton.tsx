@@ -1,5 +1,4 @@
-import type { Translations } from '@src/types';
-import translate from '@src/utils/translate';
+import { useTranslate } from '@src/app/contexts/TranslationsContext';
 
 import SparkleSVG from '../icons/SparkleSVG';
 
@@ -21,18 +20,18 @@ function SkeletonProduct() {
 function SkeletonSection({
   showTitle = true,
   cards = DEFAULT_CARDS,
-  translations,
 }: {
   showTitle?: boolean;
   cards?: number;
-  translations?: Translations;
 }) {
+  const { translate } = useTranslate();
+
   return (
     <div className="cio-agent-overview-skeleton-section" aria-hidden="true">
       <div className="cio-agent-overview-skeleton-badge">
         <SparkleSVG />
         <span>
-          {translate('CioAgentOverview.skeleton.thinking', translations)}
+          {translate('CioAgentOverview.skeleton.thinking')}
           <span className="cio-agent-overview-skeleton-thinking-dots" />
         </span>
       </div>
@@ -56,25 +55,17 @@ interface SkeletonProps {
   showTitle?: boolean;
   /** Number of product card placeholders per row. @default 5 */
   cards?: number;
-  /** Translation overrides for UI strings. */
-  translations?: Translations;
 }
 
 export default function Skeleton({
   rows = DEFAULT_ROWS,
   showTitle = true,
   cards = DEFAULT_CARDS,
-  translations,
 }: SkeletonProps) {
   return (
     <>
       {Array.from({ length: rows }, (_, i) => (
-        <SkeletonSection
-          key={i}
-          showTitle={showTitle}
-          cards={cards}
-          translations={translations}
-        />
+        <SkeletonSection key={i} showTitle={showTitle} cards={cards} />
       ))}
     </>
   );
