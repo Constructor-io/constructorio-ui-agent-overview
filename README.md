@@ -191,17 +191,6 @@ All UI strings can be customized via the `translations` prop for internationaliz
 />
 ```
 
-The standalone components (`ProductCarousel`, `RecommendationSection`) read translations from
-`TranslationsProvider` instead of a prop:
-
-```jsx
-import { ProductCarousel, TranslationsProvider } from '@constructor-io/constructorio-ui-agent-overview';
-
-<TranslationsProvider translations={{ 'CioAgentOverview.carousel.next': 'Next' }}>
-  <ProductCarousel products={products} />
-</TranslationsProvider>
-```
-
 ## Troubleshooting
 
 ### Known Issues
